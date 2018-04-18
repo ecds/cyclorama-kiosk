@@ -1,0 +1,47 @@
+@import 'ember-uikit';
+
+.fullscreen {
+  display: block;
+  height: 75vh;
+  margin: 0;
+  width: 100%;
+}
+
+.leaflet-container {
+  // 1365 clifton clinic b
+  height: 75vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.thumb-nav {
+  bottom: 0;
+  height: 25vh;
+  position: absolute;
+  width: 100vw;
+
+  img {
+    height: 20vh;
+    padding: 1em;
+  }
+}
+
+.uk-offcanvas-content {
+  height: 100vh;
+}
+
+.uk-offcanvas-bar {
+  width: 33vw;
+}
+
+.uk-open {
+  width: 33vw;
+}
+
+@media (min-width: 960px) {
+  :not(.uk-offcanvas-flip) > .uk-offcanvas-content-animation {
+    left: 33vw;
+  }
+}

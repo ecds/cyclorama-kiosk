@@ -1,0 +1,53 @@
+{{#if bounds}}
+<div class='uk-offcanvas-content'>
+<div id='panel'>
+  <div class='uk-offcanvas-bar uk-flex uk-flex-column'>
+    <button class="uk-offcanvas-close" type="button" uk-close onclick={{action 'reCenter'}}></button>
+    <h2>{{activeHotSpot.title}}</h2>
+    {{{activeHotSpot.description}}}
+  </div>
+</div>
+<div class='fullscreen'>
+{{#leaflet-map onLoad=(action 'initMap') bounds=bounds maxBounds=bounds bounceAtZoomLimits=false as |features|}}
+
+  {{features.wms-tile
+    url='https://geoserver-private.ecds.emory.edu/ECDS_Projects/wms'
+    layers='ECDS_Projects:kioskexample_geo'
+    format='image/png'
+    transparent=true
+    bounds=bounds
+    noWrap=true
+    crs=crs
+    tileSize=512
+  }}
+
+  {{#each hotSpots as |hotSpot|}}
+    {{#features.polygon
+      locations=(doughnut hotSpot.polygon)
+      color=hotSpot.fillColor
+      fillOpacity=hotSpot.fillOpacity
+      opacity=0
+      interactive=false
+      smoothFactor=10
+      }}
+    {{/features.polygon}}
+  {{/each}}
+  {{#each hotSpots as |hotSpot|}}
+    {{#features.polygon
+      locations=hotSpot.polygon
+      opacity=0
+      fillOpacity=0
+      onClick=(action 'highlight' hotSpot)
+    }}
+    {{/features.polygon}}
+  {{/each}}
+{{draw-control}}
+{{/leaflet-map}}
+</div>
+<div class='thumb-nav'>
+  {{#each hotSpots as |hotSpot|}}
+    <img onclick={{action 'highlight' hotSpot}} src='{{hotSpot.thumbnail}}' />
+  {{/each}}
+</div>
+</div>
+{{/if}}
