@@ -44,6 +44,8 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
+    ENV.locationType = 'hash';
+    ENV.rootURL = '/cyclorama-kiosk/';
     // here you can enable a production-specific feature
   }
 
