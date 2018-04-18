@@ -13,6 +13,7 @@
     "testem.log": "explorerExcludedFiles",
     ".node_modules.ember-try/": "explorerExcludedFiles",
     "bower.json.ember-try": "explorerExcludedFiles",
-    "package.json.ember-try": "explorerExcludedFiles"
+    "package.json.ember-try": "explorerExcludedFiles",
+    ".vscode": "explorerExcludedFiles"
   }
 }
