@@ -8,7 +8,13 @@
   </div>
 </div>
 <div class='fullscreen'>
-{{#leaflet-map onLoad=(action 'initMap') bounds=bounds maxBounds=bounds bounceAtZoomLimits=false as |features|}}
+{{#leaflet-map
+  onLoad=(action 'initMap')
+  bounds=bounds
+  maxBounds=bounds
+  bounceAtZoomLimits=false
+  onClick=(action 'reCenter')
+as |features|}}
 
   {{features.wms-tile
     url='https://geoserver-private.ecds.emory.edu/ECDS_Projects/wms'

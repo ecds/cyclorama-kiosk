@@ -31,7 +31,13 @@ export default Component.extend({
     });
     set(this, 'panel', panel);
 
-    // UIkit.util.on('#panel', 'close', this.send('reCenter'));
+    // UIkit.util.on(document.getElementById('panel'), 'show', () => {
+    //   document.getElementsByClassName('leaflet-container')[0].style.width = '67vw';
+    // });
+
+    // UIkit.util.on(document.getElementById('panel'), 'hide', () => {
+    //   document.getElementsByClassName('leaflet-container')[0].style.width = '100%';
+    // });
   },
 
   painting: A([[-55, 170],[-55, -170],[55, -170],[55, 170]]),
@@ -464,6 +470,11 @@ export default Component.extend({
     },
 
     highlight(hotSpot) {
+      document.getElementsByClassName('leaflet-container')[0].style.width = '67vw';
+
+      UIkit.util.on(document.getElementById('panel'), 'hide', () => {
+        document.getElementsByClassName('leaflet-container')[0].style.width = '100%';
+      });
       let hotSpots = get(this, 'hotSpots');
       set(this, 'activeHotSpot', hotSpot);
       hotSpots.forEach(h => {
@@ -480,7 +491,9 @@ export default Component.extend({
     },
 
     reCenter() {
-      if (get(this, '_map')) {
+      if (get(this, '_map') && get(this, 'panel').isToggled()) {
+        get(this, 'panel').hide();
+        document.getElementsByClassName('leaflet-container')[0].style.width = '100%';
         let hotSpots = get(this, 'hotSpots');
         hotSpots.forEach(h => {
           setProperties(h, { fillOpacity: 0 });
