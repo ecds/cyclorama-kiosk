@@ -17,14 +17,22 @@
 }
 
 .thumb-nav {
-  bottom: 0;
-  height: 25vh;
-  position: absolute;
+//   bottom: 0;
+//   height: 25vh;
+//   position: absolute;
   width: 100vw;
 
+//   img {
+//     height: 20vh;
+//     padding: 1em;
+//   }
+}
+
+.uk-thumbnav {
+  margin-left: 0;
+
   img {
-    height: 20vh;
-    padding: 1em;
+    height: 10vh;
   }
 }
 
@@ -43,5 +51,11 @@
 @media (min-width: 960px) {
   :not(.uk-offcanvas-flip) > .uk-offcanvas-content-animation {
     left: 33vw;
+  }
+}
+
+.uk-overlay-default {
+  p {
+    color: #666;
   }
 }

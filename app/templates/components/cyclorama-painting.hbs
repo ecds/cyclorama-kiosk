@@ -44,10 +44,12 @@
 {{draw-control}}
 {{/leaflet-map}}
 </div>
-<div class='thumb-nav'>
+<div class='thumb-nav uk-margin'>
+  <ul class='uk-thumbnav'>
   {{#each hotSpots as |hotSpot|}}
-    <img onclick={{action 'highlight' hotSpot}} src='{{hotSpot.thumbnail}}' />
+    <li class='uk-active'><img class='uk-margin' onclick={{action 'highlight' hotSpot}} src='{{hotSpot.thumbnail}}' /></li>
   {{/each}}
+  </ul>
 </div>
 </div>
 {{/if}}

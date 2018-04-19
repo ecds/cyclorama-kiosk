@@ -64,7 +64,17 @@ export default Component.extend({
       fillOpacity: 0,
       fillColor: '#444444',
       thumbnail: 'https://battleofatlanta.s3.amazonaws.com/troup.png',
-      title: 'Troup Hurt House'
+      title: 'Troup Hurt House',
+      description:
+        `
+          <iframe src="//www.youtube.com/embed/hEsWz_LfFWE?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=0&amp;playsinline=1" width="560" height="415" frameborder="0" allowfullscreen uk-responsive uk-video="autoplay: false"></iframe>
+          <p>The Troup Hurt House, no longer standing, is featured prominently in the Battle of Atlanta Cyclorama painting on high ground north of the Georgia Railroad (now the right of way for the MARTA commuter line and CSX railroad). The site is now occupied by a privately owned home, a converted church that was originally built in 1907.</p>
+          <p>The most famous moments in the Battle of Atlanta occurred at this site: a mid-afternoon Confederate assault on the entrenched Federal 15th Corps, followed shortly by a Union counterattack. The Cyclorama painting depicts the decisive moment, at approximately 4:30 p.m., when Federal Major General John A. Logan rallied his troops to restore the broken Union line and turn back the attacking Confederates.</p>
+          <img src='https://battleofatlanta.s3.amazonaws.com/troupHurt.JPG' />
+          <p>Brigadier General Arthur M. Manigault's brigade had spearheaded the mid-afternoon Confederate assault. Manigault's troops, followed by Colonel Jacob H. Sharp's brigade of Brown's Confederate Division, drove a wedge through the Union line at the railroad cut near the present-day Inman Park MARTA station, poured through the opening, and forced the Yankee defenders to retreat. Manigault's troops fanned out to the north and captured the Troup Hurt House and Captain Francis De Gress's 20-pound Parrott battery of four guns.</p>
+          <p>A historic marker at the north end of Degress Avenue, before it turns sharply east, indicates the location of the De Gress battery. Together, the combined action of Manigault's brigade and other elements of Brown's and Clayton's Confederate Divisions opened a half-mile gap in the Union line that if further exploited could have turned the tide of the battle. However, the Rebel successes were short-lived, and they were soon driven back by a ferocious Union counterattack. General Sherman, observing the battlefield action from his position three-fourths of a mile north of the Troup Hurt House, directed cannon fire against the Rebel front and behind it, thwarting further gains and preventing reinforcements.</p>
+          <p>Union Major General John A. Logan, who earlier that afternoon had replaced the fallen Major General James B. McPherson as commander of the Army of the Tennessee, gathered reinforcements and led the successful infantry counteroffensive. The Federal troops did not pursue their retreating foes, and fighting in the vicinity of the Troup Hurt House came to a close. Combat continued until dark at Leggett's Hill.</p>
+        `
     },
     {
       name: 'kennesaw',
@@ -79,7 +89,17 @@ export default Component.extend({
       fillColor: '#444444',
       thumbnail: 'https://battleofatlanta.s3.amazonaws.com/kennesaw.png',
       title: 'Kennesaw Mountain',
-      description: `<p><img src='https://battleofatlanta.s3.amazonaws.com/mountainNow.jpg'></p>`
+      description: `
+        <div class='uk-inline'>
+          <img src='https://battleofatlanta.s3.amazonaws.com/mountainNow.jpg'>
+          <div class='uk-overlay uk-overlay-default uk-position-bottom'>
+            <p>Present view of Kennesaw Mountain from painter's perspective.</p>
+          </div>
+        </div>
+        <p>Kennesaw Mountain was the site of the Battle of Kennesaw Mountain during the 1864 Atlanta Campaign of the American Civil War, in which the Union forces of General William Tecumseh Sherman launched a bloody frontal attack on the Confederate Army of Tennessee, which was commanded by General Joseph E. Johnston. Federal judge Kenesaw Mountain Landis, the first commissioner of Major League Baseball, was named after the battle, in which his father nearly lost his left leg.</p>
+        <p>The nearby city of Kennesaw, founded as Big Shanty, was renamed for the mountain after the war, although the mountain lies outside city limits. Kennesaw Mountain High School is another namesake.</p>
+        <p>The Kennesaw Mountain National Battlefield Park was created on June 26, 1935. It was formerly a Civilian Conservation Corps camp.</p>
+      `
     },
     {
       title: 'US Lt. Edward Jonas',
@@ -106,7 +126,12 @@ export default Component.extend({
       ],
       fillOpacity: 0,
       fillColor: '#444444',
-      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/jonas.png'
+      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/jonas.png',
+      description: `
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</p>
+        <p>Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+        <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.</p>
+      `
     },
     {
       title: 'mersy',
@@ -125,7 +150,12 @@ export default Component.extend({
       ],
       fillOpacity: 0,
       fillColor: '#444444',
-      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/mersy.png'
+      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/mersy.png',
+      description: `
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</p>
+        <p>Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+        <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.</p>
+      `
     },
     {
       title: 'General Willam Sherman',
@@ -145,7 +175,12 @@ export default Component.extend({
         [-10.705349047151419, 71.67521238327028]
       ],
       fillOpacity: 0,
-      fillColor: '#444444'
+      fillColor: '#444444',
+      description: `
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</p>
+        <p>Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+        <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.</p>
+      `
     },
     {
       polygon: [
@@ -161,7 +196,12 @@ export default Component.extend({
       title: 'Agustus Hurt House',
       fillOpacity: 0,
       fillColor: '#444444',
-      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/agustus.png'
+      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/agustus.png',
+      description: `
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</p>
+        <p>Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+        <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.</p>
+      `
     },
     {
       polygon: [
@@ -182,7 +222,12 @@ export default Component.extend({
       title: 'US 15th Army Corps',
       fillOpacity: 0,
       fillColor: '#444444',
-      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/15th.png'
+      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/15th.png',
+      description: `
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</p>
+        <p>Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+        <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.</p>
+      `
     },
     {
       polygon: [
@@ -243,7 +288,12 @@ export default Component.extend({
       fillOpacity: 0,
       fillColor: '#444444',
       title: 'US Major General John Logan',
-      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/logon.png'
+      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/logon.png',
+      description: `
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</p>
+        <p>Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+        <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.</p>
+      `
     },
     {
       polygon: [
@@ -354,7 +404,12 @@ export default Component.extend({
       fillOpacity: 0,
       fillColor: '#444444',
       title: 'US Col. Francis De Gress',
-      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/DeGress.png'
+      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/DeGress.png',
+      description: `
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</p>
+        <p>Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+        <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.</p>
+      `
     },
     {
       polygon: [
@@ -391,7 +446,12 @@ export default Component.extend({
       title: 'US Brigadier Gen. Manning Force',
       fillOpacity: 0,
       fillColor: '#444444',
-      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/force.png'
+      thumbnail: 'https://battleofatlanta.s3.amazonaws.com/force.png',
+      description: `
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur sodales ligula in libero.</p>
+        <p>Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas porttitor. Morbi lectus risus, iaculis vel, suscipit quis, luctus non, massa. Fusce ac turpis quis ligula lacinia aliquet. Mauris ipsum. Nulla metus metus, ullamcorper vel, tincidunt sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.</p>
+        <p>Nam nec ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis. Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.</p>
+      `
     }
   ]),
 
