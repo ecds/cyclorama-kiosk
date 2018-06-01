@@ -1,0 +1,1 @@
+/Users/jsvarne/data/cyclorama-kiosk/app/components/cyclorama-painting.js

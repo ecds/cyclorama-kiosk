@@ -1,0 +1,1 @@
+/Users/jsvarne/data/cyclorama-kiosk/tmp/broccoli_merge_trees-input_base_path-yccgOOur.tmp/8/components/welcome-page.js

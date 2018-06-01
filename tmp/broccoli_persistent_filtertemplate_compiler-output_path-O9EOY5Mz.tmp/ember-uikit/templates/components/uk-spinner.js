@@ -1,0 +1,1 @@
+export default Ember.HTMLBars.template({"id":"aSdXMhDo","block":"{\"symbols\":[\"&default\"],\"statements\":[[11,1]],\"hasEval\":false}","meta":{"moduleName":"ember-uikit/templates/components/uk-spinner.hbs"}});

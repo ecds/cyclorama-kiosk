@@ -1,0 +1,1 @@
+/Users/jsvarne/data/cyclorama-kiosk/tmp/broccoli_merge_trees-input_base_path-jEt8eA3S.tmp/0/ember-cli-shims/app-shims.js
