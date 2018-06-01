@@ -1,1 +1,0 @@
-/Users/jsvarne/data/cyclorama-kiosk/tmp/funnel-input_base_path-okdtCymJ.tmp/-private/utils/get-header.js

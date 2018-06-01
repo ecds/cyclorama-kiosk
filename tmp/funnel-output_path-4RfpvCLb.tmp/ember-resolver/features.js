@@ -1,1 +1,0 @@
-/Users/jsvarne/data/cyclorama-kiosk/tmp/funnel-input_base_path-l5zr7tjp.tmp/features.js

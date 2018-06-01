@@ -1,1 +1,0 @@
-/Users/jsvarne/data/cyclorama-kiosk/node_modules/ember-leaflet/app/components/geojson-layer.js

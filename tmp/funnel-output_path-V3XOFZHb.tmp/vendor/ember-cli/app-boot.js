@@ -1,1 +1,0 @@
-/Users/jsvarne/data/cyclorama-kiosk/tmp/funnel-input_base_path-4epRs2db.tmp/app-boot.js

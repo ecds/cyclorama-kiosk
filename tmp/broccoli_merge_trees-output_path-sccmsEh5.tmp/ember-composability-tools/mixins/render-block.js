@@ -1,1 +1,0 @@
-/Users/jsvarne/data/cyclorama-kiosk/tmp/broccoli_merge_trees-input_base_path-9YM5vz5L.tmp/4/ember-composability-tools/mixins/render-block.js
