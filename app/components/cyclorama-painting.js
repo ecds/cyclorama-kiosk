@@ -6,15 +6,19 @@ import {
 } from '@ember/object';
 import { A } from '@ember/array';
 import UIkit from 'uikit';
+// import MiniMap from 'leaflet-minimap';
 /* global L */
 
 export default Component.extend({
+  // classNames: ['uk-width-1-1'],
   bounds: null,
   crs: null,
   L: null,
   _map: null,
   activeHotSpot: null,
   panel: null,
+  showThumbNav: true,
+  miniMap: null,
 
   didInsertElement() {
     set(this, 'bounds', L.latLngBounds([
@@ -31,6 +35,38 @@ export default Component.extend({
     });
     set(this, 'panel', panel);
 
+    if (get(this, '_map') && get(this, 'miniMap') === null) {
+      // console.log(get(this, '_map'));
+      var osmUrl='https://geoserver-private.ecds.emory.edu/ECDS_Projects/wms';
+      var osm2 = new L.tileLayer.wms(
+        osmUrl,
+        {
+          crs: get(this, 'crs'),
+          minZoom: 0,
+          maxZoom: 0,
+          layers: 'ECDS_Projects:kioskexample_geo',
+          format: 'image/png'
+        }
+      );
+      let miniMap = new L.Control.MiniMap(
+        osm2,
+        {
+          zoomLevelFixed: true,
+          centerFixed: L.latLng(0,0),
+          width: 250,
+          height: 100,
+          aimingRectOptions: {
+            stroke: '#688EAB'
+          }
+        }
+      );
+      set(this, 'miniMap', miniMap);
+      miniMap.addTo(get(this, '_map'));
+    }
+
+    // https://geoserver-private.ecds.emory.edu/ECDS_Projects/wms?service=WMS&request=GetMap&layers=ECDS_Projects%3Akioskexample_geo&styles=&format=image%2Fpng&transparent=true&version=1.1.1&width=512&height=512&srs=EPSG%3A3857&bbox=0,-10018754.171394622,10018754.171394622,0
+    // https://geoserver-private.ecds.emory.edu/ECDS_Projects/wms?service=WMS&request=GetMap&layers=&styles=&format=image%2Fpng&transparent=false&version=1.1.1&layer=ECDS_Projects%3Akioskexample_geo&width=512&height=512&srs=EPSG%3A3857&bbox=-20037508.342789244,-20037508.34278071,60112525.02836774,20037508.34278071
+
     // UIkit.util.on(document.getElementById('panel'), 'show', () => {
     //   document.getElementsByClassName('leaflet-container')[0].style.width = '67vw';
     // });
@@ -40,7 +76,7 @@ export default Component.extend({
     // });
   },
 
-  painting: A([[-55, 170],[-55, -170],[55, -170],[55, 170]]),
+  paintingBounds: A([[-55, 170],[-55, -170],[55, -170],[55, 170]]),
 
   hotSpots: A ([
     {
@@ -74,8 +110,8 @@ export default Component.extend({
       description:
         `
           <iframe src="//www.youtube.com/embed/hEsWz_LfFWE?autoplay=0&amp;showinfo=0&amp;rel=0&amp;modestbranding=0&amp;playsinline=1" width="560" height="415" frameborder="0" allowfullscreen uk-responsive uk-video="autoplay: false"></iframe>
-          <p>The Troup Hurt House, no longer standing, is featured prominently in the Battle of Atlanta Cyclorama painting on high ground north of the Georgia Railroad (now the right of way for the MARTA commuter line and CSX railroad). The site is now occupied by a privately owned home, a converted church that was originally built in 1907.</p>
-          <p>The most famous moments in the Battle of Atlanta occurred at this site: a mid-afternoon Confederate assault on the entrenched Federal 15th Corps, followed shortly by a Union counterattack. The Cyclorama painting depicts the decisive moment, at approximately 4:30 p.m., when Federal Major General John A. Logan rallied his troops to restore the broken Union line and turn back the attacking Confederates.</p>
+          <p>The Troup Hurt House, no longer standing, is featured prominently in the Battle of Atlanta Cyclorama paintingBounds on high ground north of the Georgia Railroad (now the right of way for the MARTA commuter line and CSX railroad). The site is now occupied by a privately owned home, a converted church that was originally built in 1907.</p>
+          <p>The most famous moments in the Battle of Atlanta occurred at this site: a mid-afternoon Confederate assault on the entrenched Federal 15th Corps, followed shortly by a Union counterattack. The Cyclorama paintingBounds depicts the decisive moment, at approximately 4:30 p.m., when Federal Major General John A. Logan rallied his troops to restore the broken Union line and turn back the attacking Confederates.</p>
           <img src='https://battleofatlanta.s3.amazonaws.com/troupHurt.JPG' />
           <p>Brigadier General Arthur M. Manigault's brigade had spearheaded the mid-afternoon Confederate assault. Manigault's troops, followed by Colonel Jacob H. Sharp's brigade of Brown's Confederate Division, drove a wedge through the Union line at the railroad cut near the present-day Inman Park MARTA station, poured through the opening, and forced the Yankee defenders to retreat. Manigault's troops fanned out to the north and captured the Troup Hurt House and Captain Francis De Gress's 20-pound Parrott battery of four guns.</p>
           <p>A historic marker at the north end of Degress Avenue, before it turns sharply east, indicates the location of the De Gress battery. Together, the combined action of Manigault's brigade and other elements of Brown's and Clayton's Confederate Divisions opened a half-mile gap in the Union line that if further exploited could have turned the tide of the battle. However, the Rebel successes were short-lived, and they were soon driven back by a ferocious Union counterattack. General Sherman, observing the battlefield action from his position three-fourths of a mile north of the Troup Hurt House, directed cannon fire against the Rebel front and behind it, thwarting further gains and preventing reinforcements.</p>
@@ -469,19 +505,28 @@ export default Component.extend({
       set(this, '_map', map);
     },
 
-    highlight(hotSpot) {
+    highlight(hotSpot, index) {
+      set(hotSpot, 'index', index);
+      const map = get(this, '_map');
+
       document.getElementsByClassName('leaflet-container')[0].style.width = '67vw';
+      // document.getElementsByClassName('leaflet-container')[0].style.height = '100vh';
+      document.getElementsByClassName('leaflet-container')[0].style.top = '0';
 
       UIkit.util.on(document.getElementById('panel'), 'hide', () => {
         document.getElementsByClassName('leaflet-container')[0].style.width = '100%';
-      });
+        // document.getElementsByClassName('leaflet-container')[0].style.height = '90vh';
+        document.getElementsByClassName('leaflet-container')[0].style.top = '10vh';
+        });
+
       let hotSpots = get(this, 'hotSpots');
       set(this, 'activeHotSpot', hotSpot);
+
       hotSpots.forEach(h => {
         setProperties(h, { fillOpacity: 0 });
       });
 
-      get(this, '_map').flyToBounds(hotSpot.polygon, {
+      map.flyToBounds(hotSpot.polygon, {
         paddingBottomRight: [0,0]
       });
 
@@ -490,19 +535,38 @@ export default Component.extend({
       setProperties(hotSpot, { fillOpacity: .6});
     },
 
+    next(index) {
+      const next = index + 1
+      this.send('highlight', get(this, 'hotSpots')[next], next);
+    },
+
+    previous(index) {
+      const prev = index - 1;
+      this.send('highlight', get(this, 'hotSpots')[prev], prev);
+    },
+
     reCenter() {
       if (get(this, '_map') && get(this, 'panel').isToggled()) {
-        get(this, 'panel').hide();
-        document.getElementsByClassName('leaflet-container')[0].style.width = '100%';
         let hotSpots = get(this, 'hotSpots');
+
+        get(this, 'panel').hide();
+
+        document.getElementsByClassName('leaflet-container')[0].style.width = '100%';
+
         hotSpots.forEach(h => {
           setProperties(h, { fillOpacity: 0 });
         });
+
         get(this, '_map').flyToBounds(get(this, 'bounds'), {
           padding: [0,0]
         });
+
         get(this, '_map').setZoom(3);
       }
+    },
+
+    reSize() {
+      // console.log('oh hi');
     }
   }
 });

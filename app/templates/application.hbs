@@ -1,2 +1,54 @@
-{{cyclorama-painting}}
+<nav class="uk-navbar-container uk-margin uk-width-1-1 uk-margin-remove-bottom" uk-navbar>
+    <div class="uk-navbar-left uk-padding">
 
+        {{#link-to 'index'}}<img src='http://www.atlantahistorycenter.com/assets/images/AHC_Brand_Asset_Lockup_White.png' />{{/link-to}}
+
+        {{!-- <ul class="uk-navbar-nav">
+            <li>
+                <a href="#">
+                    <span class="uk-icon uk-margin-small-right" uk-icon="icon: star"></span>
+                    Features
+                </a>
+            </li>
+        </ul> --}}
+
+        {{!-- <div class="uk-navbar-item">
+            <div>Some <a href="#">Link</a></div>
+        </div>
+
+        <div class="uk-navbar-item">
+            <form action="javascript:void(0)">
+                <input class="uk-input uk-form-width-small" type="text" placeholder="Input">
+                <button class="uk-button uk-button-default">Button</button>
+            </form>
+        </div> --}}
+
+    </div>
+
+    <div class="uk-navbar-center">
+      <h1>
+        <span class='site-title'>Cyclorama: </span><span class='sub-title'>Some Quadrant</span>
+      </h1>
+    </div>
+
+    <div class="uk-navbar-right uk-padding">
+      {{fa-icon 'question-circle-o'}}
+    </div>
+</nav>
+<div class="uk-width-1-1">
+{{cyclorama-painting}}
+</div>
+{{!-- <div class="uk-inline uk-width-1-1">
+    <img src="../docs/images/photo.jpg" alt="">
+    <div class="uk-overlay uk-overlay-primary uk-position-bottom">
+        <p>Default Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+</div> --}}
+    {{!-- <div class='uk-width-1-1 thumb-nav uk-margin'> --}}
+
+      {{!-- <ul class='uk-thumbnav'>
+      {{#each hotSpots as |hotSpot|}}
+        <li class='uk-active'><img class='uk-margin' onclick={{action 'highlight' hotSpot}} src='{{hotSpot.thumbnail}}' /></li>
+      {{/each}}
+      </ul> --}}
+    {{!-- </div> --}}
