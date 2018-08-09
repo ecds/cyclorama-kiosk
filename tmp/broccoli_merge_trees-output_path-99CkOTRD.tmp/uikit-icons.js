@@ -1,1 +1,0 @@
-/Users/jsvarne/data/cyclorama-kiosk/tmp/broccoli_persistent_filtermapper-output_path-BpA1SMCe.tmp/uikit-icons.js

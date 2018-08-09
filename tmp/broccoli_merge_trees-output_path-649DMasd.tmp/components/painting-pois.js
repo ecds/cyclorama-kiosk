@@ -1,1 +1,0 @@
-/Users/jay/data/cyclorama-kiosk/app/components/painting-pois.js

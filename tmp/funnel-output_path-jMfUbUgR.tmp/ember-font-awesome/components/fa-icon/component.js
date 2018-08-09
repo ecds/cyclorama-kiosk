@@ -1,1 +1,0 @@
-/Users/jay/data/cyclorama-kiosk/tmp/funnel-input_base_path-kdZPJ5Hu.tmp/components/fa-icon/component.js

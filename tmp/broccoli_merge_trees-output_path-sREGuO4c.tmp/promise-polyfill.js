@@ -1,1 +1,0 @@
-/Users/jay/data/cyclorama-kiosk/tmp/broccoli_persistent_filterbabel__babel_ember_test_helpers-output_path-BQO34uuU.tmp/promise-polyfill.js

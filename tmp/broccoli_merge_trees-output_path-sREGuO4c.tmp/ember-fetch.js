@@ -1,1 +1,0 @@
-/Users/jay/data/cyclorama-kiosk/tmp/broccoli_merge_trees-input_base_path-VNOOFKph.tmp/4/ember-fetch.js

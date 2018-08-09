@@ -1,1 +1,0 @@
-/Users/jay/data/cyclorama-kiosk/tmp/funnel-input_base_path-Tc64l4rs.tmp/index.js

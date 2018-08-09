@@ -1,1 +1,0 @@
-/Users/jsvarne/data/cyclorama-kiosk/tmp/broccoli_merge_trees-input_base_path-9flX5R6n.tmp/3/ember-wormhole/templates/components/ember-wormhole.js

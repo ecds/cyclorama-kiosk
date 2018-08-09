@@ -1,1 +1,0 @@
-/Users/jay/data/cyclorama-kiosk/tmp/broccoli_merge_trees-input_base_path-mQcSSRaM.tmp/2/cyclorama-kiosk/tests/app.lint-test.js

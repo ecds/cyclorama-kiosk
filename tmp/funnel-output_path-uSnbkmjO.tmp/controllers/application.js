@@ -1,1 +1,0 @@
-/Users/jsvarne/data/cyclorama-kiosk/tmp/funnel-input_base_path-VmRdlIps.tmp/controllers/application.js
