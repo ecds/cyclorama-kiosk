@@ -1,16 +1,24 @@
 @import 'ember-uikit';
 @import 'mini-map';
 
+$dot-offset: 40px;
+$green: rgba(0,230,1, 1);
+
+body {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .painting-container {
-  height: 67vh;
+  height: 85vh;
+  width: 100vw;
 }
 
 .leaflet-container {
   background: #848380;
-  height: 90vh;
+  height: 85vh;
   left: 0;
   position: absolute;
-  top: 10vh;
   transition: width;
   width: 100%;
 
@@ -21,49 +29,12 @@
 
 .uk-navbar-container {
   background: #332E29 !important;
-  height: 10vh;
-
-  img {
-    height: 5vh;
-  }
-
-  h1 {
-    font-family: Georgia, Times, "Times New Roman", serif;
-    // font-size: 75px;
-    text-transform: uppercase;
-
-    .site-title {
-      color: #DFE0E1;
-    }
-
-    .sub-title {
-      color: #688EAB;
-    }
-  }
+  height: 15vh;
 }
 
-// .thumb-nav {
-//   // height: 0;
-//   // width: 100vw;
-// }
-
-.thumb-nav {
-  height: 10vh;
-}
-
-.with-nav {
-  .leaflet-container,
-  .fullscreen {
-    height: 67vh;
-  }
-
-  .uk-thumbnav {
-    height: 33vh;
-  }
-}
 
 .uk-offcanvas-content {
-  height: 90vh;
+  height: 85vh;
 }
 
 .uk-offcanvas-bar {
@@ -94,25 +65,131 @@
 
 .bottom-nav {
   background: #332E29;
-  height: 23vh;
-}
-
-.cyc-tabs {
-  background: #848380;
-  justify-content: center;
-  width: 100%;
-
-  .uk-active {
-    background: #332E29;
-  }
-
-  li {
-    color: white;
-    font-size: 1.75em;
-    text-transform: uppercase;
-  }
+  height: 15vh;
 }
 
 .leaflet-control-attribution {
   display: none;
+}
+
+.poi-nav,
+.ahc-logo {
+  height: 15vh;
+}
+
+.poi-nav {
+  .poi-nav-button {
+    color: white;
+    cursor: pointer;
+    opacity: .3;
+
+    img {
+      height: 90px;
+      width: 90px
+    }
+
+    // div {
+    //   color: #FFFFFF;
+    //   height: 10vh;
+    //   opacity: .3;
+    //   width: 10vh;
+
+      &.active-poi {
+        opacity: 1;
+      }
+    // }
+
+    p {
+      font-size: 1.5em;
+      text-transform: uppercase;
+    }
+  }
+}
+
+// Hide leaflet default div.
+.leaflet-marker-icon {
+  &.leaflet-interactive {
+    background: none;
+    border: none;
+  }
+}
+// $pulse-distance: 2vw;
+
+// .pulse {
+//   display: block;
+//   width: 22px;
+//   height: 22px;
+//   border: solid;
+//   border-radius: 50%;
+//   border-color: rgba(0,230,1, 1);
+//   background: rgba(0,230,1, 1);
+//   cursor: pointer;
+//   box-shadow: 0 0 0 rgba(0,230,1, 0.7);
+//   animation: pulse 2s infinite;
+// }
+// .pulse:hover {
+//   animation: none;
+// }
+
+// @keyframes pulse {
+//   0% {
+//     -moz-box-shadow: 0 0 0 0 rgba(0,230,1, 0.7);
+//     box-shadow: 0 0 0 0 rgba(0,230,1, 0.7);
+//   }
+//   70% {
+//       -moz-box-shadow: 0 0 0 $pulse-distance rgba(0,230,1, 0);
+//       box-shadow: 0 0 0 $pulse-distance rgba(0,230,1, 0);
+//   }
+//   100% {
+//       -moz-box-shadow: 0 0 0 0 rgba(0,230,1, 0);
+//       box-shadow: 0 0 0 0 rgba(0,230,1, 0);
+//   }
+// }
+
+
+.jesse-dot {
+  display: block;  
+  height: 100px;
+  left: -$dot-offset;
+  position: absolute;
+  top: -$dot-offset;
+  width: 100px;
+}
+
+.dot {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: 38px;
+  left: 38px;
+  background: rgba(5, 124, 255, 1);    
+  border: 2px solid #FFF;
+  border-radius: 50%;
+  z-index: 1000;
+}
+
+.pulsate-ring {
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 0;
+  display: block;
+  background: rgba(5, 124, 255, 0.6);
+  border-radius: 50%;
+  opacity: 0;
+  animation: pulsate 2400ms ease-out infinite;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
 }

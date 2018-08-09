@@ -1,99 +1,142 @@
 {{#if bounds}}
-<div class='uk-offcanvas-content'>
-  <div id='panel'>
-    <div class='uk-offcanvas-bar uk-flex uk-flex-column'>
-      <button class="uk-offcanvas-close" type="button" uk-close onclick={{action 'reCenter'}}></button>
-      <h2>{{activeHotSpot.title}}</h2>
-      <section>
-        {{{activeHotSpot.description}}}
-      </section>
-      <section uk-grid>
-        {{#uk-button class='uk-width-1-2' on-click=(action 'previous' activeHotSpot.index)}}previous{{/uk-button}}
-        {{#uk-button class='uk-width-1-2' on-click=(action 'next' activeHotSpot.index)}}Next{{/uk-button}}
-      </section>
-    </div>
-  </div>
-
-  {{!-- <div class={{if showThumbNav 'with-nav'}}> --}}
     <div uk-grid class='uk-grid-collapse'>
-    <div class='painting-container uk-width-1-1 {{if showThumbNav 'with-nav'}}'>
-      {{#leaflet-map
-        onLoad=(action 'initMap')
-        onResize=(action 'reSize')
-        bounds=bounds
-        maxBounds=bounds
-        bounceAtZoomLimits=false
-        onClick=(action 'reCenter')
-      as |features|}}
+  <div class='uk-offcanvas-content'>
+    <div id='panel'>
+      <div class='uk-offcanvas-bar uk-flex uk-flex-column'>
+        <button class="uk-offcanvas-close" type="button" uk-close onclick={{action 'reCenter'}}></button>
+        <h2>{{activeHotspot.name}}</h2>
+        <section>
+          {{{activeHotSpot.description}}}
+        </section>
+        <section uk-grid>
+          {{#uk-button class='uk-width-1-2' on-click=(action 'previous' activeHotSpot.index)}}previous{{/uk-button}}
+          {{#uk-button class='uk-width-1-2' on-click=(action 'next' activeHotSpot.index)}}Next{{/uk-button}}
+        </section>
+      </div>
+    </div>
 
-        {{features.wms-tile
-          url='https://geoserver-private.ecds.emory.edu/ECDS_Projects/wms'
-          layers='ECDS_Projects:kioskexample_geo'
-          format='image/png'
-          transparent=true
+      <div class='painting-container uk-width-1-1'>
+        {{#leaflet-map
+          onLoad=(action 'initMap')
+          onResize=(action 'reSize')
           bounds=bounds
-          noWrap=true
+          zoomSnap=0
+          maxBounds=bounds
+          bounceAtZoomLimits=false
+          maxBoundsViscosity=1.0
+          minZoom=3
+          maxZoom=10
           crs=crs
-          tileSize=512
-        }}
+          bounceAtZoomLimits=false
+          onClick=(action 'reCenter')
+          onZoomend=(action 'whatBounds')
+          as |features|}}
 
-        {{!-- {{features.tile
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
-        }} --}}
+          {{draw-control}}
 
-        {{#each hotSpots as |hotSpot|}}
-          {{#features.polygon
-            locations=(doughnut hotSpot.polygon)
-            color=hotSpot.fillColor
-            fillOpacity=hotSpot.fillOpacity
-            opacity=0
-            interactive=false
-            smoothFactor=10
-            }}
-          {{/features.polygon}}
-        {{/each}}
-        {{#each hotSpots as |hotSpot|}}
-          {{#features.polygon
-            locations=hotSpot.polygon
-            opacity=0
-            fillOpacity=0
-            onClick=(action 'highlight' hotSpot)
+          {{features.tile
+            url='https://s3.amazonaws.com/battleofatlanta/tiles/q1/{z}/{x}/{y}.png'
+            onLoad=(action 'paintingLoaded')
           }}
-          {{/features.polygon}}
-        {{/each}}
-      {{!-- {{draw-control}} --}}
-      {{/leaflet-map}}
+
+          {{painting-pois
+            pois=activePois
+            highlight=(action 'highlightHotspot')
+            flyToPoi=(action 'flyToHotspot')
+          }}
+
+          {{!-- {{features.marker
+            lat=-62.89937553341878
+            lng=136.876317011345
+
+            icon=(
+              div-icon
+              html='<div class="jesse-dot"><div class="dot"></div><div class="pulsate-ring"></div></div>'
+            )
+          }}
+
+          {{features.marker
+            lat=-44.956256836014916
+            lng=170.73780106308436
+
+            icon=(
+              div-icon
+              html='<div class="jesse-dot"><div class="dot"></div><div class="pulsate-ring"></div></div>'
+            )
+          }}
+
+          {{features.marker
+            lat=-63.51993280566745
+            lng=221.2729610940493
+
+            icon=(
+              div-icon
+              html='<div class="jesse-dot"><div class="dot"></div><div class="pulsate-ring"></div></div>'
+            )
+          }}
+
+          {{features.marker
+            lat=-63.35850953636612
+            lng=232.7362082576228
+
+            icon=(
+              div-icon
+              html='<div class="jesse-dot"><div class="dot"></div><div class="pulsate-ring"></div></div>'
+            )
+          }}
+
+          {{features.marker
+            lat=-74.25458021420565
+            lng=140.46514130012613
+
+            icon=(
+              div-icon
+              html='<div class="jesse-dot"><div class="dot"></div><div class="pulsate-ring"></div></div>'
+            )
+          }} --}}
+
+        {{/leaflet-map}}
+
+      </div>
+</div>
+      <div class='uk-width-1-1 bottom-nav uk-container'>
+        <div uk-grid>
+          <div class='uk-width-1-4 ahc-logo uk-inline'>
+            <img class='uk-position-center' src='http://www.atlantahistorycenter.com/assets/images/AHC_Brand_Asset_Lockup_White.png'>
+          </div>
+          
+          <div class='uk-width-1-2'>
+            <div class='poi-nav' uk-grid>
+              
+              {{#each buttons as |button|}}
+              <div class='uk-width-1-4 poi-nav-button uk-inline {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoi' button}}>
+                <div class='uk-text-center uk-grid-collapse uk-position-center' uk-grid>
+                  <img class='uk-width-1-1 uk-border-circle' src={{button.icon}} alt={{concat 'Button to highlight ' button.lable ' in the painting.'}}>
+                  <p class='uk-width-1-1 uk-margin-small-top'>{{button.label}}</p>
+                </div>
+              </div>
+              {{/each}}
+              
+              <div class='uk-width-1-4 poi-nav-button uk-inline' style='border-left: solid white; line-height: 20px;'>
+                <div class='uk-text-center uk-grid-collapse uk-position-center active-poi' uk-grid>
+                  <img class='uk-width-1-1 uk-border-circle' src="images/tours.png" alt="Border circle">
+                  <p class='uk-width-1-1 uk-margin-small-top'>TOURS</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class='uk-width-1-4 uk-margin-small'>
+            <div class='uk-grid-collapse active-poi' uk-grid>
+              <div class='uk-width-1-2'>
+                <img src='/images/view.png' style='height: 90px'>
+              </div>
+              <div class='uk-width-1-2' id='minimap'></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-<div class='uk-width-1-1 bottom-nav'>
-<ul class='cyc-tabs uk-subnav uk-sub nav-pill uk-margin-remove-left' uk-switcher="animation: uk-animation-fade">
-    <li class='uk-padding uk-padding-remove-vertical'>Explore</li>
-    <li class='uk-padding uk-padding-remove-vertical'>Take a Tour</li>
-</ul>
 
-{{!-- <div class='cyc-tabs' uk-switcher="animation: uk-animation-fade">
-    <button class="uk-button uk-button-large" type="button">explore</button>
-    <button class="uk-button uk-button-large" type="button">take a tour</button>
-</div> --}}
-
-<ul class="uk-switcher uk-margin">
-    <li>
-      {{#each hotSpots as |hotSpot index|}}
-        <img class='uk-padding-small uk-border-circle thumb-nav' onclick={{action 'highlight' hotSpot index}} src='{{hotSpot.thumbnail}}' />
-      {{/each}}
-    </li>
-    <li>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</li>
-</ul>
-</div>
-</div>
-
-    {{!-- <div class='thumb-nav uk-margin'>
-      <ul class='uk-thumbnav'>
-      {{#each hotSpots as |hotSpot|}}
-        <li class='uk-active'><img class='uk-margin' onclick={{action 'highlight' hotSpot}} src='{{hotSpot.thumbnail}}' /></li>
-      {{/each}}
-      </ul>
-    </div>
-  {{!-- </div> --}}
-</div>
 {{/if}}
