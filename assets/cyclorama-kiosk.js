@@ -116,7 +116,7 @@ define('cyclorama-kiosk/components/cyclorama-painting', ['exports', 'fetch', 'ui
       //q1
       Ember.set(this, 'bounds', new L.latLngBounds([new L.LatLng(0, 240), new L.LatLng(-80, 0)]));
 
-      (0, _fetch.default)('/q1/people.json').then(response => {
+      (0, _fetch.default)('/cyclorama-kiosk/q1/people.json').then(response => {
         response.json().then(data => {
           this.setProperties({
             people: data,
@@ -125,7 +125,7 @@ define('cyclorama-kiosk/components/cyclorama-painting', ['exports', 'fetch', 'ui
         });
       });
 
-      (0, _fetch.default)('/q1/landmarks.json').then(response => {
+      (0, _fetch.default)('/cyclorama-kiosk/q1/landmarks.json').then(response => {
         response.json().then(data => {
           this.setProperties({
             landmarks: data
@@ -133,7 +133,7 @@ define('cyclorama-kiosk/components/cyclorama-painting', ['exports', 'fetch', 'ui
         });
       });
 
-      (0, _fetch.default)('/buttons.json').then(response => {
+      (0, _fetch.default)('/cyclorama-kiosk/buttons.json').then(response => {
         response.json().then(data => {
           this.setProperties({ buttons: data });
         });
