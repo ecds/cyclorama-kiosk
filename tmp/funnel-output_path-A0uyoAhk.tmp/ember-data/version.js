@@ -1,0 +1,1 @@
+/Users/jay/data/cyclorama-kiosk/tmp/creator-output_path-2rZMNcfx.tmp/version.js

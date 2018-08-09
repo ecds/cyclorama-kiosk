@@ -1,0 +1,18 @@
+[
+  {
+    "label": "people",
+    "icon": "images/people.png",
+    "active": true
+  },
+  {
+    "label": "landmarks",
+    "icon": "images/buildings.png",
+    "active": false
+  },
+  {
+    "label": "alterations",
+    "icon": "images/brush.png",
+    "active": false
+  }
+
+]

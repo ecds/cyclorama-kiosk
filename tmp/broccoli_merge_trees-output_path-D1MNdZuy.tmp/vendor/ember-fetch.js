@@ -1,0 +1,1 @@
+/Users/jay/data/cyclorama-kiosk/tmp/broccoli_persistent_filtermapper-output_path-7KO7WN7M.tmp/ember-fetch.js

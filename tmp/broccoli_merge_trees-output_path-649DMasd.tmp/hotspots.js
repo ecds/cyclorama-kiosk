@@ -1,0 +1,1 @@
+/Users/jay/data/cyclorama-kiosk/app/hotspots.js

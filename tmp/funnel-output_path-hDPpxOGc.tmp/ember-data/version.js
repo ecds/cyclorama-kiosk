@@ -1,0 +1,1 @@
+/Users/jsvarne/data/cyclorama-kiosk/tmp/creator-output_path-zSCXRkp7.tmp/version.js

@@ -1,0 +1,1 @@
+/Users/jay/data/cyclorama-kiosk/tmp/funnel-input_base_path-ZO6y25LY.tmp/mixins/adapter-fetch.js
