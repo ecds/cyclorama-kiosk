@@ -56,11 +56,11 @@
         </section>
         <section uk-grid>
           {{#if activeHotspot.previous}}
-            {{#uk-button class='uk-width-1-3' on-click=(action 'previous' activeHotspot.previous)}}previous{{/uk-button}}
+            {{#uk-button class='uk-hidden@s uk-width-1-3@m' on-click=(action 'previous' activeHotspot.previous)}}previous{{/uk-button}}
           {{/if}}
-          {{#uk-button class='uk-width-1-3' on-click=(action 'reCenter' activeHotspot.previous)}}close{{/uk-button}}
+          {{#uk-button class='uk-width-1-1@s uk-width-1-3@m' on-click=(action 'reCenter' activeHotspot.previous)}}close{{/uk-button}}
           {{#if activeHotspot.next}}
-            {{#uk-button class='uk-width-1-3' on-click=(action 'next' activeHotspot.next)}}Next{{/uk-button}}
+            {{#uk-button class='uk-hidden@s uk-width-1-3@m' on-click=(action 'next' activeHotspot.next)}}Next{{/uk-button}}
           {{/if}}
         </section>
       {{/if}}
@@ -138,25 +138,28 @@
       </div>
       --}}
     {{!-- </div> --}}
-<div class='bottom-nav bottom-nav uk-child-width-1-3' uk-grid>
-  <div class='uk-margin-top uk-margin-left'>
-    <img class='uk-margin-left' style='opacity: .8;' src='http://www.atlantahistorycenter.com/assets/images/AHC_Brand_Asset_Lockup_White.png'>
+<div class='bottom-nav bottom-nav' uk-grid>
+  <div class='uk-visible@l uk-width-1-3@l uk-width-1-6@m uk-flex uk-flex-middle uk-text-center'>
+    <img class='uk-margin-left ahc-logo' src='http://www.atlantahistorycenter.com/assets/images/AHC_Brand_Asset_Lockup_White.png'>
   </div>
-  <div>
-    <div class='uk-child-width-1-4 uk-text-center' uk-grid>
+  <div class='uk-width-2-3@m uk-width-1-3@xl uk-width-1-1@s'>
+    <div class='uk-child-width-expand@l uk-child-width-1-1@m uk-grid-large uk-text-center uk-text-middle uk-flex-center' uk-grid>
       {{#each buttons as |button|}}
       <div class='poi-nav-button {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoi' button}}>
         <img class='uk-border-circle' src={{button.icon}} alt={{concat 'Button to highlight ' button.lable ' in the painting.'}}>
-        <p>{{button.label}}</p>
+      <p>{{button.label}}</p>
       </div>
       {{/each}}
-      <div class='poi-nav-button active-poi'>
+      <div class='poi-nav-button active-poi' onclick={{action 'showTours'}}>
         <img class='uk-border-circle' src='images/tours.png' alt="Button to show avaliable tours.">
-        <p>TOURS</p>
+      <p>TOURS</p>
       </div>
     </div>
   </div>
-  <div class='uk-width-1-6 uk-position-right' id='minimap'></div>
+  <div class='uk-visible@xl uk-width-1-3@xl'><div class='uk-align-right uk-flex uk-flex-middle' id='minimap'></div></div>
 </div>
 
+{{/if}}
+{{#if showingTours}}
+{{tour-menu active=showingTours hide=(action 'hideTours')}}
 {{/if}}

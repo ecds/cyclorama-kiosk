@@ -5,8 +5,9 @@ $dot-offset: 40px;
 $green: rgba(0,230,1, 1);
 
 body {
-  height: 100vh;
-  overflow: hidden;
+  font-size: 18px;
+  // height: 100vh;
+  // overflow: hidden;
 }
 
 body,
@@ -28,7 +29,7 @@ body,
   width: 100%;
 
   &.leaflet-control-minimap {
-    margin-bottom: 125px;
+    // margin-bottom: 125px;
   }
 }
 
@@ -47,7 +48,9 @@ body,
 }
 
 .uk-open {
-  width: 33vw;
+  &.uk-offcanvas {
+    width: 33vw;
+  }
 }
 
 @media (min-width: 960px) {
@@ -62,15 +65,15 @@ body,
   }
 }
 
-.uk-navbar-right {
-  .fa {
-    font-size: 2.5em;
-  }
-}
+// .uk-navbar-right {
+//   .fa {
+//     font-size: 2.5em;
+//   }
+// }
 
 .bottom-nav {
   // background: rgba(51, 46, 41, 0.23);
-  height: 15vh;
+  // height: 15vh;
   // position: relative;
   position: absolute;
   z-index: 999;
@@ -80,7 +83,7 @@ body,
   &.uk-grid {
     position: absolute;
     width: 100%;
-    height: 15vh;
+    // height: 15vh;
     bottom: 0;
   }
 }
@@ -89,20 +92,20 @@ body,
   display: none;
 }
 
-.poi-nav,
 .ahc-logo {
-  // height: 15vh;
+  opacity: .8;
 }
 
 .bottom-nav {
   .poi-nav-button {
     color: white;
     cursor: pointer;
+    // font-size: 2vw;
 
     img {
       animation: psst 10000ms ease-out infinite;
-      height: 125px;
-      width: 125px;
+      // height: 100%;
+      width: 10vh;
       opacity: .3;
     }
 
@@ -210,4 +213,12 @@ body,
   p {
     font-size: 1.5em;
   }
+}
+
+.tour-menus {
+  display: block;
+}
+
+.uk-card-media-top{
+  filter: grayscale(100%);
 }

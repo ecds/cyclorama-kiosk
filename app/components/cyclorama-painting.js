@@ -12,7 +12,7 @@ export default Component.extend({
   bounds: null,
   L: null,
   _map: null,
-  // activeHotspot: {},
+  activePois: [],
   panel: null,
   showThumbNav: true,
   miniMap: null,
@@ -22,6 +22,7 @@ export default Component.extend({
   people: {},
   landmarks: {},
   alterations: {},
+  showingTours: false,
 
   didInsertElement() {
     // q3
@@ -48,6 +49,14 @@ export default Component.extend({
       response.json().then(data => {
         this.setProperties({
           landmarks: data
+        });
+      });
+    });
+
+    fetch('/q1/alterations.json').then(response => {
+      response.json().then(data => {
+        this.setProperties({
+          alterations: data
         });
       });
     });
@@ -194,6 +203,14 @@ export default Component.extend({
         this._map.flyToBounds(this.bounds);
 
       // }
+    },
+
+    showTours() {
+      set(this, 'showingTours', true);
+    },
+
+    hideTours() {
+      set(this, 'showingTours', false);
     },
 
     reSize() {
