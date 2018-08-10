@@ -1,6 +1,9 @@
 [
   {
-    "name": "jonas",
+    "name": "u.s. Lt. Edward Jonas",
+    "active": false,
+    "next": 1,
+    "description": "<p>Vivamus convallis, ligula in ullamcorper blandit, justo sapien vulputate nisl, sit amet ullamcorper odio ipsum at nunc. Curabitur nec placerat velit, in sollicitudin diam. Morbi lobortis risus ac dolor tempus, nec euismod orci tincidunt. Nunc sit amet fermentum sem. Curabitur vel varius massa. Integer tincidunt eleifend ipsum, in euismod est mollis sit amet. Fusce sit amet quam dictum, rhoncus ipsum sit amet, eleifend magna. Nulla accumsan nibh vel ornare posuere. Curabitur eu purus nunc.</p>",
     "hotspot": {
       "type": "Feature",
       "geometry": {
@@ -161,7 +164,11 @@
     ]
   },
   {
-   "name": "sherman",
+   "name": "u.s. gen. william sherman",
+   "active": false,
+   "previous": "0",
+   "next": 2,
+   "description": "<p>We won’t stop now. All of the forces of Eastland, Bamett, Wallace and Thurmond won’t stop this revolution. The time will come when we will not confine our marching to Washington. We will march through the South, through the heart of Dixie, the way Sherman did. We shall pursue our own scorched earth policy and burn Jim Crow to the ground — nonviolently. We shall fragment the South into a thousand pieces and put them back together in the image of democracy. We will make the action of the past few months look petty. And I say to you, wake up America!</p>",
    "bounds": [
      [-47.622121812550084, 168.14913038107053],
      [-45.19570632770839, 171.8403011300141]
@@ -229,9 +236,13 @@
     }
   },
   {
-    "name": "logan",
+    "name": "U.S. Major Gen John Logan",
+    "active": false,
+    "next": 3,
+    "previous": 1,
+    "description": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer aliquam urna vitae massa blandit, a euismod sapien efficitur. Phasellus eleifend iaculis nunc non tristique. In viverra, ex eu interdum venenatis, ligula enim volutpat dui, eget placerat lacus arcu vel nibh. Nulla sit amet ipsum non nisl imperdiet blandit. Aenean dignissim odio sed ipsum imperdiet consequat. Curabitur tincidunt quis dui non dictum. Praesent nec viverra ex. Maecenas sit amet nibh tincidunt, hendrerit lorem a, vehicula orci. In hac habitasse platea dictumst. Aliquam mollis egestas odio a semper. Curabitur tincidunt ipsum sem, ac sollicitudin diam accumsan a. In tincidunt ante nec mi venenatis scelerisque. Nulla porttitor venenatis sodales. Nam congue dui ex, non congue orci vehicula ut.</p>",
     "bounds": [
-      [-72.64956920452305], 207.39612099591912,
+      [-72.64956920452305, 207.39612099591912],
       [-62.19240888566196, 231.2619314960209]
     ],
     "hotspot": {
@@ -445,7 +456,11 @@
     }
   },
   {
-    "name": "degress",
+    "name": "U.S. Col. Francis De Gress",
+    "active": false,
+    "previous": 2,
+    "next": 4,
+    "description": "<p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of \"de Finibus Bonorum et Malorum\" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</p>",
     "bounds": [
       [-70.86122105789364, 220.13959411676703],
       [-62.170915303475816, 239.97300816023352]
@@ -644,7 +659,11 @@
     }
   },
   {
-    "name": "mersy",
+    "name": "u.s. Col. August Mersy",
+    "active": false,
+    "previous": 3,
+    "next": 5,
+    "description": "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
     "hotspot": {
       "type": "Feature",
       "geometry": {
@@ -701,7 +720,10 @@
     ]
   },
   {
-   "name": "force",
+   "name": "u.s. Brigadier Gen. Manning Force",
+   "active": false,
+   "previous": 4,
+   "description": "<p>Nam vitae ultricies ex. Maecenas sed sollicitudin metus, sed scelerisque mauris. Proin mi neque, aliquet tristique risus quis, varius faucibus neque. Nunc sem quam, volutpat sed felis nec, facilisis consectetur ligula. Vivamus scelerisque diam nec nisi finibus tincidunt. Phasellus facilisis aliquam volutpat. Integer dignissim accumsan elit at molestie. Maecenas blandit vel purus ut cursus. Suspendisse sed mi vestibulum, tempus eros ut, elementum mi.</p>",
    "bounds": [
      [-60.632065966701035, 210.4378158478222],
      [-51.397877540132356, 230.11689740577634]

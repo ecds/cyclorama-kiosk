@@ -1,17 +1,17 @@
 [
   {
     "label": "people",
-    "icon": "/cyclorama-kiosk/images/people.png",
+    "icon": "images/people.png",
     "active": true
   },
   {
     "label": "landmarks",
-    "icon": "/cyclorama-kiosk/images/buildings.png",
+    "icon": "images/buildings.png",
     "active": false
   },
   {
     "label": "alterations",
-    "icon": "/cyclorama-kiosk/images/brush.png",
+    "icon": "images/brush.png",
     "active": false
   }
 
