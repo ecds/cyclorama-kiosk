@@ -26,10 +26,6 @@ export default Component.extend({
   actions: {
     clickSpot(poi) {
       get(this, 'highlight')(poi);
-    },
-
-    flyToPoi(poi) {
-      get(this, 'flyToPoi')(poi)
     }
   }
 });

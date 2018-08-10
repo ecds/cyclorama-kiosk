@@ -9,14 +9,19 @@ body {
   overflow: hidden;
 }
 
-.painting-container {
-  height: 85vh;
-  width: 100vw;
+body,
+.leaflet-container {
+  background: linear-gradient(rgb(116, 146, 128), #684938);
+
 }
+// .painting-container {
+//   height: 85vh;
+//   width: 100vw;
+// }
 
 .leaflet-container {
-  background: #848380;
-  height: 85vh;
+  // height: 85vh;
+  height: 100%;
   left: 0;
   position: absolute;
   transition: width;
@@ -27,14 +32,14 @@ body {
   }
 }
 
-.uk-navbar-container {
-  background: #332E29 !important;
-  height: 15vh;
-}
+// .uk-navbar-container {
+//   background: #332E29 !important;
+//   height: 15vh;
+// }
 
 
 .uk-offcanvas-content {
-  height: 85vh;
+  height: 100vh;
 }
 
 .uk-offcanvas-bar {
@@ -64,8 +69,20 @@ body {
 }
 
 .bottom-nav {
-  background: #332E29;
+  // background: rgba(51, 46, 41, 0.23);
   height: 15vh;
+  // position: relative;
+  position: absolute;
+  z-index: 999;
+  width: 100%;
+  // bottom: 0;
+
+  &.uk-grid {
+    position: absolute;
+    width: 100%;
+    height: 15vh;
+    bottom: 0;
+  }
 }
 
 .leaflet-control-attribution {
@@ -74,18 +91,23 @@ body {
 
 .poi-nav,
 .ahc-logo {
-  height: 15vh;
+  // height: 15vh;
 }
 
-.poi-nav {
+.bottom-nav {
   .poi-nav-button {
     color: white;
     cursor: pointer;
-    opacity: .3;
 
     img {
-      height: 90px;
-      width: 90px
+      animation: psst 10000ms ease-out infinite;
+      height: 125px;
+      width: 125px;
+      opacity: .3;
+    }
+
+    p {
+      opacity: .7;
     }
 
     // div {
@@ -95,7 +117,10 @@ body {
     //   width: 10vh;
 
       &.active-poi {
-        opacity: 1;
+        img {
+          animation: none;
+          opacity: 1;  
+        }
       }
     // }
 
@@ -113,38 +138,6 @@ body {
     border: none;
   }
 }
-// $pulse-distance: 2vw;
-
-// .pulse {
-//   display: block;
-//   width: 22px;
-//   height: 22px;
-//   border: solid;
-//   border-radius: 50%;
-//   border-color: rgba(0,230,1, 1);
-//   background: rgba(0,230,1, 1);
-//   cursor: pointer;
-//   box-shadow: 0 0 0 rgba(0,230,1, 0.7);
-//   animation: pulse 2s infinite;
-// }
-// .pulse:hover {
-//   animation: none;
-// }
-
-// @keyframes pulse {
-//   0% {
-//     -moz-box-shadow: 0 0 0 0 rgba(0,230,1, 0.7);
-//     box-shadow: 0 0 0 0 rgba(0,230,1, 0.7);
-//   }
-//   70% {
-//       -moz-box-shadow: 0 0 0 $pulse-distance rgba(0,230,1, 0);
-//       box-shadow: 0 0 0 $pulse-distance rgba(0,230,1, 0);
-//   }
-//   100% {
-//       -moz-box-shadow: 0 0 0 0 rgba(0,230,1, 0);
-//       box-shadow: 0 0 0 0 rgba(0,230,1, 0);
-//   }
-// }
 
 
 .jesse-dot {
@@ -160,8 +153,8 @@ body {
   width: 20px;
   height: 20px;
   position: relative;
-  top: 38px;
-  left: 38px;
+  top: 25px;
+  left: 25px;
   background: rgba(5, 124, 255, 1);    
   border: 2px solid #FFF;
   border-radius: 50%;
@@ -169,8 +162,8 @@ body {
 }
 
 .pulsate-ring {
-  width: 100px;
-  height: 100px;
+  width: 75px;
+  height: 75px;
   position: absolute;
   top: 0;
   display: block;
@@ -186,10 +179,35 @@ body {
     opacity: 0;
   }
   50% {
-    opacity: 1;
+    opacity: .7;
   }
   100% {
     transform: scale(1.2);
     opacity: 0;
+  }
+}
+
+@keyframes psst {
+  0% {
+    opacity: .3;
+  }
+  50% {
+    opacity: .6;
+  }
+  100% {
+    opacity: .3;
+  }
+}
+
+.uk-slider-items {
+  img {
+    // height: 400px;
+    // width: 25vw;
+  }
+}
+
+.description {
+  p {
+    font-size: 1.5em;
   }
 }

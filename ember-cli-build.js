@@ -4,7 +4,9 @@ const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
-    // Add options here
+    fingerprint: {
+      exclude: ['images/brush.png', 'images/buildings.png', 'images/people.png']
+    }
   });
 
   app.import('node_modules/leaflet-minimap/dist/Control.MiniMap.min.js');

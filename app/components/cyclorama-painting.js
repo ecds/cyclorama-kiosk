@@ -8,10 +8,11 @@ import UIkit from 'uikit';
 
 export default Component.extend({
   // classNames: ['uk-width-1-1'],
+  tagName: '',
   bounds: null,
   L: null,
   _map: null,
-  activeHotSpot: null,
+  // activeHotspot: {},
   panel: null,
   showThumbNav: true,
   miniMap: null,
@@ -31,7 +32,7 @@ export default Component.extend({
     //q1
     set(this, 'bounds', new L.latLngBounds([
       new L.LatLng(0, 240),
-      new L.LatLng(-80, 0)
+      new L.LatLng(-78, 0)
     ]));
 
     fetch('/q1/people.json').then(response => {
@@ -63,7 +64,9 @@ export default Component.extend({
       mode: 'push',
       bgClose: false
     });
-    set(this, 'panel', panel);
+    // UIkit.util.on(document.getElementById('panel'), 'shown', () => {this.send('flyToHotspot')});
+    UIkit.util.on(document.getElementById('panel'), 'hidden', () => {this.send('reCenter')});
+    this.panel = panel;
 
     if (get(this, '_map') && get(this, 'miniMap') === null) {
       var painting = new L.tileLayer(
@@ -96,9 +99,9 @@ export default Component.extend({
     // https://geoserver-private.ecds.emory.edu/ECDS_Projects/wms?service=WMS&request=GetMap&layers=ECDS_Projects%3Akioskexample_geo&styles=&format=image%2Fpng&transparent=true&version=1.1.1&width=512&height=512&srs=EPSG%3A3857&bbox=0,-10018754.171394622,10018754.171394622,0
     // https://geoserver-private.ecds.emory.edu/ECDS_Projects/wms?service=WMS&request=GetMap&layers=&styles=&format=image%2Fpng&transparent=false&version=1.1.1&layer=ECDS_Projects%3Akioskexample_geo&width=512&height=512&srs=EPSG%3A3857&bbox=-20037508.342789244,-20037508.34278071,60112525.02836774,20037508.34278071
 
-    UIkit.util.on(document.getElementById('panel'), 'show', () => {
-      document.getElementsByClassName('leaflet-container')[0].style.width = '67vw';
-    });
+    // UIkit.util.on(document.getElementById('panel'), 'show', () => {
+    //   document.getElementsByClassName('leaflet-container')[0].style.width = '67vw';
+    // });
 
     // UIkit.util.on(document.getElementById('panel'), 'hide', () => {
     //   document.getElementsByClassName('leaflet-container')[0].style.width = '100%';
@@ -116,7 +119,10 @@ export default Component.extend({
       set(this, '_map', map);
       map.on('click', function(e) {
         console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
-    });
+      });
+      map.setZoom(4);
+
+      // L.rectangle(this.bounds, {color: "#ff7800", weight: 1}).addTo(map);
     },
 
     paintingLoaded() {
@@ -128,7 +134,9 @@ export default Component.extend({
     },
 
     switchPoi(button) {
-      this.send('reCenter');
+      this.activePois.forEach(poi => {
+        set(poi, 'active', false);
+      }),
       this.buttons.forEach(b => {
         set(b, 'active', false);
       });
@@ -139,33 +147,43 @@ export default Component.extend({
       });
     },
 
-    highlightHotspot(hotspot, foo, bar) {
+    highlightHotspot(hotspot) {
       this.activePois.forEach(hs => {
         set(hs, 'active', false);
       });
       set(hotspot, 'active', true);
+      console.log(hotspot);
+    //  this.set('activeHotspot', hotspot);
       set(this, 'activeHotspot', hotspot);
+      console.log(this.panel.isToggled());
+      if (this.panel.isToggled() === true) {
+        this.send('flyToHotspot')
+      } else {
+        this.send('flyToHotspot')
+        this.panel.show();
+      }
     },
 
-    flyToHotspot(hotspot) {
-      get(this, '_map').flyToBounds(hotspot.bounds);
-      get(this, 'panel').show();
+    flyToHotspot() {
+      console.log('flying')
+      this._map.getContainer().style.width = '67vw';
+      this._map.flyToBounds(this.activeHotspot.bounds);
     },
 
-    next(index) {
-      const next = index + 1
-      this.send('highlight', get(this, 'hotSpots')[next], next);
+    next(next) {
+      this.send('highlightHotspot', this.activePois[next]);
     },
 
-    previous(index) {
-      const prev = index - 1;
-      this.send('highlight', get(this, 'hotSpots')[prev], prev);
+    previous(previous) {
+      this.send('highlightHotspot', this.activePois[previous]);
     },
 
     reCenter() {
-      if (get(this, '_map') && get(this, 'panel').isToggled()) {
+      console.log('recenter')
+      // if (get(this, '_map') && get(this, 'panel').isToggled()) {
+        // this.panel.hide();
+        set(this, 'activeHotspot', {});
         this.panel.hide();
-        set(this, 'activeHotspot', null);
 
         this._map.getContainer().style.width = '100%';
 
@@ -173,11 +191,9 @@ export default Component.extend({
           setProperties(h, { active: false });
         });
 
-        this._map.flyToBounds(this.bounds, {
-          padding: [0,0]
-        });
+        this._map.flyToBounds(this.bounds);
 
-      }
+      // }
     },
 
     reSize() {

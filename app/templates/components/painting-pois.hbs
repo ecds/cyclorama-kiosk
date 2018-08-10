@@ -4,12 +4,10 @@
     pointToLayer=setDot
     onClick=(action 'clickSpot' hotspot)
   }}
-
   {{#if hotspot.active}}
     {{geojson-layer
       geoJSON=hotspot.polygon
       style=setStyle
-      onAdd=(action 'flyToPoi' hotspot)
     }}
   {{/if}}
 {{/each}}
