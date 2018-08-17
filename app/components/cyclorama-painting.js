@@ -157,20 +157,20 @@ export default Component.extend({
     },
 
     highlightHotspot(hotspot) {
-      // this.activePois.forEach(hs => {
-      //   set(hs, 'active', false);
-      // });
-      // set(hotspot, 'active', true);
-      // // console.log(hotspot);
-      //  this.set('activeHotspot', hotspot);
-      // set(this, 'activeHotspot', hotspot);
-      // // console.log(this.panel.isToggled());
-      // if (this.panel.isToggled() === true) {
-      //   this.send('flyToHotspot')
-      // } else {
-      //   this.send('flyToHotspot')
-      //   this.panel.show();
-      // }
+      this.activePois.forEach(hs => {
+        set(hs, 'active', false);
+      });
+      set(hotspot, 'active', true);
+      // console.log(hotspot);
+       this.set('activeHotspot', hotspot);
+      set(this, 'activeHotspot', hotspot);
+      // console.log(this.panel.isToggled());
+      if (this.panel.isToggled() === true) {
+        this.send('flyToHotspot')
+      } else {
+        this.send('flyToHotspot')
+        this.panel.show();
+      }
     },
 
     flyToHotspot() {
