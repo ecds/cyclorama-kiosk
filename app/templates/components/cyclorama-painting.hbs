@@ -6,45 +6,51 @@
         {{#if activeHotspot}}
         {{!-- <button class="uk-offcanvas-close" type="button" uk-close onclick={{action 'reCenter'}}></button> --}}
         <button class="uk-offcanvas-close" type="button" uk-close></button>
-          <div class="uk-position-relative uk-visible-toggle uk-light" uk-slider="center: true">
+<div class="uk-position-relative uk-visible-toggle uk-light" uk-slider center=true>
 
-    <ul class="uk-slider-items uk-grid">
-        <li class="uk-width-3-4">
-            <div class="uk-panel">
+    <ul class="uk-slider-items uk-grid uk-child-width-3-4" uk-grid>
+        <li>
+            <div class="uk-panel uk-text-center">
                 <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Augustus_Hurt_House_Theodore_Davis_2_580x0.jpg" alt="">
             </div>
         </li>
 
-        <li class="uk-width-3-4">
-            <div class="uk-panel">
+        <li>
+            <div class="uk-panel uk-text-center">
                 <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Cobb_House_580x0.jpg" alt="">
             </div>
         </li>
-        <li class="uk-width-3-4">
-            <div class="uk-panel">
+        <li>
+            <div class="uk-panel uk-text-center">
                 <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Confederate_Fortifications_around_Atlanta_GA_580x0.jpg" alt="">
             </div>
         </li>
-        <li class="uk-width-3-4">
-            <div class="uk-panel">
+        <li>
+            <div class="uk-panel uk-text-center">
                 <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Augustus_Hurt_House_Theodore_Davis_2_580x0.jpg" alt="">
             </div>
         </li>
 
-        <li class="uk-width-3-4">
-            <div class="uk-panel">
+        <li>
+            <div class="uk-panel uk-text-center">
                 <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Cobb_House_580x0.jpg" alt="">
             </div>
         </li>
-        <li class="uk-width-3-4">
-            <div class="uk-panel">
+        <li>
+            <div class="uk-panel uk-text-center">
                 <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Confederate_Fortifications_around_Atlanta_GA_580x0.jpg" alt="">
             </div>
         </li>
     </ul>
 
-    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slider-item="previous"></a>
-    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
+    <a class="uk-position-center-left uk-position-small gallery-arrow" href='' uk-slider-item="previous">
+      {{fa-icon 'angle-left'}}
+    </a>
+    <a class="uk-position-center-right uk-position-small gallery-arrow" href='' uk-slider-item="next">
+      {{fa-icon 'angle-right'}}
+    </a>
+
+    <ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
 
 </div>
         <section class='uk-margin'>
@@ -78,6 +84,7 @@
           maxZoom=10
           crs=crs
           bounceAtZoomLimits=false
+          zoomControl=false
 
           as |features|}}
 
@@ -139,24 +146,60 @@
       --}}
     {{!-- </div> --}}
 <div class='bottom-nav bottom-nav' uk-grid>
-  <div class='uk-visible@l uk-width-1-3@l uk-width-1-6@m uk-flex uk-flex-middle uk-text-center'>
-    <img class='uk-margin-left ahc-logo' src='http://www.atlantahistorycenter.com/assets/images/AHC_Brand_Asset_Lockup_White.png'>
+  <div class='uk-visible@l uk-width-1-6@l uk-width-1-6@m uk-flex uk-flex-center uk-text-center'>
+    {{!-- <img class='uk-margin-left ahc-logo' src='http://www.atlantahistorycenter.com/assets/images/AHC_Brand_Asset_Lockup_White.png'> --}}
+    <div uk-grid>
+    <div class='uk-grid-collapse uk-width-3-4' uk-grid>
+      {{!-- <div class='uk-width-1-1'>
+        {{#uk-button color='secondary' on-click=(action 'pan' 'up')}}{{fa-icon 'angle-up'}}{{/uk-button}}
+      </div> --}}
+      <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-bottom'>
+          {{#uk-button color='secondary' on-click=(action 'pan' 'up')}}{{fa-icon 'angle-up'}}{{/uk-button}}
+      </div>
+      <div class='uk-width-1-3 uk-flex uk-flex-right uk-flex-middle'>
+        {{#uk-button color='secondary' on-click=(action 'pan' 'left')}}{{fa-icon 'angle-left'}}{{/uk-button}}
+        {{!-- <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-middle '> --}}
+        </div>
+      <div class='uk-width-1-3 uk-flex uk-flex-right uk-flex-middle'></div>
+        <div class='uk-width-1-3 uk-flex uk-flex-left uk-flex-middle'>
+        {{#uk-button color='secondary' on-click=(action 'pan' 'right')}}{{fa-icon 'angle-right'}}{{/uk-button}}
+        </div>
+      {{!-- </div> --}}
+      <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-top'>
+          {{#uk-button color='secondary' on-click=(action 'pan' 'down')}}{{fa-icon 'angle-down'}}{{/uk-button}}
+      </div>
+      </div>
+
+      <div class='uk-width-1-4 uk-grid-small' uk-grid>
+        <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-bottom'>
+          {{#uk-button color='secondary' on-click=(action 'zoom' 'in')}}{{fa-icon 'plus'}}{{/uk-button}}
+        </div>
+        <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-top'>
+          {{#uk-button color='secondary' on-click=(action 'zoom' 'out')}}{{fa-icon 'minus'}}{{/uk-button}}
+        </div>
+      </div>
+      {{!-- <div class='uk-width-1-1'>
+        {{#uk-button color='secondary' on-click=(action 'pan' 'down')}}{{fa-icon 'angle-down'}}{{/uk-button}}
+      </div> --}}
+   </div>
   </div>
-  <div class='uk-width-2-3@m uk-width-1-3@xl uk-width-1-1@s'>
-    <div class='uk-child-width-expand@l uk-child-width-1-1@m uk-grid-large uk-text-center uk-text-middle uk-flex-center' uk-grid>
-      {{#each buttons as |button|}}
-      <div class='poi-nav-button {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoi' button}}>
-        <img class='uk-border-circle' src={{button.icon}} alt={{concat 'Button to highlight ' button.lable ' in the painting.'}}>
+  <div class='uk-visible@l uk-width-1-6@l uk-width-1-6@m'></div>
+  <div class='uk-width-2-4@m uk-width-1-3@l uk-width-1-1@s uk-transform-origin-bottom-center uk-margin-bottom {{if activeHotspot 'uk-animation-slide-bottom-medium uk-animation-reverse' 'uk-animation-slide-bottom'}}'>
+    <div class='uk-child-width-expand@l uk-child-width-1-1@m uk-grid-large uk-text-center uk-text-middle uk-flex-center uk-text-center' uk-grid>
+      {{#each buttons as |button index|}}
+      <div class='poi-nav-button {{if (eq index 2) 'uk-margin-large-right'}} {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoi' button}}>
+        <img class='uk-border-circle' src={{button.icon}} alt={{concat 'Button to highlight ' button.label ' in the painting.'}}>
       <p>{{button.label}}</p>
       </div>
       {{/each}}
-      <div class='poi-nav-button active-poi' onclick={{action 'showTours'}}>
-        <img class='uk-border-circle' src='images/tours.png' alt="Button to show avaliable tours.">
+      <div class='poi-nav-button active-poi' style='border-left: solid;' onclick={{action 'showTours'}}>
+        <img class='uk-border-circle' src='images/tours.png' alt="Button to show available tours.">
       <p>TOURS</p>
       </div>
     </div>
   </div>
-  <div class='uk-visible@xl uk-width-1-3@xl'><div class='uk-align-right uk-flex uk-flex-middle' id='minimap'></div></div>
+  <div class='uk-visible@l uk-width-1-6@l uk-width-1-6@m'></div>
+  <div class='uk-visible@xl uk-width-1-6@xl'><div class='uk-align-right uk-flex uk-flex-middle' id='minimap'></div></div>
 </div>
 
 {{/if}}

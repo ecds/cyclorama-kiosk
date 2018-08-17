@@ -12,7 +12,7 @@ export default Component.extend({
   bounds: null,
   L: null,
   _map: null,
-  activePois: [],
+  activePois: A(),
   panel: null,
   showThumbNav: true,
   miniMap: null,
@@ -122,13 +122,13 @@ export default Component.extend({
   actions: {
     initMap(event) {
       let map = event.target;
-      map.zoomControl.setPosition('topright');
+      // map.zoomControl.setPosition('bottomleft');
       // map.setZoom(3);
       map.fitBounds(get(this, 'bounds'));
       set(this, '_map', map);
-      map.on('click', function(e) {
-        console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
-      });
+      // map.on('click', function(e) {
+      //   console.log("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+      // });
       map.setZoom(4);
 
       // L.rectangle(this.bounds, {color: "#ff7800", weight: 1}).addTo(map);
@@ -139,7 +139,7 @@ export default Component.extend({
     },
 
     whatBounds() {
-      console.log(get(this, '_map'));
+      // console.log(get(this, '_map'));
     },
 
     switchPoi(button) {
@@ -157,26 +157,25 @@ export default Component.extend({
     },
 
     highlightHotspot(hotspot) {
-      this.activePois.forEach(hs => {
-        set(hs, 'active', false);
-      });
-      set(hotspot, 'active', true);
-      console.log(hotspot);
-    //  this.set('activeHotspot', hotspot);
-      set(this, 'activeHotspot', hotspot);
-      console.log(this.panel.isToggled());
-      if (this.panel.isToggled() === true) {
-        this.send('flyToHotspot')
-      } else {
-        this.send('flyToHotspot')
-        this.panel.show();
-      }
+      // this.activePois.forEach(hs => {
+      //   set(hs, 'active', false);
+      // });
+      // set(hotspot, 'active', true);
+      // // console.log(hotspot);
+      //  this.set('activeHotspot', hotspot);
+      // set(this, 'activeHotspot', hotspot);
+      // // console.log(this.panel.isToggled());
+      // if (this.panel.isToggled() === true) {
+      //   this.send('flyToHotspot')
+      // } else {
+      //   this.send('flyToHotspot')
+      //   this.panel.show();
+      // }
     },
 
     flyToHotspot() {
-      console.log('flying')
       this._map.getContainer().style.width = '67vw';
-      this._map.flyToBounds(this.activeHotspot.bounds);
+      this._map.flyToBounds(this.activeHotspot.bounds, { duration: 3 });
     },
 
     next(next) {
@@ -188,10 +187,9 @@ export default Component.extend({
     },
 
     reCenter() {
-      console.log('recenter')
-      // if (get(this, '_map') && get(this, 'panel').isToggled()) {
+        // if (get(this, '_map') && get(this, 'panel').isToggled()) {
         // this.panel.hide();
-        set(this, 'activeHotspot', {});
+        set(this, 'activeHotspot', null);
         this.panel.hide();
 
         this._map.getContainer().style.width = '100%';
@@ -200,7 +198,7 @@ export default Component.extend({
           setProperties(h, { active: false });
         });
 
-        this._map.flyToBounds(this.bounds);
+        this._map.flyToBounds(this.bounds, { duration: 3 });
 
       // }
     },
@@ -215,6 +213,26 @@ export default Component.extend({
 
     reSize() {
       // console.log('oh hi');
+    },
+
+    pan(direction) {
+      if (direction === 'down') {
+        this._map.panBy(L.point(0, 500));
+      } else if (direction === 'up') {
+        this._map.panBy(L.point(0, -500));
+      } else if (direction === 'left') {
+        this._map.panBy(L.point(-500, 0));
+      } else if (direction === 'right') {
+        this._map.panBy(L.point(500, 0));
+      }
+    },
+
+    zoom(direction) {
+      if (direction === 'in') {
+        this._map.zoomIn(1);
+      } else {
+        this._map.zoomOut(1);
+      }
     }
   }
 });
