@@ -1,92 +1,100 @@
 {{#if bounds}}
     {{!-- <div uk-grid class='uk-grid-collapse'> --}}
+          {{!-- <img class='ahc-logo' src='http://www.atlantahistorycenter.com/assets/images/AHC_Brand_Asset_Lockup_White.png'> --}}
   <div class='uk-offcanvas-content'>
-    <div id='panel'>
+    {{#poi-detail panel=panel on-hide=(action 'reCenter') on-shown=(action 'flyToHotspot') activeHotspot=activeHotspot}}
       <div class='uk-offcanvas-bar uk-flex uk-flex-column'>
-        {{#if activeHotspot}}
-        {{!-- <button class="uk-offcanvas-close" type="button" uk-close onclick={{action 'reCenter'}}></button> --}}
-        <button class="uk-offcanvas-close" type="button" uk-close></button>
+{{#if activeHotspot}}
+{{!-- <button class="uk-offcanvas-close" type="button" uk-close onclick={{action 'reCenter'}}></button> --}}
+{{!-- <button class="uk-offcanvas-close" type="button" uk-close></button> --}}
+<div class='uk-child-width-1-1' uk-grid>
+  <section class='uk-margin'>
+    <article class='uk-article description uk-padding'>
+      <h2 style='text-transform: uppercase;'>{{activeHotspot.name}}</h2>
+      {{{activeHotspot.description}}}
+    </article>
+  </section>
+
+<section>
 <div class="uk-position-relative uk-visible-toggle uk-light" uk-slider center=true>
 
-    <ul class="uk-slider-items uk-grid uk-child-width-3-4" uk-grid>
-        <li>
-            <div class="uk-panel uk-text-center">
-                <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Augustus_Hurt_House_Theodore_Davis_2_580x0.jpg" alt="">
-            </div>
-        </li>
+<ul class="uk-slider-items uk-grid uk-child-width-3-4" uk-grid>
+<li>
+<div class="uk-panel uk-text-center">
+  <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Augustus_Hurt_House_Theodore_Davis_2_580x0.jpg" alt="">
+</div>
+</li>
 
-        <li>
-            <div class="uk-panel uk-text-center">
-                <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Cobb_House_580x0.jpg" alt="">
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel uk-text-center">
-                <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Confederate_Fortifications_around_Atlanta_GA_580x0.jpg" alt="">
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel uk-text-center">
-                <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Augustus_Hurt_House_Theodore_Davis_2_580x0.jpg" alt="">
-            </div>
-        </li>
+<li>
+<div class="uk-panel uk-text-center">
+  <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Cobb_House_580x0.jpg" alt="">
+</div>
+</li>
+<li>
+<div class="uk-panel uk-text-center">
+  <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Confederate_Fortifications_around_Atlanta_GA_580x0.jpg" alt="">
+</div>
+</li>
+<li>
+<div class="uk-panel uk-text-center">
+  <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Augustus_Hurt_House_Theodore_Davis_2_580x0.jpg" alt="">
+</div>
+</li>
 
-        <li>
-            <div class="uk-panel uk-text-center">
-                <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Cobb_House_580x0.jpg" alt="">
-            </div>
-        </li>
-        <li>
-            <div class="uk-panel uk-text-center">
-                <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Confederate_Fortifications_around_Atlanta_GA_580x0.jpg" alt="">
-            </div>
-        </li>
-    </ul>
+<li>
+<div class="uk-panel uk-text-center">
+  <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Cobb_House_580x0.jpg" alt="">
+</div>
+</li>
+<li>
+<div class="uk-panel uk-text-center">
+  <img src="https://battleofatlanta.digitalscholarship.emory.edu/media/stops/Confederate_Fortifications_around_Atlanta_GA_580x0.jpg" alt="">
+</div>
+</li>
+</ul>
 
-    <a class="uk-position-center-left uk-position-small gallery-arrow" href='' uk-slider-item="previous">
-      {{fa-icon 'angle-left'}}
-    </a>
-    <a class="uk-position-center-right uk-position-small gallery-arrow" href='' uk-slider-item="next">
-      {{fa-icon 'angle-right'}}
-    </a>
+<a class="uk-position-center-left uk-position-small gallery-arrow" href='' uk-slider-item="previous">
+{{fa-icon 'angle-left'}}
+</a>
+<a class="uk-position-center-right uk-position-small gallery-arrow" href='' uk-slider-item="next">
+{{fa-icon 'angle-right'}}
+</a>
 
-    <ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
+<ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
 
 </div>
-        <section class='uk-margin'>
+</section>
 
-          <article class='uk-article description uk-padding'>
-        <h2 style='text-transform: uppercase;'>{{activeHotspot.name}}</h2>
-            {{{activeHotspot.description}}}
-          </article>
-        </section>
-        <section uk-grid>
-          {{#if activeHotspot.previous}}
-            {{#uk-button class='uk-hidden@s uk-width-1-3@m' on-click=(action 'previous' activeHotspot.previous)}}previous{{/uk-button}}
-          {{/if}}
-          {{#uk-button class='uk-width-1-1@s uk-width-1-3@m' on-click=(action 'reCenter' activeHotspot.previous)}}close{{/uk-button}}
-          {{#if activeHotspot.next}}
-            {{#uk-button class='uk-hidden@s uk-width-1-3@m' on-click=(action 'next' activeHotspot.next)}}Next{{/uk-button}}
-          {{/if}}
-        </section>
-      {{/if}}
-      </div>
-    </div>
+<nav class='poi-detail-nav uk-child-width-1-3' uk-grid>
+  {{#if activeHotspot.previous}}
+    <div role='link' onclick={{action 'previous' activeHotspot.previous}}>{{fa-icon 'angle-left'}} Previous</div>
+  {{/if}}
+  <div onclick={{action 'reCenter'}}>{{fa-icon 'undo'}} Return to Painting</div>
+  {{#if activeHotspot.next}}
+    <div role='link' onclick={{action 'next' activeHotspot.next}}>Next {{fa-icon 'angle-right'}}</div>
+  {{/if}}
+</nav>
+</div>
+{{/if}}
+</div>
+{{/poi-detail}}
 
+{{!-- maxBounds=bounds --}}
         {{#leaflet-map
           onLoad=(action 'initMap')
           onResize=(action 'reSize')
           bounds=bounds
           zoomSnap=0
-          maxBounds=bounds
           bounceAtZoomLimits=false
           maxBoundsViscosity=1.0
           maxZoom=10
+          minZoom=4
           crs=crs
           bounceAtZoomLimits=false
           zoomControl=false
-
-          as |features|}}
+          onZoomend=(action 'zoomend')
+        as |features|}}
+          
 
           {{!-- {{draw-control}} --}}
 
@@ -105,101 +113,29 @@
         {{/leaflet-map}}
 
 </div>
-{{!--
-      <div class='uk-width-1-1 bottom-nav uk-container'>
-        <div uk-grid>
-          <div class='uk-width-1-4 ahc-logo uk-inline'>
-            <img class='uk-position-center' src='http://www.atlantahistorycenter.com/assets/images/AHC_Brand_Asset_Lockup_White.png'>
-          </div>
-          
-          <div class='uk-width-1-2'>
-            <div class='poi-nav' uk-grid>
-              
-              {{#each buttons as |button|}}
-              <div class='uk-width-1-4 poi-nav-button uk-inline {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoi' button}}>
-                <div class='uk-text-center uk-grid-collapse uk-position-center' uk-grid>
-                  <img class='uk-width-1-1 uk-border-circle' src={{button.icon}} alt={{concat 'Button to highlight ' button.lable ' in the painting.'}}>
-                  <p class='uk-width-1-1 uk-margin-small-top'>{{button.label}}</p>
-                </div>
-              </div>
-              {{/each}}
-              
-              <div class='uk-width-1-4 poi-nav-button uk-inline' style='border-left: solid white; line-height: 20px;'>
-                <div class='uk-text-center uk-grid-collapse uk-position-center active-poi' uk-grid>
-                  <img class='uk-width-1-1 uk-border-circle' src="images/tours.png" alt="Border circle">
-                  <p class='uk-width-1-1 uk-margin-small-top'>TOURS</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class='uk-width-1-4 uk-margin-small'>
-            <div class='uk-grid-collapse active-poi' uk-grid>
-              <div class='uk-width-1-2'>
-                <img src='images/view.png' style='height: 90px'>
-              </div>
-              <div class='uk-width-1-2' id='minimap'></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      --}}
-    {{!-- </div> --}}
-<div class='bottom-nav bottom-nav' uk-grid>
-  <div class='uk-visible@l uk-width-1-6@l uk-width-1-6@m uk-flex uk-flex-center uk-text-center'>
-    {{!-- <img class='uk-margin-left ahc-logo' src='http://www.atlantahistorycenter.com/assets/images/AHC_Brand_Asset_Lockup_White.png'> --}}
-    <div uk-grid>
-    <div class='uk-grid-collapse uk-width-3-4' uk-grid>
-      {{!-- <div class='uk-width-1-1'>
-        {{#uk-button color='secondary' on-click=(action 'pan' 'up')}}{{fa-icon 'angle-up'}}{{/uk-button}}
-      </div> --}}
-      <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-bottom'>
-          {{#uk-button color='secondary' on-click=(action 'pan' 'up')}}{{fa-icon 'angle-up'}}{{/uk-button}}
-      </div>
-      <div class='uk-width-1-3 uk-flex uk-flex-right uk-flex-middle'>
-        {{#uk-button color='secondary' on-click=(action 'pan' 'left')}}{{fa-icon 'angle-left'}}{{/uk-button}}
-        {{!-- <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-middle '> --}}
-        </div>
-      <div class='uk-width-1-3 uk-flex uk-flex-right uk-flex-middle'></div>
-        <div class='uk-width-1-3 uk-flex uk-flex-left uk-flex-middle'>
-        {{#uk-button color='secondary' on-click=(action 'pan' 'right')}}{{fa-icon 'angle-right'}}{{/uk-button}}
-        </div>
-      {{!-- </div> --}}
-      <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-top'>
-          {{#uk-button color='secondary' on-click=(action 'pan' 'down')}}{{fa-icon 'angle-down'}}{{/uk-button}}
-      </div>
-      </div>
 
-      <div class='uk-width-1-4 uk-grid-small' uk-grid>
-        <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-bottom'>
-          {{#uk-button color='secondary' on-click=(action 'zoom' 'in')}}{{fa-icon 'plus'}}{{/uk-button}}
-        </div>
-        <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-top'>
-          {{#uk-button color='secondary' on-click=(action 'zoom' 'out')}}{{fa-icon 'minus'}}{{/uk-button}}
-        </div>
-      </div>
-      {{!-- <div class='uk-width-1-1'>
-        {{#uk-button color='secondary' on-click=(action 'pan' 'down')}}{{fa-icon 'angle-down'}}{{/uk-button}}
-      </div> --}}
-   </div>
+<div class='bottom-nav bottom-nav' uk-grid>
+  <div class='uk-visible@l uk-width-1-6@l uk-width-1-6@m uk-flex uk-flex-center uk-text-center'>    
   </div>
   <div class='uk-visible@l uk-width-1-6@l uk-width-1-6@m'></div>
-  <div class='uk-width-2-4@m uk-width-1-3@l uk-width-1-1@s uk-transform-origin-bottom-center uk-margin-bottom {{if activeHotspot 'uk-animation-slide-bottom-medium uk-animation-reverse' 'uk-animation-slide-bottom'}}'>
-    <div class='uk-child-width-expand@l uk-child-width-1-1@m uk-grid-large uk-text-center uk-text-middle uk-flex-center uk-text-center' uk-grid>
+  <div class=' uk-margin uk-width-2-4@m uk-width-1-3@l uk-width-1-1@s uk-transform-origin-bottom-center uk-child-width-expand@l uk-child-width-1-1@m uk-grid-large uk-text-center uk-flex-center uk-grid-collapse {{if activeHotspot 'uk-animation-slide-bottom-medium uk-animation-reverse' 'uk-animation-slide-bottom'}} uk-grid'>
       {{#each buttons as |button index|}}
-      <div class='poi-nav-button {{if (eq index 2) 'uk-margin-large-right'}} {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoi' button}}>
+      <div class='poi-nav-button uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse {{if (eq index 2) 'uk-margin-right'}} {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoi' button}} uk-grid>
         <img class='uk-border-circle' src={{button.icon}} alt={{concat 'Button to highlight ' button.label ' in the painting.'}}>
       <p>{{button.label}}</p>
       </div>
       {{/each}}
-      <div class='poi-nav-button active-poi' style='border-left: solid;' onclick={{action 'showTours'}}>
+      <div class='poi-nav-button tour-button active-poi uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse uk-margin-left' onclick={{action 'showTours'}} uk-grid>
         <img class='uk-border-circle' src='images/tours.png' alt="Button to show available tours.">
       <p>TOURS</p>
       </div>
-    </div>
   </div>
-  <div class='uk-visible@l uk-width-1-6@l uk-width-1-6@m'></div>
-  <div class='uk-visible@xl uk-width-1-6@xl'><div class='uk-align-right uk-flex uk-flex-middle' id='minimap'></div></div>
+  <div class='uk-visible@l uk-width-1-6@l uk-width-1-6@m uk-margin-remove' uk-grid>
+      {{map-controls map=_map}}
+  </div>
+  <div class='uk-visible@l uk-width-1-6@l uk-flex uk-flex-middle uk-flex-center'>
+    <div id='minimap' class='uk-flex uk-flex-center'></div>
+  </div>
 </div>
 
 {{/if}}

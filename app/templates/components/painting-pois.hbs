@@ -1,13 +1,14 @@
 {{#each pois as |hotspot|}}
-  {{geojson-layer
-    geoJSON=hotspot.hotspot
-    pointToLayer=setDot
-    onClick=(action 'clickSpot' hotspot)
-  }}
   {{#if hotspot.active}}
     {{geojson-layer
       geoJSON=hotspot.polygon
       style=setStyle
+    }}
+  {{else}}
+    {{geojson-layer
+      geoJSON=hotspot.hotspot
+      pointToLayer=setDot
+      onClick=(action 'clickSpot' hotspot)
     }}
   {{/if}}
 {{/each}}

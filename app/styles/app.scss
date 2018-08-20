@@ -1,42 +1,31 @@
 @import 'ember-uikit';
 @import 'mini-map';
+@import 'pan-controls';
 
 $dot-offset: 40px;
 $green: rgba(0,230,1, 1);
 
 body {
-  font-size: 18px;
-  // height: 100vh;
-  // overflow: hidden;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.leaflet-container {
+  background: none;
+  height:85vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transition: width;
+  width: 100%;
 }
 
 body,
-.leaflet-container {
-  background: linear-gradient(rgb(116, 146, 128), #684938);
-
-}
-// .painting-container {
-//   height: 85vh;
-//   width: 100vw;
-// }
-
-.leaflet-container {
-  // height: 85vh;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  transition: width;
-  width: 100%;
-
-  &.leaflet-control-minimap {
-    // margin-bottom: 125px;
-  }
+.leaflet-control-minimap {
+  background: linear-gradient(rgb(116, 146, 128), #824325);
+  font-size: 18px;
 }
 
-// .uk-navbar-container {
-//   background: #332E29 !important;
-//   height: 15vh;
-// }
 
 
 .uk-offcanvas-content {
@@ -65,31 +54,22 @@ body,
   }
 }
 
-// .uk-navbar-right {
-//   .fa {
-//     font-size: 2.5em;
-//   }
-// }
-
 .bottom-nav {
-  // background: rgba(51, 46, 41, 0.23);
-  // height: 15vh;
   // position: relative;
-  position: absolute;
-  z-index: 999;
   width: 100%;
-  // bottom: 0;
+  z-index: 999;
 
   &.uk-grid {
+    height: 15vh;
     position: absolute;
     width: 100%;
-    // height: 15vh;
     bottom: 0;
+    // top: 85vh;
   }
 
-  img {
-    height: 10vh;
-  }
+  // img {
+  //   height: 8vh;
+  // }
 }
 
 .leaflet-control-attribution {
@@ -97,10 +77,15 @@ body,
 }
 
 .ahc-logo {
-  opacity: .8;
+  left: 50px;
+  opacity: .6;
+  position: relative;
+  top: 50px;
+  z-index: 999;
 }
 
 .bottom-nav {
+  // height: 15vh;
   .poi-nav-button {
     color: white;
     cursor: pointer;
@@ -108,20 +93,16 @@ body,
 
     img {
       animation: psst 10000ms ease-out infinite;
-      // height: 100%;
-      // width: 10vh;
+      height: 8vh;
+      width: 8vh;
       opacity: .3;
     }
 
     p {
+      font-size: 1vw;
       opacity: .7;
+      text-transform: uppercase;
     }
-
-    // div {
-    //   color: #FFFFFF;
-    //   height: 10vh;
-    //   opacity: .3;
-    //   width: 10vh;
 
       &.active-poi {
         img {
@@ -129,12 +110,6 @@ body,
           opacity: 1;  
         }
       }
-    // }
-
-    p {
-      font-size: 1.5em;
-      text-transform: uppercase;
-    }
   }
 }
 
@@ -221,6 +196,15 @@ body,
 
 .tour-menus {
   display: block;
+
+  .uk-button-large {
+    font-size: 3rem;
+    line-height: 6rem;
+
+    .svg-inline--fa.fa-w-16 {
+      width: .7em;
+    }
+  }
 }
 
 .uk-card-media-top{
@@ -241,6 +225,21 @@ body,
 .uk-button-secondary {
   background-color: lightgray;
   color: black;
-  font-size: 2em;
+  font-size: 21m;
   opacity: .7;
+}
+
+.tour-heading {
+  color: white !important;
+  // letter-spacing: .25em;
+  text-transform: uppercase;
+}
+
+.tour-button {
+  border-left: solid;
+  border-right: solid;
+}
+
+.poi-detail-nav {
+  cursor: pointer;
 }
