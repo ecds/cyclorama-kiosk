@@ -1,0 +1,33 @@
+{{#each pois as |poi|}}
+  {{#if editing}}
+    {{!-- {{#if poi.active}}
+      {{geojson-layer
+        geoJSON=poi.polygon
+        style=setStyle
+        onAdd=(action 'polygonAdded' poi)
+        className='uk-animation-fade'
+      }}
+    {{/if}}
+    {{geojson-layer
+      geoJSON=poi.point
+      pointToLayer=(action 'setDot' poi)
+      onClick=(action 'clickSpot' poi)
+    }} --}}
+  {{else}}
+    {{#if poi.show}}
+      {{#if poi.active}}
+        {{geojson-layer
+          geoJSON=poi.polygon
+          style=setStyle
+          className='uk-animation-fade'
+        }}
+      {{else}}
+        {{geojson-layer
+          geoJSON=poi.point
+          pointToLayer=(action 'setDot' poi)
+          onClick=(action 'clickSpot' poi)
+        }}
+      {{/if}}
+    {{/if}}
+  {{/if}}
+{{/each}}

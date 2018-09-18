@@ -1,0 +1,74 @@
+/**
+* Quarter Circles
+*/
+
+.pan-controls {
+	position:relative;
+	width: 8vh;
+	height: 8vh;
+	transform: rotate(45deg);
+  color: white;
+}
+
+.quarter {
+  cursor: pointer;
+	position:absolute;
+	width:50%;
+	height:50%;
+  transition:background-color 0.2s ease-in-out;
+
+  span {
+    color: white;
+		// font-size: calc(6vw / 2vh);
+		font-size: 1.5em;
+  }
+
+  &:focus,
+  &:hover {
+    background-color:#1E1E1E;
+    outline: none;
+  }
+}
+
+.quarter1 {
+	top:0;
+	left:0;
+	background-color:#333;
+	border-radius:100% 0 0 0;
+}
+
+.quarter2 {
+	top:0;
+	right:0;
+	background-color:#333;
+	border-radius:0 100% 0 0 ;
+}
+
+.quarter3 {
+	bottom:0;
+	left:0;
+	background-color:#333;
+	border-radius:0 0 0 100%;
+}
+
+.quarter4 {
+	bottom:0;
+	right:0;
+	background-color:#333;
+	border-radius:0 0 100% 0 ;
+}
+
+.button {
+	transform: rotate(-45deg);
+}
+
+.zoom-button {
+	background-color: #333 !important;
+	border: solid black;
+	color: white !important;
+	font-size: 1.25em;
+	margin: .5vh;
+	opacity: 1 !important;
+	padding: .2em;
+	width: 50%;
+}

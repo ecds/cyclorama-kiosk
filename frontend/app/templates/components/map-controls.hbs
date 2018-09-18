@@ -1,0 +1,40 @@
+<div class='uk-width-1-1 uk-child-width-1-2' uk-grid>
+  {{!-- Zoom Controls --}}
+  <div class='uk-grid-collapse uk-child-width-1-1' uk-grid>
+      {{!-- <div class='uk-flex uk-flex-center uk-flex-bottom'> --}}
+        <div></div>
+        <div></div>
+        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=(action 'zoom' 'in')}}{{fa-icon 'plus'}}{{/uk-button}}</div>
+        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=reCenter}}{{fa-icon 'home'}}{{/uk-button}}</div>
+        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=(action 'zoom' 'out')}}{{fa-icon 'minus'}}{{/uk-button}}</div>
+        <div></div>
+        <div></div>
+      {{!-- </div> --}}
+  </div>
+
+  {{!-- Pan Controls --}}
+  <div class='uk-flex uk-flex-center uk-flex-middle'>
+  <div class='pan-controls'>
+    <span role='button' tabindex=0 onclick={{action 'pan' 'up'}} class="quarter quarter1 uk-flex uk-flex-center">
+      <span class='uk-flex uk-flex-middle button'>
+        {{fa-icon 'angle-up'}}
+      </span>
+    </span>
+    <span role='button' tabindex=0 onclick={{action 'pan' 'right'}} class="quarter quarter2 uk-flex uk-flex-center">
+      <span class='uk-flex uk-flex-middle button'>
+        {{fa-icon 'angle-right'}}
+      </span>
+    </span>
+    <span role='button' tabindex=0 onclick={{action 'pan' 'left'}} class="quarter quarter3 uk-flex uk-flex-center">
+      <span class='uk-flex uk-flex-middle  button'>
+        {{fa-icon 'angle-left'}}
+      </span>
+    </span>
+    <span role='button' tabindex=0 onclick={{action 'pan' 'down'}} class="quarter quarter4 uk-flex uk-flex-center">
+      <span class='uk-flex uk-flex-middle button'>
+        {{fa-icon 'angle-down'}}
+      </span>
+    </span>
+  </div>
+  </div>
+</div>

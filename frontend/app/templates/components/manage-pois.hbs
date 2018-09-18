@@ -1,0 +1,45 @@
+<button class="uk-offcanvas-close" type="button" uk-close></button>
+<h2>People</h2>
+{{#uk-button on-click=(action 'newPoi' 'people')}}Add{{/uk-button}}
+{{#uk-sortable tagName='ul' class='uk-list uk-list-striped' on-stop=(action 'reorder' 'people')}}
+  {{#each model.sortedPois as |poi|}}
+    {{#if (eq poi.point.properties.type 'people')}}
+      <li data-id={{poi.id}}>
+        {{fa-icon 'bars'}}
+        {{#uk-button color='link' on-click=(action 'editPoi' poi)}}{{poi.name}}{{/uk-button}}
+        <span class='uk-align-right'>{{#uk-button color='link' on-click=(action 'deletePoi' poi)}}{{fa-icon 'trash-alt'}}{{/uk-button}}</span>
+      </li>
+    {{/if}}
+    {{else}} none...
+  {{/each}}
+{{/uk-sortable}}
+<hr class="uk-divider-icon">
+<h2>Landmarks</h2>
+{{#uk-button on-click=(action 'newPoi' 'landmarks')}}Add{{/uk-button}}
+{{#uk-sortable tagName='ul' class='uk-list uk-list-striped' on-stop=(action 'reorder' 'landmarks')}}
+  {{#each model.sortedPois as |poi|}}
+    {{#if (eq poi.point.properties.type 'landmarks')}}
+      <li data-id={{poi.id}}>
+        {{fa-icon 'bars'}}
+        {{#uk-button color='link' on-click=(action 'editPoi' poi)}}{{poi.name}}{{/uk-button}}
+        <span class='uk-align-right'>{{#uk-button color='link' on-click=(action 'deletePoi' poi)}}{{fa-icon 'trash-alt'}}{{/uk-button}}</span>
+      </li>
+    {{/if}}
+    {{else}} none...
+  {{/each}}
+{{/uk-sortable}}
+<hr class="uk-divider-icon">
+<h2>Alterations</h2>
+{{#uk-button on-click=(action 'newPoi' 'alterations')}}Add{{/uk-button}}
+{{#uk-sortable tagName='ul' class='uk-list uk-list-striped' on-stop=(action 'reorder' 'alterations')}}
+  {{#each model.sortedPois as |poi|}}
+    {{#if (eq poi.point.properties.type 'alterations')}}
+      <li data-id={{poi.id}}>
+        {{fa-icon 'bars'}}
+        {{#uk-button color='link' on-click=(action 'editPoi' poi)}}{{poi.name}}{{/uk-button}}
+        <span class='uk-align-right'>{{#uk-button color='link' on-click=(action 'deletePoi' poi)}}{{fa-icon 'trash-alt'}}{{/uk-button}}</span>
+      </li>
+    {{/if}}
+    {{else}} none...
+  {{/each}}
+{{/uk-sortable}}
