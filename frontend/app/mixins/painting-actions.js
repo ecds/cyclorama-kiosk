@@ -109,31 +109,50 @@ export default Mixin.create({
 
     clearPoi() {
       this.model.pois.forEach(p => {
+        console.log('clear')
         p.set('active', false);
       });
-      this.model.map.getContainer().style.height = '85vh';
-      this.set('activePoi', false);
     },
 
     closePanel() {
-      this.panel.hide();
+      console.log('height')
+      this.model.map.getContainer().style.height = '85vh';
+      this.panel.hide().then(() => {
+        console.log('hide -> then')
+        this.send('clearPoi');
+        this.send('reCenter');
+        // this.model.map.once('zoomend', () => {
+        //   this.model.map.setView(this.model.originalCenter, this.model.originalZoom);
+        // });
+        // this.set('activePoi', false);
+        // this.model.map.flyToBounds(this.model.originalBounds, { duration: 1 });
+      });
     },
 
     reCenter() {
       this.model.map.once('moveend', () => {
-        this.model.map.setView(this.model.originalCenter, this.model.originalZoom);
+      console.log('show buttons')
+      this.set('activePoi', false);
+        // this.model.map.setView(this.model.originalCenter, this.model.originalZoom);
       });
+      console.log('fly to')
       this.model.map.flyToBounds(this.model.originalBounds, { duration: 1 });
     },
 
-    reSize() {},
+    reSize() {
+      console.log('resize')
+    },
 
     paintingLoaded() {},
 
     whatBounds() {},
 
-    zoomend() {},
+    zoomend() {
+      console.log('zoomend')
+    },
 
-    moveend() {}
+    moveend() {
+      console.log('moveend')
+    }
   }
 });
