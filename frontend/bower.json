@@ -1,0 +1,6 @@
+{
+  "name": "cyclorama-kiosk",
+  "dependencies": {
+    "ember": "components/ember#canary"
+  }
+}

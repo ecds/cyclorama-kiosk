@@ -1,7 +1,13 @@
+/* eslint-env node */
 'use strict';
 
 module.exports = function(environment) {
   let ENV = {
+    'ember-resolver': {
+      features: {
+        EMBER_RESOLVER_MODULE_UNIFICATION: true
+      }
+    },
     modulePrefix: 'cyclorama-kiosk',
     environment,
     rootURL: '/',
@@ -10,6 +16,7 @@ module.exports = function(environment) {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
+        'ember-module-unification': true
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
@@ -24,12 +31,12 @@ module.exports = function(environment) {
   };
 
   if (environment === 'development') {
+    ENV.APP.API_HOST = 'http://localhost:3000';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
-    ENV.APP.API_HOST = 'http://localhost:3000';
   }
 
   if (environment === 'test') {
@@ -41,13 +48,10 @@ module.exports = function(environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
-    ENV.APP.autoboot = false;
   }
 
   if (environment === 'production') {
-    ENV.locationType = 'hash';
-    ENV.rootURL = '/cyclorama-kiosk/';
-    // here you can enable a production-specific feature
+
   }
 
   return ENV;

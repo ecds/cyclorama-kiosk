@@ -1,17 +1,12 @@
+/* eslint-env node */
 'use strict';
 
 const EmberApp = require('ember-cli/lib/broccoli/ember-app');
 
 module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
-    fingerprint: {
-      exclude: ['images/brush.png', 'images/buildings.png', 'images/people.png']
-    }
+    // Add options here
   });
-
-  app.import('node_modules/leaflet-minimap/dist/Control.MiniMap.min.js');
-  app.import('node_modules/leaflet.pm/dist/leaflet.pm.min.js');
-  // app.import('vendor/shims/leaflet-minimap.js');
 
   // Use `app.import` to add additional libraries to the generated
   // output files.
