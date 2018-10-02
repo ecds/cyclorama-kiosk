@@ -5,7 +5,7 @@
         <div></div>
         <div></div>
         <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=(action 'zoom' 'in')}}{{fa-icon 'plus'}}{{/uk-button}}</div>
-        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=reCenter}}{{fa-icon 'home'}}{{/uk-button}}</div>
+        {{!-- <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=reCenter}}{{fa-icon 'undo'}}{{/uk-button}}</div> --}}
         <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=(action 'zoom' 'out')}}{{fa-icon 'minus'}}{{/uk-button}}</div>
         <div></div>
         <div></div>
@@ -13,7 +13,7 @@
   </div>
 
   {{!-- Pan Controls --}}
-  <div class='uk-flex uk-flex-center uk-flex-middle'>
+  <div>
   <div class='pan-controls'>
     <span role='button' tabindex=0 onclick={{action 'pan' 'up'}} class="quarter quarter1 uk-flex uk-flex-center">
       <span class='uk-flex uk-flex-middle button'>
@@ -37,4 +37,9 @@
     </span>
   </div>
   </div>
+  {{!-- <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-middle'>
+    Recenter
+  </div> --}}
+        <div class='uk-width-1-1 uk-margin-small-top uk-flex uk-flex-center uk-flex-middle'>{{#uk-button color='link' size='small' on-click=reCenter}}{{fa-icon 'undo'}} Recenter{{/uk-button}}</div>
+
 </div>

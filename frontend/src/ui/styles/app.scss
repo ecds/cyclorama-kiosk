@@ -39,7 +39,7 @@ body {
 body,
 .leaflet-control-minimap {
   // background: linear-gradient(#809a84, #809a84 40%, #824325);
-  background: #504131;
+  background: #4b4035;
   font-size: 18px;
 }
 
@@ -116,9 +116,10 @@ body,
     }
 
     p {
-      font-size: 1vw;
-      opacity: .7;
-      text-transform: uppercase;
+      font-size: 1.25em;
+      font-weight: 300;
+      // opacity: .7;
+      text-transform: capitalize;
     }
 
       &.active-poi {
@@ -252,8 +253,8 @@ body,
 }
 
 .tour-button {
-  border-left: solid;
-  border-right: solid;
+  // border-left: solid;
+  // border-right: solid;
 }
 
 .poi-detail-content {
