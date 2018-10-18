@@ -6,100 +6,97 @@ $control-background: #D7CCC8;
 $control-icon-color: #212121;
 
 .pan-controls {
-	position:relative;
-	width: 8vh;
-	height: 8vh;
-	transform: rotate(45deg);
-	color: white;
+  position: relative;
+  width: 8vh;
+  height: 8vh;
+  transform: rotate(45deg);
+  color: white;
 }
 
 .quarter {
   cursor: pointer;
-	position:absolute;
-	width:50%;
-	height:50%;
-  transition:background-color 0.2s ease-in-out;
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  transition: background-color 0.2s ease-in-out;
 
   span {
     color: $control-icon-color;
-		// font-size: calc(6vw / 2vh);
-		font-size: 1.5em;
+    // font-size: calc(6vw / 2vh);
+    font-size: 1.5em;
   }
 
   &:focus,
   &:hover {
-		background-color: #1E1E1E;
-		outline: none;
-		
-		span {
-			color: $control-background;
-		}
+    background-color: #1E1E1E;
+    outline: none;
+
+    span {
+      color: $control-background;
+    }
   }
 }
 
 .quarter1 {
-	top:0;
-	left:0;
-	background-color:$control-background;
-	border-radius:100% 0 0 0;
-	// border-top: solid #E0E0E0;
-	// border-left: solid #E0E0E0;
+  top: 0;
+  left: 0;
+  background-color: $control-background;
+  border-radius: 100% 0 0 0;
+  // border-top: solid #E0E0E0;
+  // border-left: solid #E0E0E0;
 }
 
 .quarter2 {
-	top:0;
-	right:0;
-	background-color:$control-background;
-	border-radius:0 100% 0 0 ;
-	// border-right: solid #E0E0E0;
-	// border-top: solid #E0E0E0;
+  top: 0;
+  right: 0;
+  background-color: $control-background;
+  border-radius: 0 100% 0 0;
+  // border-right: solid #E0E0E0;
+  // border-top: solid #E0E0E0;
 }
 
 .quarter3 {
-	bottom:0;
-	left:0;
-	background-color:$control-background;
-	border-radius:0 0 0 100%;
-	// border-left: solid #E0E0E0;
-	// border-bottom: solid #E0E0E0;
+  bottom: 0;
+  left: 0;
+  background-color: $control-background;
+  border-radius: 0 0 0 100%;
+  // border-left: solid #E0E0E0;
+  // border-bottom: solid #E0E0E0;
 }
 
 .quarter4 {
-	bottom:0;
-	right:0;
-	background-color:$control-background;
-	border-radius:0 0 100% 0 ;
-	// border-right: solid #E0E0E0;
-	// border-bottom: solid #E0E0E0;
+  bottom: 0;
+  right: 0;
+  background-color: $control-background;
+  border-radius: 0 0 100% 0;
+  // border-right: solid #E0E0E0;
+  // border-bottom: solid #E0E0E0;
 }
 
 .button {
-	transform: rotate(-45deg);
+  transform: rotate(-45deg);
 }
 
 .zoom-button {
-	background-color: $control-background !important;
-	border: solid #EFEBE9;
-	color: $control-icon-color !important;
-	font-size: 1.25em;
-	margin: .5vh;
-	opacity: 1 !important;
-	padding: .2em;
-	width: 50%;
+  background-color: $control-background !important;
+  border: solid #EFEBE9;
+  color: $control-icon-color !important;
+  margin: .5vh;
+  opacity: 1 !important;
 
-	&:focus,
+  &:focus,
   &:hover {
-		background-color: #1E1E1E !important;
-		color: $control-background !important;
+    background-color: #1E1E1E !important;
+    color: $control-background !important;
   }
 }
 
 .uk-button-link {
-	color: $control-background;
+  color: $control-background;
 
-	&:hover,
-	&:active,
-	&:focus {
-		color: #BCAAA4;
-	}
+  &:hover,
+  &:active,
+  &:focus {
+    color: #BCAAA4;
+  }
 }

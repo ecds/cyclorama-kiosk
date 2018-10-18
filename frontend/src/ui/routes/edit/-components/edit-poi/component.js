@@ -1,12 +1,10 @@
 import Component from '@ember/component';
-import EmberObject from '@ember/object';
 import { A } from '@ember/array';
-/* global L */
 
 // const POI = EmberObject.extend({});
 
 export default Component.extend({
-  types: A(['people', 'landmarks', 'alterations']),
+  types: A(['people', 'landmarks', 'changes']),
   actions: {
     addImage(poi) {
       this.newImage(poi);

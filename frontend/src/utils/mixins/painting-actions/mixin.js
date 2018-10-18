@@ -10,7 +10,7 @@ const COLORS = {
     dot: 'rgba(192,47,29, 1)',
     ring: 'rgba(192,47,29, .6)'
   },
-  alterations: {
+  changes: {
     dot: 'rgba(235,201,68, 1)',
     ring: 'rgba(235,201,68, .6)'
   }
@@ -31,11 +31,8 @@ export default Mixin.create({
 
   addMiniMap(miniPainting) {
     let miniMap = new L.Control.MiniMap(
-      miniPainting,
-      {
-        zoomLevelFixed: -6,
-        centerFixed: this.model.originalCenter,
-        width: '10vw',
+      miniPainting, {
+        width: '15vw',
         height: '10vh',
         aimingRectOptions: {
           weight: 5
@@ -46,8 +43,10 @@ export default Mixin.create({
         }
       }
     );
-  
-    this.setProperties({miniMap: miniMap});
+
+    this.setProperties({
+      miniMap: miniMap
+    });
     miniMap.addTo(this.model.map);
     let lCtrlContainer = miniMap.getContainer();
     let newCtrlContainer = document.getElementById('minimap');
@@ -57,14 +56,13 @@ export default Mixin.create({
   actions: {
     setDot(poi, feature, point) {
       let marker = L.marker(
-        point,
-        {
+        point, {
           icon: L.divIcon({
             html: `<div class="jesse-dot"><div class="dot" style='background-color: ${COLORS[feature.properties.type].dot}'></div><div class="pulsate-ring" style='background-color: ${COLORS[feature.properties.type].ring}'></div></div>`
           })
         }
       );
-  
+
       marker.on('dragend', event => {
         this.send('relocatePoi', event.target._latlng, poi)
       });
@@ -93,45 +91,51 @@ export default Mixin.create({
         this.model.setProperties({
           bottom: [
             (
-              this.model.paintingLayer.getBounds()._southWest.lat
-              - map.getBounds()._southWest.lat
-            )
-            + map.getCenter().lat,
+              this.model.paintingLayer.getBounds()._southWest.lat -
+              map.getBounds()._southWest.lat
+            ) +
+            map.getCenter().lat,
             map.getCenter().lng
-          ]}
-        );
+          ]
+        });
         map.panTo(this.model.bottom);
-      }); 
+      });
 
-      this.model.setProperties({ map });
+      this.model.setProperties({
+        map
+      });
     },
 
     setPainting(event) {
-        this.model.map.setMinZoom(-5);
-        this.model.map.fitBounds(event.target.getBounds());
-        this.model.setProperties({ paintingLayer: event.target });
+      this.model.map.setMinZoom(-5);
+      this.model.map.fitBounds(event.target.getBounds());
+      this.model.setProperties({
+        paintingLayer: event.target
+      });
     },
 
     highlightPoi(poi) {
       this.model.pois.forEach(p => {
         p.set('active', false);
       });
-  
+
       this.set('activePoi', true);
-  
+
       this.model.map.once('zoomend', () => {
         poi.set('active', true);
         if (this.panel.isToggled() !== true) {
           this.panel.show();
         }
       });
-  
+
       this.send('flyToPoi', poi);
       this.model.map.getContainer().style.height = '100vh';
     },
-  
+
     flyToPoi(poi) {
-      this.model.map.flyToBounds(poi.bounds, { duration: 1 });
+      this.model.map.flyToBounds(poi.bounds, {
+        duration: 1
+      });
     },
 
     clearPoi() {
@@ -155,10 +159,12 @@ export default Mixin.create({
 
     reCenter() {
       this.model.map.once('moveend', () => {
-      this.set('activePoi', false);
+        this.set('activePoi', false);
         // this.model.map.setView(this.model.originalCenter, this.model.originalZoom);
       });
-      this.model.map.flyToBounds(this.model.originalBounds, { duration: 1 });
+      this.model.map.flyToBounds(this.model.originalBounds, {
+        duration: 1
+      });
     },
 
     reSize() {},
