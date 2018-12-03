@@ -30,7 +30,7 @@ var router = express.Router();
 app.use('/', router);
 require('./router')(router); // configure our routes
 
-// startup our app at http://localhost:3000
+// startup our app at http://otb.ecdsdev.org:3000
 app.listen(port);
 
 // expose app

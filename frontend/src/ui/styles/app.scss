@@ -6,14 +6,16 @@
 $dot-offset: 40px;
 $green: rgba(0,230,1, 1);
 
-body {
+body,
+html {
   height: 100vh;
   overflow: hidden;
+  color: aliceblue;
 }
 
 .leaflet-container {
   background: none;
-  height:85vh;
+  height:100vh;
   left: 0;
   position: absolute;
   right: 0;
@@ -290,5 +292,11 @@ form {
     max-height: 300px;
     max-width: 300px;
     width: auto;
+  }
+}
+
+.tour-card-footer {
+  .uk-button-link {
+    color: unset;
   }
 }

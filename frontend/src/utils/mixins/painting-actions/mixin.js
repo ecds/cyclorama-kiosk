@@ -1,4 +1,6 @@
 import Mixin from '@ember/object/mixin';
+import { isPresent } from '@ember/utils';
+import { task } from 'ember-concurrency';
 /* global L */
 
 const COLORS = {
@@ -13,12 +15,24 @@ const COLORS = {
   changes: {
     dot: 'rgba(235,201,68, 1)',
     ring: 'rgba(235,201,68, .6)'
-  }
+  },
 };
 
 export default Mixin.create({
   panel: null,
+  activePoi: null,
   crs: L.CRS.Simple,
+  
+  animationFinished() {
+    return new Promise((resolve, reject) => {
+      this.model.quad.map.once('moveend', resolve());
+      // on failure
+      reject(false);
+
+      this.send('reCenter');
+    });
+  },
+
   setStyle() {
     return {
       color: '#263238',
@@ -47,10 +61,39 @@ export default Mixin.create({
     this.setProperties({
       miniMap: miniMap
     });
-    miniMap.addTo(this.model.map);
+    miniMap.addTo(this.model.quad.map);
     let lCtrlContainer = miniMap.getContainer();
     let newCtrlContainer = document.getElementById('minimap');
     newCtrlContainer.appendChild(lCtrlContainer);
+  },
+
+  closePanel: task(function* () {
+    yield this.panel.hide();
+    this.send('reCenter');
+    this.send('clearActive');
+  }),
+
+  showPanel: task(function* () {
+    yield this.panel.show()
+  }),
+
+  enableInteraction() {
+    this.model.quad.map.dragging.enable();
+    this.model.quad.map.doubleClickZoom.enable();
+    this.model.quad.map.scrollWheelZoom.enable();
+  },
+
+  disableInteraction() {
+    this.model.quad.map.dragging.disable();
+    this.model.quad.map.doubleClickZoom.disable();
+    this.model.quad.map.scrollWheelZoom.disable();
+  },
+
+  suspendInteractions() {
+    this.model.quad.map.once('zoomend', () => {
+      this.enableInteraction();
+    });
+    this.disableInteraction();
   },
 
   actions: {
@@ -71,10 +114,14 @@ export default Mixin.create({
 
     initMap(event) {
       let map = event.target;
+      this.model.quad.setProperties({
+        map
+      });
+      this.disableInteraction();
       map.once('moveend', () => {
         map.once('moveend', () => {
-          if (!this.model.originalCenter) {
-            this.model.setProperties({
+          if (!this.model.quad.originalCenter) {
+            this.model.quad.setProperties({
               originalCenter: map.getCenter(),
               originalZoom: map.getZoom(),
               originalBounds: map.getBounds()
@@ -82,88 +129,68 @@ export default Mixin.create({
           }
           if (this.miniMap === null) {
             const miniPainting = new L.imageOverlay(
-              this.model.painting,
-              this.model.paintingBounds
+              this.model.quad.painting,
+              this.model.quad.paintingBounds
             );
             this.addMiniMap(miniPainting);
           }
+          map.setMaxBounds(map.getBounds().pad(.1));
+          map.setMinZoom(map.getZoom());
+          this.enableInteraction();
         });
-        this.model.setProperties({
+        this.model.quad.setProperties({
           bottom: [
             (
-              this.model.paintingLayer.getBounds()._southWest.lat -
+              this.model.quad.paintingLayer.getBounds()._southWest.lat -
               map.getBounds()._southWest.lat
             ) +
-            map.getCenter().lat,
+            map.getCenter().lat -
+            ((document.documentElement.clientHeight * 0.85) * 2),
             map.getCenter().lng
           ]
         });
-        map.panTo(this.model.bottom);
-      });
-
-      this.model.setProperties({
-        map
+        map.panTo(this.model.quad.bottom);
       });
     },
 
     setPainting(event) {
-      this.model.map.setMinZoom(-5);
-      this.model.map.fitBounds(event.target.getBounds());
-      this.model.setProperties({
+      this.model.quad.map.setMinZoom(-5);
+      this.model.quad.map.fitBounds(event.target.getBounds());
+      this.model.quad.setProperties({
         paintingLayer: event.target
       });
     },
 
     highlightPoi(poi) {
-      this.model.pois.forEach(p => {
-        p.set('active', false);
-      });
-
-      this.set('activePoi', true);
-
-      this.model.map.once('zoomend', () => {
+      this.set('showingTours', false);
+      this.model.quad.map.once('zoomend', () => {
+        // Panel is opened by the polygon's `onAdd` event.
         poi.set('active', true);
-        if (this.panel.isToggled() !== true) {
-          this.panel.show();
-        }
       });
-
+      this.send('clearActive');
+      this.set('activePoi', poi);
+      poi.setProperties({ active: true });
       this.send('flyToPoi', poi);
-      this.model.map.getContainer().style.height = '100vh';
+    },
+
+    clearActive() {
+      if (isPresent(this.activePoi)) {
+        this.activePoi.setProperties({ active: false });
+        this.set('activePoi', null);
+      }
     },
 
     flyToPoi(poi) {
-      this.model.map.flyToBounds(poi.bounds, {
+      this.suspendInteractions();
+      this.model.quad.map.flyToBounds(poi.bounds, {
         duration: 1
-      });
-    },
-
-    clearPoi() {
-      this.model.pois.forEach(p => {
-        p.set('active', false);
-      });
-    },
-
-    closePanel() {
-      this.model.map.getContainer().style.height = '85vh';
-      this.panel.hide().then(() => {
-        this.send('clearPoi');
-        this.send('reCenter');
-        // this.model.map.once('zoomend', () => {
-        //   this.model.map.setView(this.model.originalCenter, this.model.originalZoom);
-        // });
-        // this.set('activePoi', false);
-        // this.model.map.flyToBounds(this.model.originalBounds, { duration: 1 });
       });
     },
 
     reCenter() {
-      this.model.map.once('moveend', () => {
-        this.set('activePoi', false);
-        // this.model.map.setView(this.model.originalCenter, this.model.originalZoom);
-      });
-      this.model.map.flyToBounds(this.model.originalBounds, {
-        duration: 1
+      this.suspendInteractions();
+      this.model.quad.map.flyToBounds(this.model.quad.originalBounds, {
+        // duration: 1
       });
     },
 

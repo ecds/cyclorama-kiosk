@@ -5,8 +5,9 @@ import { sort } from '@ember/object/computed';
 const { Model, attr, hasMany } = DS;
 
 export default Model.extend({
-  title: attr('string'),
-  painting: attr('string'),
+  name: attr('string'),
+  intro: attr('string'),
+  coverImage: attr('string'),
   pois: hasMany('poi', { async: false }),
   sortedPois: sort('pois', '_poiPositionSort'),
   _poiPositionSort: computed('pois', function() {

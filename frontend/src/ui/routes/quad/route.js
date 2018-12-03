@@ -1,11 +1,14 @@
 import Route from '@ember/routing/route';
+import RSVP from 'rsvp';
 import fetch from 'fetch';
 /* global L */
 
 export default Route.extend({
   model(params) {
-    return this.store.queryRecord('quad', { title: params.quad });
-  },
+    return RSVP.hash({
+      quad: this.store.queryRecord('quad', { title: params.quad }),
+      tours: this.store.findAll('tour')
+    });  },
 
   setupController(controller, model) {
     // Call _super for default behavior
@@ -15,19 +18,10 @@ export default Route.extend({
         this.controllerFor('quad').set('buttons', data);
       });
     });
-
-    // fetch(`http://localhost:3000/quads/${this.paramsFor('quad').quad}`).then(response => {
-    //   response.json().then(data => {
-    //     this.controllerFor('quad').set('model', data.quad[0]);
-    //     this.controllerFor('quad').set('people', data.people);
-    //     this.controllerFor('quad').set('landmarks', data.landmarks);
-    //     this.controllerFor('quad').set('alterations', data.alterations);
-    //   });
-    // });
   },
 
   afterModel(model) {
-    model.setProperties({
+    model.quad.setProperties({
       paintingBounds: new L.latLngBounds(
         [
           new L.LatLng(0, 0),
@@ -35,7 +29,7 @@ export default Route.extend({
         ]
       )
     });
-    model.pois.forEach(poi => {
+    model.quad.pois.forEach(poi => {
       if (poi.point.properties.type == 'people') {
         poi.setProperties({ show: true });
       }

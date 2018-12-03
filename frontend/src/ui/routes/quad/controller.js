@@ -7,14 +7,14 @@ export default Controller.extend(PaintingActionsMixin, {
   actions: {
     switchPoiType(button) {
       if (button.active) {
-        this.model.pois.forEach(poi => {
+        this.model.quad.pois.forEach(poi => {
           if (poi.point.properties.type === button.label){
             poi.setProperties({ show: false });
           }
         });
         set(button, 'active', false);
       } else {
-        this.model.pois.forEach(poi => {
+        this.model.quad.pois.forEach(poi => {
           if (poi.point.properties.type === button.label){
             poi.setProperties({ show: true });
           }

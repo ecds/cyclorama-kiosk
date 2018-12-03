@@ -31,7 +31,7 @@ module.exports = function(environment) {
   };
 
   if (environment === 'development') {
-    ENV.APP.API_HOST = 'http://localhost:3000';
+    ENV.APP.API_HOST = 'http://otb.ecdsdev.org:3000';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
@@ -50,9 +50,9 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
   }
 
-  if (environment === 'production') {
+  // if (environment === 'production') {
 
-  }
+  // }
 
   return ENV;
 };

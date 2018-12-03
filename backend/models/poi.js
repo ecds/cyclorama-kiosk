@@ -51,10 +51,12 @@ var PolygonSchema = new Schema({
 
 var PoiSchema = new Schema({
     quad: { type: Schema.Types.ObjectId, ref: 'Quad' },
+    tour: { type: Schema.Types.ObjectId, ref: 'Tour' },
     name: String,
     type: String,
     description: String,
     position: Number,
+    tourPosition: Number,
     bounds: [[Number]],
     images: [{ type: ObjectId, ref: 'Image' }],
     point: PointSchema,

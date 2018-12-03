@@ -5,8 +5,10 @@ import UIkit from 'uikit';
 
 export default Controller.extend(PaintingActionsMixin, {
   newPoi: null,
+  tourToEdit: null,
   newPoiType: 'people',
   managePois: false,
+  manageTours: false,
 
   // Function that calculates the fly-to bounds for a POI.
   // This is kind of a long walk, but we first dig out the bounds
@@ -30,9 +32,15 @@ export default Controller.extend(PaintingActionsMixin, {
   },
 
   actions: {
+    newTour() {
+      this.set('manageTours', false);
+      let newTour = this.store.createRecord('tour');
+      this.set('tourToEdit', newTour);
+    },
+
     newPoiType(type) {
       this.set('newPoiType', type);
-      this.model.map.pm.Draw.Marker.enable();
+      this.model.quad.map.pm.Draw.Marker.enable();
     },
     // This is called when a new marker is added to the paining.
     newPoi(shape) {
@@ -40,8 +48,8 @@ export default Controller.extend(PaintingActionsMixin, {
         return;
       }
       this.set('managePois', false);
-      this.model.map.pm.Draw.Marker.disable();
-      this.model.map.pm.Draw.Cut.enable();
+      this.model.quad.map.pm.Draw.Marker.disable();
+      this.model.quad.map.pm.Draw.Cut.enable();
       let newPoint = shape.layer.toGeoJSON();
       newPoint.properties.type = this.get('newPoiType');
 
@@ -53,7 +61,7 @@ export default Controller.extend(PaintingActionsMixin, {
       shape.layer.remove();
 
       // Add listener for when the POI has been cut out.
-      this.model.map.once('pm:cut', shape => {
+      this.model.quad.map.once('pm:cut', shape => {
         const newBounds = this.calcBounds(shape)
         newPoi.setProperties({
           polygon: shape.resultingLayers[0].toGeoJSON().features[0],
@@ -62,29 +70,29 @@ export default Controller.extend(PaintingActionsMixin, {
 
         // When the cut is finished, we fly to the new bounds.
         // This will open the panel with the form when the zoom stops.
-        this.model.map.once('zoomend', () => {
+        this.model.quad.map.once('zoomend', () => {
           if (!this.panel.isToggled()) {
             this.panel.show();
           }
         });
 
-        this.model.map.flyToBounds(newBounds);
+        this.model.quad.map.flyToBounds(newBounds);
 
       });
 
       let b = this.model.paintingLayer.getBounds();
       let rec = L.rectangle(b);
-      rec.addTo(this.model.map);
+      rec.addTo(this.model.quad.map);
       this.set('newPoi', newPoi)
     },
 
     editPoi(poi) {
       this.send('highlightPoi', poi)
-      this.model.map.pm.enableGlobalEditMode();
+      this.model.quad.map.pm.enableGlobalEditMode();
     },
 
     editReCenter() {
-      this.model.map.pm.disableGlobalEditMode();
+      this.model.quad.map.pm.disableGlobalEditMode();
       this.send('reCenter');
     },
 
@@ -169,9 +177,7 @@ export default Controller.extend(PaintingActionsMixin, {
         this.model.pois.removeObject(poi);
         poi.destroy();
       }
-      this.panel.hide();
-      this.send('clearPoi');
-      this.send('reCenter');
+      this.get('closePanel').perform();
     },
 
     reorderPois(type, event) {
@@ -216,6 +222,23 @@ export default Controller.extend(PaintingActionsMixin, {
 
     updatePolygon(updated, poi) {
       poi.setProperties({ polygon: updated });
+    },
+
+    saveTour(tour) {
+      tour.save();
+    },
+
+    deleteTour(tour) {
+      tour.destroyRecord();
+    },
+
+    addPoiToTour(tour, poi) {
+      let tourPois = tour.get('pois');
+      tourPois.pushObject(poi);
+      poi.setProperties({
+        tourPosition: tourPois.length + 1
+      });
+      poi.save();
     }
   }
 });

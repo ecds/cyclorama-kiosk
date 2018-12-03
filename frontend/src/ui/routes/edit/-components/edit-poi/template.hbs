@@ -1,17 +1,17 @@
 {{yield}}
-<button class="uk-offcanvas-close" type="button" uk-close></button>
+{{!-- <button class="uk-offcanvas-close" type="button" onclick=closePanel uk-close></button> --}}
 <form class="uk-form-stacked">
   <h2>Metadata</h2>
   <div class="uk-margin">
-    <label class="uk-form-label" for="name">Title</label>
+    <label class="uk-form-label" for={{concat 'name-' poi.id}}>Title</label>
     <div class="uk-form-controls">
-      {{input class='uk-input' id='name' placeholder='POI Title' value=poi.name}}
+      {{input class='uk-input' id=(concat 'name-' poi.id) placeholder='POI Title' value=poi.name}}
     </div>
   </div>
   <div class="uk-margin">
-    <label class="uk-form-label" for="type">POI Type</label>
+    <label class="uk-form-label" for={{concat 'type-' poi.id}}>POI Type</label>
     <div class="uk-form-controls">
-      <select class='uk-select' id='type' onchange={{action (mut poi.point.properties.type) value="target.value"}}>
+      <select class='uk-select' id={{concat 'type-' poi.id}} onchange={{action (mut poi.point.properties.type) value="target.value"}}>
         {{#each types as |type|}}
           <option value={{type}} selected={{eq type poi.point.properties.type}}>{{uppercase type}}</option>
         {{/each}}

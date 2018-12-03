@@ -1,31 +1,44 @@
 <div class='uk-offcanvas-content'>
   {{#poi-detail panel=panel}}
   {{#if managePois}}
-  {{manage-pois model=model reorderPois=(action 'reorderPois') highlight=(action 'editPoi') managePois=managePois
+  {{manage-pois model=model.quad reorderPois=(action 'reorderPois') highlight=(action 'editPoi') managePois=managePois
   new=(action 'newPoiType') delete=(action 'deletePoi')}}
   {{/if}}
   {{#if newPoi}}
-  {{edit-poi poi=newPoi save=(action 'savePoi' newPoi) delete=(action 'deletePoi' newPoi) cancel=(action 'cancel'
+  {{#edit-poi poi=newPoi save=(action 'savePoi' newPoi) delete=(action 'deletePoi' newPoi) cancel=(action 'cancel'
   newPoi) newImage=(action 'newImage' newPoi)}}
+    <button class="uk-offcanvas-close" type="button" onclick={{perform closePanel}} uk-close></button>
+  {{/edit-poi}}
   {{else}}
-  {{#each model.pois as |poi|}}
+  {{#each model.quad.pois as |poi|}}
   {{#if poi.active}}
-  {{edit-poi poi=poi save=(action 'savePoi' poi) delete=(action 'deletePoi' poi) cancel=(action 'cancel' poi)
+  {{#edit-poi poi=poi save=(action 'savePoi' poi) delete=(action 'deletePoi' poi) cancel=(action 'cancel' poi)
   deleteImage=(action 'deleteImage') newImage=(action 'newImage' poi)}}
-  {{/if}}
+      <button class="uk-offcanvas-close" type="button" onclick={{perform closePanel}} uk-close></button>
+  {{/edit-poi}}
+{{/if}}
   {{/each}}
+  {{/if}}
+
+    {{#if manageTours}}
+  {{manage-tours tourToEdit=tourToEdit model=model.tours reorderPois=(action 'reorderPois') highlight=(action 'editPoi') manageTours=manageTours
+  new=(action 'newTour') delete=(action 'deletePoi')}}
+  {{/if}}
+  {{#if tourToEdit}}
+  {{edit-tour tour=tourToEdit pois=model.pois addPoi=(action 'addPoiToTour') save=(action 'saveTour' newTour) delete=(action 'deleteTour' newTour) cancel=(action 'cancel'
+  tourToEdit)}}
   {{/if}}
   {{/poi-detail}}
 
-  {{#if model.map}}
-  {{edit-controls model=model newPoi=(action 'newPoi')}}
+  {{#if model.quad.map}}
+  {{edit-controls model=model.quad newPoi=(action 'newPoi')}}
   {{/if}}
 
-  {{#if model.paintingBounds}}
+  {{#if model.quad.paintingBounds}}
   {{#leaflet-map
   onLoad=(action 'initMap')
   onResize=(action 'reSize')
-  bounds=model.paintingBounds
+  bounds=model.quad.paintingBounds
   zoomSnap=0
   bounceAtZoomLimits=false
   maxBoundsViscosity=1.0
@@ -37,17 +50,17 @@
   as |features|}}
 
   {{features.image
-  url=model.painting
-  bounds=model.paintingBounds
+  url=model.quad.painting
+  bounds=model.quad.paintingBounds
   onLoad=(action 'setPainting')
   }}
 
-  {{!-- {{#each model.pois as |poi|}}
+  {{#each model.quad.pois as |poi|}}
   {{#if poi.active}}
   {{features.geoJSON
   geoJSON=poi.polygon
   style=setStyle
-  onAdd=(action 'polygonAdded' poi)
+  onAdd=(perform showPanel)
   className='uk-animation-fade'
   }}
   {{/if}}
@@ -56,10 +69,10 @@
   pointToLayer=(action 'setDot' poi)
   onClick=(action 'editPoi' poi)
   }}
-  {{/each}} --}}
+  {{/each}}
 
   {{!-- {{painting-pois
-  pois=model.pois
+  pois=model.quad.pois
   activePoi=activePoi
   editing=edit
   highlight=painting.highlightPoi
@@ -69,9 +82,12 @@
   {{/if}}
   {{!-- {{/edit-quad}} --}}
   <div class='bottom-nav bottom-nav' uk-grid>
-    <div class='uk-visible@l uk-width-1-3@l uk-width-1-6@m uk-flex uk-flex-center uk-text-center'></div>
+    {{!-- <div class='uk-visible@l uk-width-1-3@l uk-width-1-6@m uk-flex uk-flex-center uk-text-center'></div> --}}
     <div class='uk-margin uk-width-1-3@l uk-width-1-3@m uk-width-1-1@s uk-transform-origin-bottom-center uk-child-width-expand@l uk-child-width-1-1@m uk-grid-large uk-text-center uk-flex-center uk-grid-collapse {{if activePoi 'uk-animation-slide-bottom-medium uk-animation-reverse' 'uk-animation-slide-bottom'}} uk-grid'>
       {{#uk-button color='primary' on-click=(action (toggle 'managePois' this))}}manage pois{{/uk-button}}
+    </div>
+    <div class='uk-margin uk-width-1-3@l uk-width-1-3@m uk-width-1-1@s uk-transform-origin-bottom-center uk-child-width-expand@l uk-child-width-1-1@m uk-grid-large uk-text-center uk-flex-center uk-grid-collapse {{if activePoi 'uk-animation-slide-bottom-medium uk-animation-reverse' 'uk-animation-slide-bottom'}} uk-grid'>
+      {{#uk-button color='primary' on-click=(action (toggle 'manageTours' this))}}manage tours {{manageTours}}{{/uk-button}}
     </div>
     <div class='uk-margin uk-width-1-3@l uk-width-1-3@m uk-width-1-1@s uk-transform-origin-bottom-center uk-child-width-expand@l uk-child-width-1-1@m uk-grid-large uk-text-center uk-flex-center uk-grid-collapse {{if activePoi 'uk-animation-slide-bottom-medium uk-animation-reverse' 'uk-animation-slide-bottom'}} uk-grid'>
       {{#uk-button color='primary' on-click=(action 'editReCenter')}}Clear/recenter{{/uk-button}}
@@ -81,7 +97,7 @@
       {{!-- {{map-controls map=_map reCenter=(action 'closePanel')}} --}}
     </div>
     <div class='uk-visible@l uk-width-1-6 uk-flex-middle uk-flex uk-flex-center'>
-      <div id='minimap' style='display: none;'></div>
+      <div id='minimap' hidden></div>
 
     </div>
   </div>

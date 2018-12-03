@@ -8,7 +8,7 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('edit', { path: '/edit/:quad' });
-  this.route('quad', { path: '/:quad' });
+  this.route('quad', { path: '/quad/:quad' });
 });
 
 export default Router;

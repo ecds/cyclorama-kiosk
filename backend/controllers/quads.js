@@ -2,6 +2,7 @@ var Quad = require('../models/quad');
 var async = require('async');
 
 module.exports.getAllQuads = function(req, res) {
+  
 };
 
 exports.quadDetail = function(req, res, next) {
