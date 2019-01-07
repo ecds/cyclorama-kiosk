@@ -5,15 +5,27 @@
 
 $dot-offset: 40px;
 $green: rgba(0,230,1, 1);
+$blue: #38748f;
+$red: #8f2e1f;
+$yellow: #dec04b;
+$font-family: "Gotham Book", "Montserrat script=all rev=1", Helvetica, Arial, sans-serif;
+
 
 body,
 html {
   height: 100vh;
   overflow: hidden;
   color: aliceblue;
+  font-family: $font-family;
 }
 
-.leaflet-container {
+.uk-h1, .uk-h2, .uk-h3, .uk-h4, .uk-h5, .uk-h6, h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.leaflet-container.painting {
   background: none;
   height:100vh;
   left: 0;
@@ -41,8 +53,12 @@ html {
 body,
 .leaflet-control-minimap {
   // background: linear-gradient(#809a84, #809a84 40%, #824325);
-  background: #423622;
-  font-size: 18px;
+  background: #231f20;
+  font-size: 1.5vh;
+  // font-size: 18px;
+  font-weight: 200;
+  left: 25%;
+  right: 24%;
 }
 
 
@@ -74,16 +90,22 @@ body,
 }
 
 .bottom-nav {
-  // position: relative;
-  width: 100%;
+  background: #231f20a3;
+  bottom: 0vh;
+  height: 20vh;
+  margin-left: 0;
+  position: absolute;
+  bottom: 0vh;
+  transition: bottom 500ms;
+  width: 100vw;
   z-index: 999;
-
+  
   &.uk-grid {
-    height: 15vh;
-    position: absolute;
-    width: 100%;
-    bottom: 0;
     // top: 85vh;
+  }
+
+  &.hide-bottom-nav {
+    bottom: -25vh;
   }
 
   // img {
@@ -112,24 +134,29 @@ body,
 
     img {
       animation: psst 10000ms ease-out infinite;
-      height: 8vh;
-      width: 8vh;
+      height: 10vh;
+      width: 10vh;
       opacity: .3;
     }
 
-    p {
-      font-size: 1.25em;
-      font-weight: 300;
-      // opacity: .7;
-      text-transform: capitalize;
-    }
-
-      &.active-poi {
-        img {
-          animation: none;
-          opacity: 1;  
-        }
+    &.active-poi {
+      img {
+        animation: none;
+        opacity: 1;  
       }
+    }
+  }
+
+  p {
+    font-size: 1.5vw;
+    // font-style: regular;
+    font-weight: 800;
+    // opacity: .7;
+    text-transform: capitalize;
+
+    &.sentence {
+      text-transform: none;
+    }
   }
 }
 
@@ -207,11 +234,11 @@ body,
   }
 }
 
-.description {
-  p {
-    font-size: 1.5em;
-  }
-}
+// .description {
+//   p {
+//     font-size: 1.5em;
+//   }
+// }
 
 .tour-menus {
   display: block;
@@ -261,12 +288,40 @@ body,
 
 .poi-detail-content {
   height: 90%;
+
+  img {
+    max-height: 35vh;
+  }
+
+  figcaption {
+    margin: 0 auto;
+    width: 50%;
+  }
 }
 
 .poi-detail-nav {
   bottom: 0;
   position: absolute;
   width: 100%;
+
+  &.people {
+    background: $blue;
+  }
+
+  &.landmarks {
+    background: $red;
+  }
+
+  &.changes {
+    background: $yellow;
+  }
+
+  button {
+    color: white !important;
+    font-size: 1vw;
+    font-weight: 900;
+    text-transform: capitalize;
+  }
 }
 
 .leaflet-interactive {

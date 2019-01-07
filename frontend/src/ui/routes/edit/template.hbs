@@ -36,15 +36,15 @@
 
   {{#if model.quad.paintingBounds}}
   {{#leaflet-map
-  onLoad=(action 'initMap')
-  onResize=(action 'reSize')
+  onLoad=(perform initMap)
+  onResize=(perform reSize)
   bounds=model.quad.paintingBounds
   zoomSnap=0
   bounceAtZoomLimits=false
   maxBoundsViscosity=1.0
   crs=crs
   bounceAtZoomLimits=false
-  zoomControl=false
+  zoomControl=true
   onZoomend=(action 'zoomend')
   class='painting'
   as |features|}}
@@ -60,7 +60,7 @@
   {{features.geoJSON
   geoJSON=poi.polygon
   style=setStyle
-  onAdd=(perform showPanel)
+  onAdd=(action 'polygonAdded' poi)
   className='uk-animation-fade'
   }}
   {{/if}}

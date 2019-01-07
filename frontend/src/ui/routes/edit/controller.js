@@ -87,13 +87,13 @@ export default Controller.extend(PaintingActionsMixin, {
     },
 
     editPoi(poi) {
-      this.send('highlightPoi', poi)
+      this.get('highlightPoi').perform(poi);
       this.model.quad.map.pm.enableGlobalEditMode();
     },
 
     editReCenter() {
       this.model.quad.map.pm.disableGlobalEditMode();
-      this.send('reCenter');
+      this.get('reCenter').perform();
     },
 
     savePoi(poi) {
@@ -117,7 +117,7 @@ export default Controller.extend(PaintingActionsMixin, {
         // We add it back later by setting it to active. This will make sure it gets the proper
         // listeners for editing.
         poi.setProperties({ active: false });
-        this.model.save().then(() => {
+        poi.save().then(() => {
           UIkit.notification(`${poi.name} SAVED!`, 'success');
           poi.setProperties({ active: true });
       }, error => {
@@ -218,6 +218,7 @@ export default Controller.extend(PaintingActionsMixin, {
         poi.setProperties({ tmpPolygon: editEvent.target.pm._layer.toGeoJSON() });
       });
       layer.pm.enable();
+      this.get('showPanel').perform();
     },
 
     updatePolygon(updated, poi) {

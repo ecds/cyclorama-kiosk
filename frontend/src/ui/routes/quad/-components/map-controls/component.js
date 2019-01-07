@@ -3,6 +3,10 @@ import Component from '@ember/component';
 
 export default Component.extend({
   tagName: '',
+
+  didInsertElement() {
+  },
+
   actions: {
     pan(direction) {
       if (direction === 'down') {

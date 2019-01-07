@@ -2,15 +2,16 @@
 * Quarter Circles
 */
 
-$control-background: #D7CCC8;
-$control-icon-color: #212121;
+$control-background: #212121;
+$control-icon-color: #D7CCC8;
 
 .pan-controls {
-  position: relative;
-  width: 8vh;
-  height: 8vh;
-  transform: rotate(45deg);
   color: white;
+  height: 100%;
+  opacity: 0;
+  position: relative;
+  transform: rotate(45deg);
+  width: 100%;
 }
 
 .quarter {
@@ -23,12 +24,12 @@ $control-icon-color: #212121;
   span {
     color: $control-icon-color;
     // font-size: calc(6vw / 2vh);
-    font-size: 1.5em;
+    font-size: 1vw;
   }
 
-  &:focus,
+  // &:focus,
   &:hover {
-    background-color: #1E1E1E;
+    background-color: #D7CCC8;
     outline: none;
 
     span {
@@ -42,8 +43,8 @@ $control-icon-color: #212121;
   left: 0;
   background-color: $control-background;
   border-radius: 100% 0 0 0;
-  // border-top: solid #E0E0E0;
-  // border-left: solid #E0E0E0;
+  border-top: solid #E0E0E0;
+  border-left: solid #E0E0E0;
 }
 
 .quarter2 {
@@ -51,8 +52,8 @@ $control-icon-color: #212121;
   right: 0;
   background-color: $control-background;
   border-radius: 0 100% 0 0;
-  // border-right: solid #E0E0E0;
-  // border-top: solid #E0E0E0;
+  border-right: solid #E0E0E0;
+  border-top: solid #E0E0E0;
 }
 
 .quarter3 {
@@ -60,8 +61,8 @@ $control-icon-color: #212121;
   left: 0;
   background-color: $control-background;
   border-radius: 0 0 0 100%;
-  // border-left: solid #E0E0E0;
-  // border-bottom: solid #E0E0E0;
+  border-left: solid #E0E0E0;
+  border-bottom: solid #E0E0E0;
 }
 
 .quarter4 {
@@ -69,8 +70,8 @@ $control-icon-color: #212121;
   right: 0;
   background-color: $control-background;
   border-radius: 0 0 100% 0;
-  // border-right: solid #E0E0E0;
-  // border-bottom: solid #E0E0E0;
+  border-right: solid #E0E0E0;
+  border-bottom: solid #E0E0E0;
 }
 
 .button {
@@ -98,5 +99,14 @@ $control-icon-color: #212121;
   &:active,
   &:focus {
     color: #BCAAA4;
+  }
+}
+
+.zoom-controls {
+  button {
+    color: white;
+    font-size: 1vw;
+    font-weight: 600;
+    text-transform: capitalize;
   }
 }

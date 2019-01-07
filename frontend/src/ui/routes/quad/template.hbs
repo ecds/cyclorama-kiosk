@@ -5,7 +5,7 @@
   <div class='poi-detail-content uk-child-width-1-1 uk-overflow-auto' uk-grid>
     <section class='uk-margin'>
       <article class='uk-article description uk-padding'>
-        <h2 style='text-transform: uppercase;'>{{poi.name}}</h2>
+        <h2>{{poi.name}}</h2>
         {{{poi.description}}}
       </article>
     </section>
@@ -16,12 +16,13 @@
         <ul class="uk-slider-items uk-grid uk-child-width-3-4" uk-grid>
           {{#each poi.images as |image|}}
           <li>
-            <div class='uk-panel uk-text-center'>
-              <img src={{image.url}} alt="">
-            </div>
+            <figure class='uk-panel uk-text-center'>
+              <img src={{image.url}} alt={{image.caption}}>
+              <figcaption class='uk-text-left uk-margin-top'>{{{image.caption}}}</figcaption>
+            </figure>
           </li>
           {{/each}}
-          <li class='uk-panel'>
+          {{!-- <li class='uk-panel'>
             <div class='uk-card uk-card-default uk-position-center uk-card-body uk-width-1-2'>
               <ol>
                 {{#each poi.images as |image|}}
@@ -31,7 +32,7 @@
                 {{/each}}
               </ol>
             </div>
-          </li>
+          </li> --}}
         </ul>
 
         <a class="uk-position-center-left uk-slidenav-large uk-position-small gallery-arrow" href=''
@@ -42,27 +43,27 @@
           uk-slider-item="next">
           {{!-- {{fa-icon 'angle-right'}} --}}
         </a>
-        <ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
+        {{!-- <ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul> --}}
       </div>
     </section>
     {{/if}}
   </div>
-  <nav class='poi-detail-nav uk-child-width-1-3 uk-margin' uk-grid>
+  <nav class='poi-detail-nav uk-child-width-1-3 uk-margin uk-margin-remove-bottom uk-padding uk-padding-remove-right uk-padding-remove-left {{poi.point.properties.type}}' uk-grid>
     <div>
       {{#if poi.previous}}
-      {{#uk-button color='link' on-click=(action 'highlightPoi' poi.previous)}}
+      {{#uk-button color='link' on-click=(perform highlightPoi poi.previous)}}
       {{fa-icon 'angle-left'}} {{poi.previous.name}}
       {{/uk-button}}
       {{/if}}
     </div>
     <div>
-      {{#uk-button color='secondary' on-click=(perform closePanel)}}
-      {{fa-icon 'undo'}} Return to Painting
+      {{#uk-button color='link' on-click=(perform closePanel)}}
+      Back to Painting
       {{/uk-button}}
     </div>
     <div>
       {{#if poi.next}}
-      {{#uk-button color='link' on-click=(action 'highlightPoi' poi.next)}}
+      {{#uk-button color='link' on-click=(perform highlightPoi poi.next)}}
       {{poi.next.name}} {{fa-icon 'angle-right'}}
       {{/uk-button}}
       {{/if}}
@@ -74,8 +75,8 @@
 
   {{#if model.quad.paintingBounds}}
   {{#leaflet-map
-  onLoad=(action 'initMap')
-  onResize=(action 'reSize')
+  onLoad=(perform initMap)
+  onResize=(perform reSize)
   onZoomend=(action 'zoomend')
   onMoveend=(action 'moveend')
   bounds=model.quad.paintingBounds
@@ -105,7 +106,7 @@
   {{features.geoJSON
   geoJSON=poi.point
   pointToLayer=(action 'setDot' poi)
-  onClick=(action 'highlightPoi' poi)
+  onClick=(perform highlightPoi poi)
   }}
   {{/if}}
   {{/if}}
@@ -121,17 +122,25 @@
   {{/leaflet-map}}
   {{/if}}
 
-  <div class='bottom-nav bottom-nav' uk-grid>
-    <div class='uk-visible@l uk-width-1-3@l uk-width-1-6@m uk-flex uk-flex-center uk-text-center'>
-      <div class='uk-inline {{if activePoi 'uk-animation-reverse uk-animation-fade' 'uk-animation-fade'}}'>
-      <div class='uk-heading-primary uk-position-center'>Looking Northeast</div>
+  <div class='bottom-nav uk-padding uk-padding-remove-bottom uk-padding-remove-left uk-padding-remove-right uk-grid {{if activePoi 'hide-bottom-nav'}}' uk-grid>
+    <div class='uk-width-1-4 uk-transform-origin-bottom-center uk-child-width-1-1 uk-grid-small' style='margin-top: 15px;' uk-grid>
+      <div class='uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse' uk-grid>
+        <div id='minimap' class='uk-margin-remove uk-text-center uk-flex-center'></div>
+        <div class='uk-text-center uk-flex-center'>
+          <p class='sentence'>You are facing northeast</p>
+        </div>
       </div>
     </div>
-    <div class='uk-margin uk-width-1-3@l uk-width-1-3@m uk-width-1-1@s uk-transform-origin-bottom-center uk-child-width-1-4@l uk-child-width-1-1@m uk-grid-large uk-text-center uk-flex-center uk-grid-collapse uk-animation-fade {{if activePoi 'uk-animation-fade uk-animation-reverse' 'uk-animation-fade'}} uk-grid'>
+
+    <div class='uk-width-1-2 uk-transform-origin-bottom-center uk-child-width-1-4 uk-grid-small' uk-grid>
       {{#each buttons as |button index|}}
-      <div class='poi-nav-button uk-child-width-1-1 uk-text-center uk-flex-center uk-grid uk-grid-collapse uk-grid-stack {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoiType' button}} uk-grid>
-        <img class='uk-border-circle' src={{concat '/' button.icon}} alt={{concat 'Button to highlight ' button.label ' in the painting.'}}>
-        <p>{{button.label}}</p>
+      <div class='poi-nav-button uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse' uk-grid>
+        <div class='uk-margin-remove poi-nav-button uk-text-center uk-flex-center {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoiType' button}}>
+          <img class='uk-border-circle' src={{concat '/' button.icon}} alt={{concat 'Button to highlight ' button.label ' in the painting.'}}>
+          </div>
+          <div class='uk-text-center uk-flex-center'>
+          <p>{{button.label}}</p>
+        </div>
       </div>
       {{/each}}
       <div class='poi-nav-button uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse active-poi' role='button' onclick={{action 'showTours'}} uk-grid>
@@ -139,15 +148,14 @@
         <p>Tours</p>
       </div>
     </div>
-    <div class='uk-visible@l uk-width-1-6 uk-transform-origin-bottom-center uk-grid-collapse uk-flex uk-flex-middle {{if activePoi 'uk-animation-fade uk-animation-reverse' 'uk-animation-fade'}}'
-      uk-grid>
-      {{map-controls map=model.quad.map reCenter=(action 'reCenter')}}
+
+    <div class='uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse' uk-grid>
+      {{map-controls map=model.quad.map reCenter=(perform reCenter)}}
     </div>
-    <div id='minimap' class='uk-visible@l uk-width-1-6 uk-flex-middle uk-flex uk-flex-center'></div>
   </div>
 
   {{#if showingTours}}
-  {{tour-menu start=(action 'highlightPoi') showing=showingTours tours=model.tours active=showingTours hide=(action 'hideTours')}}
+  {{tour-menu start=(perform highlightPoi) showing=showingTours tours=model.tours active=showingTours hide=(action 'hideTours')}}
   {{/if}}
 
 </div>

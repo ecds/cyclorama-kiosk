@@ -32,7 +32,7 @@ export default Controller.extend(PaintingActionsMixin, {
     },
 
     viewReCenter() {
-      this.send('reCenter');
+      this.get('reCenter').perform();
     },
 
     setPaintingView(event) {

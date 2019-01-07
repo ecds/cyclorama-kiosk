@@ -1,20 +1,7 @@
-<div class='uk-width-1-1 uk-child-width-1-2' uk-grid>
-  {{!-- Zoom Controls --}}
-  <div class='uk-grid-collapse uk-child-width-1-1' uk-grid>
-      {{!-- <div class='uk-flex uk-flex-center uk-flex-bottom'> --}}
-        <div></div>
-        <div></div>
-        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=(action 'zoom' 'in')}}{{fa-icon 'plus'}}{{/uk-button}}</div>
-        {{!-- <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=reCenter}}{{fa-icon 'undo'}}{{/uk-button}}</div> --}}
-        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=(action 'zoom' 'out')}}{{fa-icon 'minus'}}{{/uk-button}}</div>
-        <div></div>
-        <div></div>
-      {{!-- </div> --}}
-  </div>
-
+<div class='uk-width-1-1 uk-child-width-1-2 uk-margin-collapse' uk-grid>
   {{!-- Pan Controls --}}
-  <div>
-  <div class='pan-controls'>
+  <div class='uk-flex uk-flex-right' style='width: 50%;'>
+  <div class='pan-controls uk-margin-top' id='pan-controls'>
     <span role='button' tabindex=0 onclick={{action 'pan' 'up'}} class="quarter quarter1 uk-flex uk-flex-center">
       <span class='uk-flex uk-flex-middle button'>
         {{fa-icon 'angle-up'}}
@@ -37,9 +24,19 @@
     </span>
   </div>
   </div>
+  
+  {{!-- Zoom Controls --}}
+  <div class='uk-grid-collapse uk-child-width-1-1 zoom-controls' uk-grid>
+      {{!-- <div class='uk-flex uk-flex-center uk-flex-bottom'> --}}
+        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button color='link' on-click=(action 'zoom' 'in')}}{{fa-icon 'plus'}}<br>Zoom in{{/uk-button}}</div>
+        {{!-- <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=reCenter}}{{fa-icon 'undo'}}{{/uk-button}}</div> --}}
+        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button color='link' on-click=(action 'zoom' 'out')}}{{fa-icon 'minus'}}<br>Zoom out{{/uk-button}}</div>
+      {{!-- </div> --}}
+        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button color='link' on-click=reCenter}}<br>Re-center{{/uk-button}}</div>
+        <div class='uk-padding-small'></div>
+  </div>
   {{!-- <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-middle'>
     Recenter
   </div> --}}
-        <div class='uk-width-1-1 uk-margin-small-top uk-flex uk-flex-center uk-flex-middle'>{{#uk-button color='link' size='small' on-click=reCenter}}{{fa-icon 'undo'}} Recenter{{/uk-button}}</div>
 
 </div>
