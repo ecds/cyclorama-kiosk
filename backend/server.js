@@ -8,7 +8,7 @@ var port = process.env.PORT || 3000;
 
 // set up mongoose, assume locally installed
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/RESTServer', { useNewUrlParser: true });
+mongoose.connect('mongodb://otb.ecdsdev.org/cyclorama', { useNewUrlParser: true });
 mongoose.set('useFindAndModify', false);
 
 // set the static files location for our Ember application

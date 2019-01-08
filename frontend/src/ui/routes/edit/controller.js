@@ -130,8 +130,8 @@ export default Controller.extend(PaintingActionsMixin, {
 
     deletePoi(poi) {
       UIkit.modal.confirm(`Are you sure you want to delete ${poi.name}?`).then(() => {
-        this.model.get('pois').removeObject(poi);
-        this.model.save().then(() => {
+        this.model.quad.get('pois').removeObject(poi);
+        this.model.quad.save().then(() => {
           poi.destroyRecord().then(() => {
             UIkit.notification(`${poi.name} DELETED!`, 'success');
           }, error => {

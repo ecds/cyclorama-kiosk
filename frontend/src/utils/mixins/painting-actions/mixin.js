@@ -176,7 +176,8 @@ export default Mixin.create({
           this.model.quad.map.getBounds()._southWest.lat
         ) +
         this.model.quad.map.getCenter().lat -
-        ((document.documentElement.clientHeight * 1) * 2),
+        (document.documentElement.clientHeight * 2) -
+        document.getElementsByClassName('bottom-nav')[0].clientHeight,
         this.model.quad.map.getCenter().lng
       ]
     });
@@ -185,8 +186,10 @@ export default Mixin.create({
   }).restartable(),
   
   panToBottom: task(function* () {
+    L.marker(this.model.quad.bottom).addTo(this.model.quad.map);
+    L.marker(this.model.quad.map.getCenter()).addTo(this.model.quad.map);
     this.model.quad.map.panTo(this.model.quad.bottom);
-      yield waitForEvent(this.model.quad.map, 'moveend');
+    yield waitForEvent(this.model.quad.map, 'moveend');
   }),
 
   removeMinMap() {

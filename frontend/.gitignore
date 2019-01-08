@@ -16,6 +16,13 @@
 npm-debug.log*
 yarn-error.log
 testem.log
+backend/nohup.out
+backend/package-lock.json
+frontend/bower.json-bk
+frontend/bower.json.bk
+frontend/dist.bk/
+frontend/ember-uikit.scss
+yarn.lock
 
 # ember-try
 .node_modules.ember-try/
