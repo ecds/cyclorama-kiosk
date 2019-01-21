@@ -66,6 +66,8 @@
     "node": "6.* || >= 8.*"
   },
   "dependencies": {
+    "install": "^0.12.2",
+    "leaflet-iiif": "^2.0.1",
     "leaflet-minimap": "git://github.com/ecds/Leaflet-MiniMap.git#develop",
     "leaflet-rastercoords": "^1.0.3",
     "leaflet.pm": "^0.25.0",

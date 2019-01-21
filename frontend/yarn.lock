@@ -6225,6 +6225,11 @@ inquirer@^3.0.6, inquirer@^3.3.0:
     strip-ansi "^4.0.0"
     through "^2.3.6"
 
+install@^0.12.2:
+  version "0.12.2"
+  resolved "https://registry.yarnpkg.com/install/-/install-0.12.2.tgz#ea10e9b2cbb5b0484f25080b24b5b34429d9f564"
+  integrity sha512-+7thTb4Rpvs9mnlhHKGZFJbGOO6kyMgy+gg0sgM5vFzIFK0wrCYXqdlaM71Bi289DTuPHf61puMFsaZBcwDIrg==
+
 invariant@^2.2.2:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/invariant/-/invariant-2.2.4.tgz#610f3c92c9359ce1db616e538008d23ff35158e6"
@@ -6750,6 +6755,11 @@ lazy-cache@^2.0.2:
   integrity sha1-uRkKT5EzVGlIQIWfio9whNiCImQ=
   dependencies:
     set-getter "^0.1.0"
+
+leaflet-iiif@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/leaflet-iiif/-/leaflet-iiif-2.0.1.tgz#b25b79b86051d8051be3efba658ec9ef6e762a57"
+  integrity sha512-+5WsgcZQM02cxM/FSMryMzOeQ6rXgIrp6jjuaZM9jKa6KmKpY6QJ+X6/x1LYW+aRHqg8iz+CJ+a/BS94n/pmqQ==
 
 "leaflet-minimap@git://github.com/ecds/Leaflet-MiniMap.git#develop":
   version "3.6.1"

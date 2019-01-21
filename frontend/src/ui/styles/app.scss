@@ -8,6 +8,7 @@ $green: rgba(0,230,1, 1);
 $blue: #38748f;
 $red: #8f2e1f;
 $yellow: #dec04b;
+$purple: #8161a0;
 $font-family: "Gotham Book", "Montserrat script=all rev=1", Helvetica, Arial, sans-serif;
 
 
@@ -52,7 +53,7 @@ html {
 
 body,
 .leaflet-control-minimap {
-  background: linear-gradient(#7da38b 20%, #231f20 30%);
+  background: linear-gradient(#82a5bf 20%, #231f20 30%);
   // background: #231f20;
   font-size: 1.5vh;
   // font-size: 18px;
@@ -148,7 +149,7 @@ body,
   }
 
   p {
-    font-size: 1.5vw;
+    font-size: 1.5em;
     // font-style: regular;
     font-weight: 800;
     // opacity: .7;
@@ -179,19 +180,19 @@ body,
 }
 
 .dot {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   position: relative;
-  top: 25px;
-  left: 25px;
+  top: 24px;
+  left: 24px;
   border: 2px solid #FFF;
   border-radius: 50%;
   z-index: 1000;
 }
 
 .pulsate-ring {
-  width: 75px;
-  height: 75px;
+  width: 80px;
+  height: 80px;
   position: absolute;
   top: 0;
   display: block;
@@ -313,8 +314,8 @@ body,
     background: $red;
   }
 
-  &.changes {
-    background: $yellow;
+  &.alterations {
+    background: $purple;
   }
 
   button {
@@ -355,4 +356,9 @@ form {
   .uk-button-link {
     color: unset;
   }
+}
+
+img.leaflet-tile.leaflet-tile-loaded {
+  width: 257px !important;
+  height: 257px !important;
 }

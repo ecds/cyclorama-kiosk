@@ -20,18 +20,24 @@ export default Route.extend({
     });
   },
 
+  // zoomLevel() {
+  //   return Math.ceil(
+  //     Math.log(
+  //       Math.max(this.width, this.height) /
+  //       this.tilesize
+  //     ) / Math.log(2)
+  //   )
+  // }
+
   afterModel(model) {
-    model.quad.setProperties({
-      paintingBounds: new L.latLngBounds(
-        [
-          new L.LatLng(0, 0),
-          new L.LatLng(5000, 15405)
-        ]
-      )
+    model.quad.pois.forEach(poi => {
+      poi.setProperties({ show: true });
     });
     model.quad.pois.forEach(poi => {
       if (poi.point.properties.type == 'people') {
         poi.setProperties({ show: true });
+      } else {
+        poi.setProperties({ show: false });
       }
     });
   }

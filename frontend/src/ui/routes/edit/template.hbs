@@ -49,10 +49,13 @@
   class='painting'
   as |features|}}
 
-  {{features.image
-  url=model.quad.painting
-  bounds=model.quad.paintingBounds
-  onLoad=(action 'setPainting')
+   {{features.tile
+    url=(concat 'https://s3.amazonaws.com/battleofatlanta/tiles/' model.quad.title '/{z}/{x}/{y}.png')
+    maxZoom=10
+    minZoom=0
+    tileSize=256
+    continuousWorld=false
+    onLoad=(action 'setPainting')
   }}
 
   {{#each model.quad.pois as |poi|}}

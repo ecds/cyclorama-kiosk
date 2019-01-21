@@ -85,13 +85,23 @@
   crs=crs
   bounceAtZoomLimits=true
   zoomControl=false
+  maxZoom=11
   class='painting'
   as |features|}}
 
-  {{features.image
+  {{!-- {{features.image
   url=model.quad.painting
   bounds=model.quad.paintingBounds
   onLoad=(action 'setPaintingView')
+  }} --}}
+
+  {{features.tile
+    url=(concat 'https://s3.amazonaws.com/battleofatlanta/tiles/' model.quad.title '/{z}/{x}/{y}.png')
+    maxZoom=11
+    minZoom=0
+    tileSize=256
+    continuousWorld=false
+    onLoad=(action 'setPainting')
   }}
 
   {{#each model.quad.pois as |poi|}}
@@ -121,7 +131,10 @@
 
   {{/leaflet-map}}
   {{/if}}
+{{!-- <div class='uk-position-right uk-flex uk-flex-middle'>
 
+<a href="" uk-icon="icon: chevron-right; ratio: 10"></a>
+  </div> --}}
   <div class='bottom-nav uk-padding uk-padding-remove-bottom uk-padding-remove-left uk-padding-remove-right uk-grid {{if activePoi 'hide-bottom-nav'}}' uk-grid>
     <div class='uk-width-1-4 uk-transform-origin-bottom-center uk-child-width-1-1 uk-grid-small' style='margin-top: 15px;' uk-grid>
       <div class='uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse' uk-grid>
@@ -132,7 +145,7 @@
       </div>
     </div>
 
-    <div class='uk-width-1-2 uk-transform-origin-bottom-center uk-child-width-1-4 uk-grid-small' uk-grid>
+    <div class='uk-width-1-2 uk-transform-origin-bottom-center uk-child-width-1-3 uk-grid-small' uk-grid>
       {{#each buttons as |button index|}}
       <div class='poi-nav-button uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse' uk-grid>
         <div class='uk-margin-remove poi-nav-button uk-text-center uk-flex-center {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoiType' button}}>
@@ -143,13 +156,13 @@
         </div>
       </div>
       {{/each}}
-      <div class='poi-nav-button uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse active-poi' role='button' onclick={{action 'showTours'}} uk-grid>
+      {{!-- <div class='poi-nav-button uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse active-poi' role='button' onclick={{action 'showTours'}} uk-grid>
         <img class='uk-border-circle' src='/images/tours.png' alt="Button to show available tours.">
         <p>Tours</p>
-      </div>
+      </div> --}}
     </div>
 
-    <div class='uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse' uk-grid>
+    <div class='uk-child-width-1-1 uk-flex-center uk-grid-collapse' uk-grid>
       {{map-controls map=model.quad.map reCenter=(perform reCenter)}}
     </div>
   </div>
@@ -159,3 +172,5 @@
   {{/if}}
 
 </div>
+
+{{!-- <div style='height: 457px; width: 20vw; position: absolute; bottom: 0; left: 0; background: red;'></div> --}}

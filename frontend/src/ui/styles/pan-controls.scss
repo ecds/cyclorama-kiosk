@@ -110,3 +110,14 @@ $control-icon-color: #D7CCC8;
     text-transform: capitalize;
   }
 }
+
+#re-center-button {
+  cursor: pointer;
+  font-size: 1vw;
+  position: relative;
+  z-index: 2;
+
+  svg {
+    transform: rotate(-45deg);
+  }
+}

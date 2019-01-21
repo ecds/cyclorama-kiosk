@@ -13,7 +13,7 @@ export default Model.extend({
   images: hasMany('image', { async: false }),
   bounds: attr(),
   active: attr('boolean'),
-  show: attr('boolean'),
+  show: attr('boolean', { defaultValue: false }),
   type: attr('string'),
   position: attr('number'),
   tourPosition: attr('number'),

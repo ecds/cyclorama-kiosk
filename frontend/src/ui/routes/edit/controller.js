@@ -55,14 +55,14 @@ export default Controller.extend(PaintingActionsMixin, {
 
       let newPoi = this.store.createRecord('poi', {
         point: newPoint,
-        quad: this.model
+        quad: this.model.quad
       });
 
       shape.layer.remove();
 
       // Add listener for when the POI has been cut out.
       this.model.quad.map.once('pm:cut', shape => {
-        const newBounds = this.calcBounds(shape)
+        const newBounds = this.calcBounds(shape);
         newPoi.setProperties({
           polygon: shape.resultingLayers[0].toGeoJSON().features[0],
           bounds: newBounds
@@ -80,7 +80,7 @@ export default Controller.extend(PaintingActionsMixin, {
 
       });
 
-      let b = this.model.paintingLayer.getBounds();
+      let b = this.model.quad.paintingBounds;
       let rec = L.rectangle(b);
       rec.addTo(this.model.quad.map);
       this.set('newPoi', newPoi)
@@ -111,7 +111,16 @@ export default Controller.extend(PaintingActionsMixin, {
         poi.set('polygon', poi.tmpPolygon);
         poi.set('tmpPolygon', null);
       }
-  
+
+      let newBounds = this.model.quad.map.getBounds();
+      
+      poi.setProperties({
+        bounds: [
+          [newBounds.getNorth(), newBounds.getEast()],
+          [newBounds.getSouth(), newBounds.getWest()]
+        ]
+      });
+
       poi.save().then(() => {
         // This is a little hacky, but setting the POI to inactive removes it from the painting.
         // We add it back later by setting it to active. This will make sure it gets the proper
@@ -222,6 +231,7 @@ export default Controller.extend(PaintingActionsMixin, {
     },
 
     updatePolygon(updated, poi) {
+      console.log(updated);
       poi.setProperties({ polygon: updated });
     },
 

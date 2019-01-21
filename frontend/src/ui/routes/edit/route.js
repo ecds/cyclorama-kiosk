@@ -16,11 +16,13 @@ export default Route.extend({
   },
 
   afterModel(model) {
+    let sw = L.CRS.Simple.pointToLatLng(L.point(0, model.quad.height), 8);
+    let ne = L.CRS.Simple.pointToLatLng(L.point(model.quad.width, 0), 8);
     model.quad.setProperties({
       paintingBounds: new L.latLngBounds(
         [
-          new L.LatLng(0, 0),
-          new L.LatLng(5000, 15405)
+          sw,
+          ne
         ]
       )
     });
