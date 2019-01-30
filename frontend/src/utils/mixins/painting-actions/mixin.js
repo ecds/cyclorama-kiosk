@@ -1,7 +1,6 @@
 import Mixin from '@ember/object/mixin';
 import { isPresent } from '@ember/utils';
-import { task, timeout, waitForEvent } from 'ember-concurrency';
-import { copy } from '@ember/object/internals';
+import { task, waitForEvent, timeout } from 'ember-concurrency';
 /* global L */
 
 const COLORS = {
@@ -18,8 +17,6 @@ const COLORS = {
     ring: 'rgba(129,97,160, .6)'
   },
 };
-
-const noop = () => {};
 
 export default Mixin.create({
   panel: null,
@@ -48,7 +45,15 @@ export default Mixin.create({
         height: '10vh',
         aimingRectOptions: {
           color: '#0d00ff',
-          fillOpacity: 0
+          fillOpacity: 0,
+          weight: 10
+        },
+        zoomLevelFixed: 1,
+        centerFixed: this.model.quad.paintingBounds.getCenter(),
+        mapOptions: {
+          maxBounds: this.model.quad.paintingBounds.pad(0),
+          minZoom: 0,
+          maxZoom: 0
         }
       }
     );
@@ -82,15 +87,22 @@ export default Mixin.create({
     }
   }).restartable(),
 
+  setPainting: task(function* (/* event */) {
+    if (this.paintingSet) return;
+    this.set('paintingSet', true);
+    yield this.get('offsetCenter').perform();
+    this.sizePanControls();
+    return true
+  }),
+
   sizePanControls() {
     let element = document.getElementById('pan-controls');
     if (element === null) return;
-    element.style.width = '100%';
-    let containerWidth = element.clientWidth;
-    // let newSize = Math.floor(containerWidth * .85);
-    let newSize = containerWidth + Math.floor(containerWidth * .25);
+    let containerWidth = window.innerWidth;
+    let newSize =  Math.floor(containerWidth * .08);
     element.style.cssText = `width: ${newSize}px; height: ${newSize}px; opacity: 1`
     this.setReCenterButton(newSize);
+    this.set('controlsSet', true);
   },
 
   setReCenterButton(controlsWidth) {
@@ -151,11 +163,13 @@ export default Mixin.create({
     if (this.miniMap === null) {
       this.addMiniMap();
     }
+    let allSet = yield timeout(300);
+    return allSet;
   }),
 
   highlightPoi: task(function* (poi) {
     this.set('showingTours', false);
-    this.removeMinMap();
+    // this.removeMinMap();
     this.send('clearActive');
     this.set('activePoi', poi);
     poi.setProperties({ active: true });
@@ -165,14 +179,14 @@ export default Mixin.create({
   flyToPoi: task(function* (poi) {
     this.suspendInteractions();
     yield this.model.quad.map.flyToBounds(poi.bounds, {
-      duration: 1
+      duration: 1.5
     });
   }).restartable(),
 
   reCenter: task(function* () {
     this.suspendInteractions();
+    // this.addMiniMap();
     yield this.get('panToCenter').perform();
-    this.addMiniMap();
   }),
 
   offsetCenter: task(function* () {
@@ -181,49 +195,30 @@ export default Mixin.create({
       This ensures the painting will always sit right on top of the navigation.
       The bottom navigation is 20vh plus 40px margin
     */
-   let { map, paintingBounds } = this.model.quad;
-    // let navNorthEastPoint = L.point(window.innerWidth, (window.innerHeight + (window.innerHeight * .2) - 40));
-    // // let navNorthWestPoint = L.point(0, window.innerHeight - (window.innerHeight * .2));
+    let { map, paintingBounds } = this.model.quad;
+    let fullBounds = L.latLngBounds(paintingBounds.getSouthWest, paintingBounds.getNorthEast());
     let paintingSouthWestPoint = map.options.crs.latLngToPoint(paintingBounds.getSouthWest(), map.getZoom());
     let navSouthWestPoint = L.point(0, paintingSouthWestPoint.y + (window.innerHeight * .2));
-    // // let navHeight = navNorthWestPoint.distanceTo(navSouthWestPoint);
-    // let paintingNavDistance = paintingSouthEast.y + navNorthEastPoint.y;
-    let h = (window.innerHeight * .2)
-    let offsetCenterPoint = L.point(window.innerWidth/2, window.innerHeight/2 + h/map.getZoom());
-
-    // let navNortheast = map.options.crs.pointToLatLng(navNorthEastPoint, map.getZoom());
     let navSouthwest = map.options.crs.pointToLatLng(navSouthWestPoint, map.getZoom());
 
     let navBounds = L.latLngBounds(paintingBounds.getSouthEast(), navSouthwest);
-    // // let fullBounds = L.latLngBounds(paintingBounds.getSouthWest(), paintingBounds.getNorthEast());
-    paintingBounds.extend(navBounds);
-    // fullBounds.extend(navBounds);
-    // L.rectangle(navBounds, {color: "deeppink", weight: 1}).addTo(this.model.quad.map);
-    // L.rectangle(paintingBounds, {color: "blue", weight: 1}).addTo(this.model.quad.map);
-    // this.model.quad.map
-    // yield waitForEvent(map, 'moveend');
-    // L.marker(paintingBounds.getSouthEast()).addTo(map);
-    // L.marker(navSouthwest).addTo(map);
-    console.log('panby');
-    // map.panTo(fullBounds.getCenter());
-    // map.setView(
-    //   // fullBounds.getCenter()
-    //   map.options.crs.pointToLatLng(offsetCenterPoint, map.getZoom()),
-    //   map.getZoom()
-    //   );
-    map.fitBounds(paintingBounds.pad(.1));
-    yield waitForEvent(map, 'moveend');
-    console.log('panned');
-    this.model.quad.setProperties({ bottom: paintingBounds});
-    // map.setMinZoom(Math.ceil(map.getZoom()) - 1);
-    // map.setMaxBounds(fullBounds.pad(.1));
+    fullBounds.extend(navBounds);
+    map.fitBounds(fullBounds.pad(.01), {
+      animate: false
+    });
+    yield timeout(300);
+    map.setMaxBounds(fullBounds);
+    map.setMinZoom(map.getZoom() - .5);
   }).restartable(),
   
   panToCenter: task(function* () {
-    this.model.quad.map.flyToBounds(this.model.quad.bottom);
+    this.model.quad.map.flyToBounds(
+      this.model.quad.paintingBounds, {
+        animate: false
+      }
+    );
     yield waitForEvent(this.model.quad.map, 'moveend');
-    this.model.quad.map.panTo(this.model.quad.bottom.getCenter());
-    yield waitForEvent(this.model.quad.map, 'moveend');
+    this.set('atMaxBounds', true);
   }).restartable(),
 
   removeMinMap() {
@@ -248,35 +243,11 @@ export default Mixin.create({
       return marker;
     },
 
-    setPainting(event) {
-      if (this.paintingSet) return;
-      this.set('paintingSet', true);
-      let painting = event.target
-      // TODO: Make the dimensions dynamic.
-      // Zoom level was determined by the math in that leaflet plugin
-      // https://github.com/commenthol/leaflet-rastercoords/blob/master/rastercoords.js#L46-L53
-      // let sw = this.model.quad.map.options.crs.pointToLatLng(L.point(0, this.model.quad.height), 8);
-      // let ne = this.model.quad.map.options.crs.pointToLatLng(L.point(this.model.quad.width, 0), 8);
-      // painting.bounds = L.latLngBounds(sw, ne);
-      // this.model.quad.map.fitBounds(painting.bounds);
-      this.sizePanControls();
-      this.get('offsetCenter').perform();
-      return true
-    },
-
     clearActive() {
       if (isPresent(this.activePoi)) {
         this.activePoi.setProperties({ active: false });
         this.set('activePoi', null);
       }
-    },
-
-    paintingLoaded() {},
-
-    whatBounds() {},
-
-    zoomend() {},
-
-    moveend() {}
+    }
   }
 });

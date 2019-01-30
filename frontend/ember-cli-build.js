@@ -22,7 +22,5 @@ module.exports = function (defaults) {
   // along with the exports of each module as its value.
   app.import('node_modules/leaflet-minimap/dist/Control.MiniMap.min.js');
   app.import('node_modules/leaflet.pm/dist/leaflet.pm.min.js');
-  app.import('node_modules/leaflet-rastercoords/rastercoords.js');
-  app.import('node_modules/leaflet-iiif/leaflet-iiif.js');
   return app.toTree();
 };

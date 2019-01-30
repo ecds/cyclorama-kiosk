@@ -50,8 +50,8 @@ var PolygonSchema = new Schema({
 });
 
 var PoiSchema = new Schema({
-    quad: { type: Schema.Types.ObjectId, ref: 'Quad' },
-    tour: { type: Schema.Types.ObjectId, ref: 'Tour' },
+    panel: { type: ObjectId, ref: 'Panel' },
+    tour: { type: ObjectId, ref: 'Tour' },
     name: String,
     type: String,
     description: String,

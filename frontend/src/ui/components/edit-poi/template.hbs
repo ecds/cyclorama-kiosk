@@ -30,6 +30,7 @@
     {{#each poi.images as |image index|}}
       <div>
         <div class='uk-margin'>
+          <input type='file' onchange={{perform uploadImage image}}>
           <label class='uk-form-label' for={{concat (dasherize poi.name) '-' index}}>URL</label>
           <div class='uk-form-controls'>
             {{input class='uk-input' id=(concat (dasherize poi.name) '-' index) value=image.url}}

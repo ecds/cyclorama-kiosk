@@ -4,6 +4,7 @@ import UIkit from 'uikit';
 const noop = () => {};
 
 export default Component.extend({
+  classNames: ['uk-offcanvas-slide', 'uk-grid', 'uk-child-width-1-1', 'uk-margin-remove'],
   attributeBindings: ['id', 'ukOffcanvas:uk-offcanvas', 'mode', 'bgClose:bg-close'],
   id: 'poi-detail',
   ukOffcanvas: true,

@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import PaintingActionsMixin from "../../../utils/mixins/painting-actions/mixin";
 import UIkit from 'uikit';
+import { task, timeout } from 'ember-concurrency';
 /* global L */
 
 export default Controller.extend(PaintingActionsMixin, {
@@ -31,6 +32,69 @@ export default Controller.extend(PaintingActionsMixin, {
     ]
   },
 
+  initEditMap: task(function* (event) {
+    yield this.get('initMap').perform(event);
+    // Add listener for when a new poi is dropped on the painting.
+    this.model.quad.map.on('pm:create', (shape) => { this.send('newPoi', shape) });
+  }),
+
+  savePoi: task(function* (poi) {
+    poi.images.forEach(image => {
+      // if (image.dirtyType) {
+        image.setProperties({
+          poi
+        });
+        image.save().then(() => {
+          // Don't really need to do anything here.
+        }, error => {
+          UIkit.notification(`ERROR SAVING IMAGE ${error.message}`, 'danger');
+        });  
+      // }
+    });
+
+    // A tmpPolygon is set by the onEdit event.
+    // The onEdit listener is added when the polygon is added.
+    if (poi.tmpPolygon) {
+      poi.set('polygon', poi.tmpPolygon);
+      poi.set('tmpPolygon', null);
+    }
+
+    let newBounds = this.model.quad.map.getBounds();
+    
+    poi.setProperties({
+      bounds: [
+        [newBounds.getNorth(), newBounds.getEast()],
+        [newBounds.getSouth(), newBounds.getWest()]
+      ]
+    });
+
+    try {
+      yield poi.save()
+      UIkit.notification(`${poi.name} SAVED!`, 'success');
+    } catch(error) {
+      UIkit.notification(`ERROR SAVING POI: ${error.message}`, 'danger');
+    }
+    
+    try {
+      this.model.quad.get('pois').pushObject(poi);
+      yield this.model.quad.save();
+    } catch(error) {
+      UIkit.notification(`ERROR SAVING QUAD: ${error.message}`, 'danger');
+    } finally {
+      //
+    }
+    
+    // For some reason, we need to wait a bit before
+    // re-enabling the edit mode.
+    yield timeout(500);
+    this.model.quad.map.pm.enableGlobalEditMode();
+  }),
+
+  editReCenter: task(function* () {
+    yield this.get('closePanel').perform();
+    this.model.quad.map.pm.disableGlobalEditMode();
+  }),
+
   actions: {
     newTour() {
       this.set('manageTours', false);
@@ -40,11 +104,12 @@ export default Controller.extend(PaintingActionsMixin, {
 
     newPoiType(type) {
       this.set('newPoiType', type);
+      // Enabling pm.Draw.Marker adds a marker to be dropped.
       this.model.quad.map.pm.Draw.Marker.enable();
     },
     // This is called when a new marker is added to the paining.
     newPoi(shape) {
-      if (shape.shape !== 'Marker') {
+      if (!shape || shape.shape !== 'Marker') {
         return;
       }
       this.set('managePois', false);
@@ -83,58 +148,12 @@ export default Controller.extend(PaintingActionsMixin, {
       let b = this.model.quad.paintingBounds;
       let rec = L.rectangle(b);
       rec.addTo(this.model.quad.map);
-      this.set('newPoi', newPoi)
+      this.set('newPoi', newPoi);
     },
 
     editPoi(poi) {
       this.get('highlightPoi').perform(poi);
       this.model.quad.map.pm.enableGlobalEditMode();
-    },
-
-    editReCenter() {
-      this.model.quad.map.pm.disableGlobalEditMode();
-      this.get('reCenter').perform();
-    },
-
-    savePoi(poi) {
-      poi.images.forEach(image => {
-        if (image.dirtyType) {
-          image.save().then(() => {
-            // Don't really need to do anything here.
-          }, error => {
-            UIkit.notification(`ERROR SAVING IMAGE ${error.message}`, 'danger');
-          });  
-        }
-      });
-
-      if (poi.tmpPolygon) {
-        poi.set('polygon', poi.tmpPolygon);
-        poi.set('tmpPolygon', null);
-      }
-
-      let newBounds = this.model.quad.map.getBounds();
-      
-      poi.setProperties({
-        bounds: [
-          [newBounds.getNorth(), newBounds.getEast()],
-          [newBounds.getSouth(), newBounds.getWest()]
-        ]
-      });
-
-      poi.save().then(() => {
-        // This is a little hacky, but setting the POI to inactive removes it from the painting.
-        // We add it back later by setting it to active. This will make sure it gets the proper
-        // listeners for editing.
-        poi.setProperties({ active: false });
-        poi.save().then(() => {
-          UIkit.notification(`${poi.name} SAVED!`, 'success');
-          poi.setProperties({ active: true });
-      }, error => {
-          UIkit.notification(`ERROR SAVING QUAD: ${error.message}`, 'danger');
-        });
-      }, error => {
-        UIkit.notification(`ERROR SAVING POI: ${error.message}`, 'danger');
-      });
     },
 
     deletePoi(poi) {
@@ -186,7 +205,7 @@ export default Controller.extend(PaintingActionsMixin, {
         this.model.pois.removeObject(poi);
         poi.destroy();
       }
-      this.get('closePanel').perform();
+      this.get('editReCenter').perform();
     },
 
     reorderPois(type, event) {
@@ -228,11 +247,6 @@ export default Controller.extend(PaintingActionsMixin, {
       });
       layer.pm.enable();
       this.get('showPanel').perform();
-    },
-
-    updatePolygon(updated, poi) {
-      console.log(updated);
-      poi.setProperties({ polygon: updated });
     },
 
     saveTour(tour) {
