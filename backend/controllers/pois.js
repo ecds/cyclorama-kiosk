@@ -1,6 +1,16 @@
 var Poi = require('../models/poi');
 var async = require('async');
 
+module.exports.poiList = function(req, res) {
+    Poi.find()
+    .populate('images')
+    .exec(function(err, pois) {
+        if (err) return res.status(500).send(err);    
+        return res.json({pois: pois});  
+      });
+};
+
+
 module.exports.poiUpdate = function(req, res) {
     // return res.send(req.body)
     Poi.findByIdAndUpdate(
@@ -36,4 +46,16 @@ module.exports.poiDelete = function(req, res) {
             return res.status(200).send({});
         }
     );
+};
+
+module.exports.poiDetail = function(req, res) {
+    // return res.send(req.body)
+    Poi.findById(
+        // the id of the item to find
+        req.params.id,
+    ).populate('images')
+    .exec(function (err, poi) {
+      if (err) return res.status(500).send(err);
+      return res.json({poi: poi});
+    });
 };

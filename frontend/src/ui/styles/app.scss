@@ -1,0 +1,462 @@
+@import 'ember-uikit';
+@import 'mini-map';
+@import 'leaflet.pm';
+@import 'pan-controls';
+
+$dot-offset: 40px;
+$green: rgba(0,230,1, 1);
+$blue: #38748f;
+$red: #8f2e1f;
+$yellow: #dec04b;
+$purple: #8161a0;
+$font-family: "Gotham Book", "Montserrat script=all rev=1", Helvetica, Arial, sans-serif;
+
+
+body,
+html {
+  font-size: 1vmax;
+  height: 100vh;
+  overflow: hidden;
+  color: aliceblue;
+  font-family: $font-family;
+}
+
+.uk-h1, .uk-h2, .uk-h3, .uk-h4, .uk-h5, .uk-h6, h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.uk-form-label {
+  font-size: .8rem;
+}
+
+.to-left {     
+  left: 0;
+}
+
+.to-right {
+  left: 10vw;
+}
+
+.leaflet-container.painting {
+  background: none;
+  height:100vh;
+  left: 0;
+  position: absolute;
+  right: 0;
+  // top: 0;
+  // transition: width .3s ease-in-out;
+  transform: translateX(0);
+  transition: all .3s ease-out;
+  width: 100vw;
+
+  &.painting {
+    .leaflet-pane {
+      transform-origin: right;
+    }
+  }
+}
+
+.multi-panels {
+  position: absolute;
+  .leaflet-container.painting {
+    width: 90vw;
+  }
+}
+
+.uk-button-text {
+  color: whitesmoke;
+}
+
+// .edit-view {
+//   .leaflet-container {
+//     height: 100vh;
+//   }
+// }
+
+body,
+.leaflet-control-minimap {
+  background: linear-gradient(#82a5bf 20%, #231f20 30%);
+  // background: #231f20;
+  font-weight: 200;
+  left: 25%;
+  right: 24%;
+}
+
+
+
+.uk-offcanvas-content {
+  height: 100vh;
+}
+
+.uk-offcanvas-bar {
+  width: 50vw;
+}
+
+.uk-open {
+  &.uk-offcanvas {
+    width: 50vw;
+  }
+}
+
+@media (min-width: 960px) {
+  :not(.uk-offcanvas-flip) > .uk-offcanvas-content-animation {
+    left: 50vw;
+  }
+}
+
+.uk-overlay-default {
+  p {
+    color: #666;
+  }
+}
+
+.leaflet-control-minimap {
+  bottom: 0;
+  left: 6vw;
+}
+
+.bottom-nav {
+  background: #231f20a3;
+  bottom: 0vh;
+  height: 20vh;
+  margin-left: 0;
+  position: absolute;
+  bottom: 0vh;
+  width: 100vw;
+  z-index: 999;
+  
+  div,
+  p {
+    transition: opacity 500ms, bottom 500ms, left 500ms;
+  }
+
+  .poi-buttons {
+    opacity: 1;
+  }
+  
+  &.uk-grid {
+    // top: 85vh;
+  }
+
+  &.hide-bottom-nav {
+    background-color: transparent;
+
+    .poi-buttons,
+    .map-controls,
+    .sentence {
+      opacity: 0;
+    }
+
+    .leaflet-control-minimap {
+      bottom: -6vh;
+      left: 12vw;
+    }
+  }
+
+  // img {
+  //   height: 8vh;
+  // }
+}
+
+.leaflet-layer {
+  transition: opacity 500ms;
+}
+
+.leaflet-control-attribution {
+  display: none;
+}
+
+.ahc-logo {
+  left: 50px;
+  opacity: .6;
+  position: relative;
+  top: 50px;
+  z-index: 999;
+}
+
+.bottom-nav {
+  // height: 15vh;
+  .poi-nav-button {
+    color: white;
+    cursor: pointer;
+    // font-size: 2vw;
+
+    img {
+      animation: psst 10000ms ease-out infinite;
+      height: 10vh;
+      width: 10vh;
+      opacity: .3;
+    }
+
+    &.active-poi {
+      img {
+        animation: none;
+        opacity: 1;  
+      }
+    }
+  }
+
+  p {
+    font-size: 1.5rem;
+    // font-style: regular;
+    font-weight: 800;
+    // opacity: .7;
+    text-transform: capitalize;
+
+    &.sentence {
+      text-transform: none;
+    }
+  }
+}
+
+// Hide leaflet default div.
+.leaflet-marker-icon {
+  &.leaflet-interactive {
+    // background: none;
+    // border: none;
+  }
+}
+
+
+.jesse-dot {
+  display: block;  
+  height: 100px;
+  left: -$dot-offset;
+  position: absolute;
+  top: -$dot-offset;
+  width: 100px;
+}
+
+.dot {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  top: 24px;
+  left: 24px;
+  border: 2px solid #FFF;
+  border-radius: 50%;
+  z-index: 1000;
+}
+
+.pulsate-ring {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 0;
+  display: block;
+  background: rgba(5, 124, 255, 0.6);
+  border-radius: 50%;
+  opacity: 0;
+  animation: pulsate 2400ms ease-out infinite;
+}
+
+@keyframes pulsate {
+  0% {
+    transform: scale(0.1);
+    opacity: 0;
+  }
+  50% {
+    opacity: .7;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes psst {
+  0% {
+    opacity: .3;
+  }
+  50% {
+    opacity: .6;
+  }
+  100% {
+    opacity: .3;
+  }
+}
+
+.uk-slider-items {
+  img {
+    // height: 400px;
+    // width: 25vw;
+  }
+}
+
+// .description {
+//   p {
+//     font-size: 1.5rem;
+//   }
+// }
+
+.tour-menus {
+  display: block;
+
+  .uk-button-large {
+    font-size: 3rem;
+    line-height: 6rem;
+
+    .svg-inline--fa.fa-w-16 {
+      width: .7rem;
+    }
+  }
+}
+
+.uk-card-media-top{
+  filter: grayscale(100%);
+}
+
+.gallery-arrow {
+  font-size: 8rem;
+}
+
+.uk-dotnav {
+  a {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+}
+
+.uk-button-secondary {
+  background-color: lightgray;
+  color: black;
+  font-size: 21m;
+  opacity: .7;
+}
+
+.tour-heading {
+  color: white !important;
+  // letter-spacing: .25rem;
+  text-transform: uppercase;
+}
+
+.tour-button {
+  // border-left: solid;
+  // border-right: solid;
+}
+
+.poi-detail-content {
+  height: 90%;
+
+  img {
+    max-height: 30vh;
+    max-width: 85%;
+  }
+
+  figcaption {
+    font-size: .85rem;
+    margin: 0 auto;
+    width: 50%;
+  }
+}
+
+.styled-scrollbar {
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    // background-color: #F5F5F5;
+
+    &::-webkit-scrollbar {
+      width: 1vmax;
+      // background-color: #F5F5F5;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    }
+
+    &.people {
+      &::-webkit-scrollbar-thumb {
+        background-color: $blue;
+      }
+    }
+
+    &.landmarks {
+      &::-webkit-scrollbar-thumb {
+        background-color: $red;
+      }
+    }
+
+    &.people {
+      &::-webkit-scrollbar-thumb {
+        background-color: $blue;
+      }
+    }
+
+    &.changes {
+      &::-webkit-scrollbar-thumb {
+        background-color: $purple;
+      }
+    }
+  }
+
+
+.poi-detail-nav {
+  bottom: 0;
+  position: absolute;
+  width: 100%;
+
+  &.people {
+    background: $blue;
+  }
+
+  &.landmarks {
+    background: $red;
+  }
+
+  &.changes {
+    background: $purple;
+  }
+
+  button {
+    color: white !important;
+    font-size: 1rem;
+    font-weight: 800;
+    text-transform: capitalize;
+  }
+
+  .poi-detail-home {
+    button {
+      font-size: 1.75rem;
+    }
+  }
+}
+
+.leaflet-interactive {
+  &.uk-animation-fade {
+    animation-duration: 0.3s;
+  }
+}
+
+.poi-wysiwyg,
+.caption-wysiwyg {
+  outline: auto;
+}
+
+.caption-wysiwyg {
+  .pell-content {
+    height: auto;
+  }
+}
+
+form {
+  img {
+    height: auto;
+    max-height: 300px;
+    max-width: 300px;
+    width: auto;
+  }
+}
+
+.tour-card-footer {
+  .uk-button-link {
+    color: unset;
+  }
+}
+
+img.leaflet-tile.leaflet-tile-loaded {
+  width: 257px !important;
+  height: 257px !important;
+}

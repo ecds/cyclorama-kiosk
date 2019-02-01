@@ -9,5 +9,4 @@ var ImageSchema = new Schema({
     position: Number
 });
 
-// var Poi = mongoose.model('Poi', PoiSchema);
 module.exports = mongoose.model('Image', ImageSchema);

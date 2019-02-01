@@ -1,0 +1,12 @@
+{{#uk-button on-click=new}}Add{{/uk-button}}
+<ul class='uk-list'>
+{{#each model as |tour|}}
+<li>
+  {{#uk-button color='link' on-click=(action 'editTour' tour)}}
+    {{tour.name}}
+  {{/uk-button}}
+</li>
+{{else}}
+<li>none...</li>
+{{/each}}
+</ul>

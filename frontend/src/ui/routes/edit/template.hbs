@@ -1,0 +1,90 @@
+<div class='uk-offcanvas-content styled-scrollbar'>
+  {{#poi-detail panel=panel}}
+  {{#if managePois}}
+  {{manage-pois model=model.quad reorderPois=(action 'reorderPois') highlight=(action 'editPoi') managePois=managePois
+  new=(action 'newPoiType') delete=(action 'deletePoi')}}
+  {{/if}}
+  {{#if newPoi}}
+  {{#edit-poi poi=newPoi save=(perform savePoi newPoi) delete=(action 'deletePoi' newPoi) cancel=(action 'cancel'
+  newPoi) newImage=(action 'newImage' newPoi)}}
+    <button class="uk-offcanvas-close" type="button" onclick={{perform closePanel}} uk-close></button>
+  {{/edit-poi}}
+  {{else}}
+  {{#each model.quad.pois as |poi|}}
+  {{#if poi.active}}
+  {{#edit-poi poi=poi save=(perform savePoi poi) delete=(action 'deletePoi' poi) cancel=(action 'cancel' poi)
+  deleteImage=(action 'deleteImage') newImage=(action 'newImage' poi)}}
+      <button class="uk-offcanvas-close" type="button" onclick={{perform closePanel}} uk-close></button>
+  {{/edit-poi}}
+{{/if}}
+  {{/each}}
+  {{/if}}
+
+    {{#if manageTours}}
+  {{manage-tours tourToEdit=tourToEdit model=model.tours reorderPois=(action 'reorderPois') highlight=(action 'editPoi') manageTours=manageTours
+  new=(action 'newTour') delete=(action 'deletePoi')}}
+  {{/if}}
+  {{#if tourToEdit}}
+  {{edit-tour tour=tourToEdit pois=model.pois addPoi=(action 'addPoiToTour') save=(action 'saveTour' newTour) delete=(action 'deleteTour' newTour) cancel=(action 'cancel'
+  tourToEdit)}}
+  {{/if}}
+  {{/poi-detail}}
+
+  {{#if model.quad.paintingBounds}}
+  {{#leaflet-map
+  onLoad=(perform initEditMap)
+  onResize=(perform reSize)
+  bounds=model.quad.paintingBounds
+  zoomSnap=0
+  maxBoundsViscosity=0.5
+  crs=crs
+  bounceAtZoomLimits=true
+  zoomControl=true
+  maxZoom=11
+  class='painting'
+  as |features|}}
+
+   {{features.tile
+    url=(concat 'https://s3.amazonaws.com/battleofatlanta/tiles/' model.quad.title '/{z}/{x}/{y}.png')
+    maxZoom=10
+    minZoom=0
+    tileSize=256
+    continuousWorld=false
+    onLoad=(perform setPainting)
+  }}
+
+  {{#each model.quad.pois as |poi|}}
+  {{#if poi.active}}
+  {{features.geoJSON
+  geoJSON=poi.polygon
+  style=setStyle
+  onAdd=(action 'polygonAdded' poi)
+  className='uk-animation-fade'
+  }}
+  {{/if}}
+  {{features.geoJSON
+  geoJSON=poi.point
+  pointToLayer=(action 'setDot' poi)
+  onClick=(action 'editPoi' poi)
+  }}
+  {{/each}}
+
+  {{/leaflet-map}}
+  {{/if}}
+  <div class='bottom-nav bottom-nav uk-flex-middle uk-flex uk-flex-center uk-child-width-1-4 {{if activePoi 'hide-bottom-nav'}}' uk-grid>
+      <div class='uk-flex-middle uk-flex uk-flex-center'>{{#uk-button size='large' color='primary' on-click=(action (toggle 'managePois' this))}}manage pois{{/uk-button}}</div>
+
+      <div class='uk-flex-middle uk-flex uk-flex-center'>{{#uk-button size='large' color='primary' on-click=(action (toggle 'manageTours' this))}}manage tours{{/uk-button}}</div>
+
+      <div class='uk-flex-middle uk-flex uk-flex-center'>{{#uk-button size='large' color='primary' on-click=(perform editReCenter)}}Clear/recenter{{/uk-button}}</div>
+
+    <div>
+      {{#if model.quad.map}}
+      {{map-controls map=model.quad.map reCenter=(perform reCenter)}}
+    {{/if}}
+    </div>
+
+    </div>
+      <div id='minimap' hidden></div>
+
+</div>
