@@ -120,7 +120,8 @@ export default Controller.extend(PaintingActionsMixin, {
 
       let newPoi = this.store.createRecord('poi', {
         point: newPoint,
-        quad: this.model.quad
+        quad: this.model.quad,
+        type: this.newPoiType
       });
 
       shape.layer.remove();
@@ -212,7 +213,7 @@ export default Controller.extend(PaintingActionsMixin, {
       const indices = {
         people: 100,
         landmarks: 200,
-        alterations: 300
+        changes: 300
       };
       let index = indices[type];
       for (let item of event.target.children) {

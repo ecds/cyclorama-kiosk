@@ -29,11 +29,11 @@
   {{/each}}
 {{/uk-sortable}}
 <hr class="uk-divider-icon">
-<h2>Alterations</h2>
-{{#uk-button on-click=(action 'newPoi' 'alterations')}}Add{{/uk-button}}
-{{#uk-sortable tagName='ul' class='uk-list uk-list-striped' on-stop=(action 'reorder' 'alterations')}}
+<h2>Changes</h2>
+{{#uk-button on-click=(action 'newPoi' 'changes')}}Add{{/uk-button}}
+{{#uk-sortable tagName='ul' class='uk-list uk-list-striped' on-stop=(action 'reorder' 'changes')}}
   {{#each model.sortedPois as |poi|}}
-    {{#if (eq poi.point.properties.type 'alterations')}}
+    {{#if (eq poi.point.properties.type 'changes')}}
       <li data-id={{poi.id}}>
         {{fa-icon 'bars'}}
         {{#uk-button color='link' on-click=(action 'editPoi' poi)}}{{poi.name}}{{/uk-button}}

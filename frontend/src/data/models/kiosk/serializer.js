@@ -1,8 +1,8 @@
 import DS from 'ember-data';
 
 export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
-  primaryKey: 'title',
+  primaryKey: '_id',
   attrs: {
-    pois: { embedded: 'always' }
+    panels: { embedded: 'always' }
   }
 });

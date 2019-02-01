@@ -8,10 +8,13 @@ const { Model, attr, hasMany } = DS;
 
 export default Model.extend({
   title: attr('string'),
+  kiosks: hasMany('kiosk'),
   painting: attr('string'),
   pois: hasMany('poi', { async: false }),
   height: attr('number'),
   width: attr('number'),
+  opacity: attr('number'),
+  direction: attr('string'),
   sortedPois: sort('pois', '_poiPositionSort'),
   _poiPositionSort: computed('pois', function() {
     return ['position:asc']

@@ -19,6 +19,7 @@ export default Component.extend({
     image.setProperties({
       url: signature.url
     });
+    return yield image.save();
   }),
 
   actions: {

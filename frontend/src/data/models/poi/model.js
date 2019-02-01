@@ -6,6 +6,7 @@ const { Model, attr, belongsTo, hasMany} = DS;
 export default Model.extend({
   name: attr('string'),
   description: attr('string'),
+  panel: belongsTo('panel'),
   quad: belongsTo('quad'),
   tour: belongsTo('tour'),
   polygon: attr(),
@@ -18,16 +19,16 @@ export default Model.extend({
   position: attr('number'),
   tourPosition: attr('number'),
 
-  previous: computed('quad', function() {
-    let previous = this.quad.get('sortedPois')[this.quad.get('sortedPois').indexOf(this) - 1]
+  previous: computed('panel', function() {
+    let previous = this.panel.get('sortedPois')[this.panel.get('sortedPois').indexOf(this) - 1]
     if (!previous || previous.point.properties.type !== this.point.properties.type) {
       return null;
     }
     return previous
   }),
 
-  next: computed('quad', function() {
-    let next = this.quad.get('sortedPois')[this.quad.get('sortedPois').indexOf(this) + 1]
+  next: computed('panel', function() {
+    let next = this.panel.get('sortedPois')[this.panel.get('sortedPois').indexOf(this) + 1]
     if (!next || next.point.properties.type !== this.point.properties.type) {
       return null;
     }

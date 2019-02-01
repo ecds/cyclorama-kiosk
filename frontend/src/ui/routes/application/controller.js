@@ -1,4 +1,5 @@
-import Mixin from '@ember/object/mixin';
+import Controller from '@ember/controller';
+import { action } from '@ember-decorators/object';
 import { isPresent } from '@ember/utils';
 import { task, waitForEvent, timeout } from 'ember-concurrency';
 /* global L */
@@ -18,11 +19,12 @@ const COLORS = {
   },
 };
 
-export default Mixin.create({
-  panel: null,
-  activePoi: null,
-  crs: L.CRS.Simple,
-  paintingSet: false,
+export default class ApplicationController extends Controller {
+  panel = null;
+  activePoi = null;
+  crs = L.CRS.Simple;
+  paintingSet = false;
+  miniMap = null;
 
   setStyle() {
     return {
@@ -30,14 +32,14 @@ export default Mixin.create({
       fillOpacity: .85,
       fillColor: '#263238'
     }
-  },
-
-  miniMap: null,
+  }
 
   addMiniMap() {
-    if (this.miniMap) return;
+    if (this.miniMap) {
+      this.removeMinMap();
+    }
     const miniPainting = new L.tileLayer(
-      `https://s3.amazonaws.com/battleofatlanta/tiles/${this.model.quad.title}/{z}/{x}/{y}.png`
+      `https://s3.amazonaws.com/battleofatlanta/tiles/${this.activePanel.title}/{z}/{x}/{y}.png`
     );
     let miniMap = new L.Control.MiniMap(
       miniPainting, {
@@ -49,9 +51,9 @@ export default Mixin.create({
           weight: 10
         },
         zoomLevelFixed: 1,
-        centerFixed: this.model.quad.paintingBounds.getCenter(),
+        centerFixed: this. activePanel.paintingBounds.getCenter(),
         mapOptions: {
-          maxBounds: this.model.quad.paintingBounds.pad(0.5),
+          maxBounds: this. activePanel.paintingBounds.pad(0),
           minZoom: 0,
           maxZoom: 0
         }
@@ -60,40 +62,41 @@ export default Mixin.create({
     this.setProperties({
       miniMap: miniMap
     });
-    miniMap.addTo(this.model.quad.map);
+    miniMap.addTo(this. activePanel.map);
     let lCtrlContainer = miniMap.getContainer();
     let newCtrlContainer = document.getElementById('minimap');
     newCtrlContainer.appendChild(lCtrlContainer);
-  },
+  }
 
-  closePanel: task(function* () {
+  closePanel = task(function* () {
     yield this.panel.hide();
     this.get('reCenter').perform();
     this.send('clearActive');
-  }),
+  })
 
-  showPanel: task(function* () {
+  showPanel  = task(function* () {
     yield this.panel.show();
-  }),
+  })
 
-  reSize: task(function* (/*event*/) {
+  reSize  = task(function* (/*event*/) {
     this.sizePanControls();
     if (this.activePoi) {
       yield this.get('flyToPoi').perform(this.activePoi);
     } else {
-      // yield this.model.quad.map.fitBounds(this.model.quad.paintingBounds);
+      // yield this. activePanel.map.fitBounds(this. activePanel.paintingBounds);
       yield this.get('offsetCenter').perform();
       yield this.get('reCenter').perform();
     }
-  }).restartable(),
+  }).restartable()
 
-  setPainting: task(function* (/* event */) {
+  setPainting = task(function* (event) {
+    console.log(event);
     if (this.paintingSet) return;
     this.set('paintingSet', true);
     yield this.get('offsetCenter').perform();
     this.sizePanControls();
     return true
-  }),
+  })
 
   sizePanControls() {
     let element = document.getElementById('pan-controls');
@@ -103,7 +106,7 @@ export default Mixin.create({
     element.style.cssText = `width: ${newSize}px; height: ${newSize}px; opacity: 1`
     this.setReCenterButton(newSize);
     this.set('controlsSet', true);
-  },
+  }
 
   setReCenterButton(controlsWidth) {
     /*
@@ -118,84 +121,80 @@ export default Mixin.create({
     let topOffset = (controlsWidth / 2) - iconWidth + (iconWidth / 4);
     let leftOffset = (controlsWidth / 2) - iconHeight + (iconHeight / 4);
     element.style.cssText = `top: ${topOffset}px; left: ${leftOffset}px;`;
-  },
+  }
 
   enableInteraction() {
-    this.model.quad.map.dragging.enable();
-    this.model.quad.map.doubleClickZoom.enable();
-    this.model.quad.map.scrollWheelZoom.enable();
-  },
+    if (!this.activePanel) return;
+    this.activePanel.map.dragging.enable();
+    this.activePanel.map.doubleClickZoom.enable();
+    this.activePanel.map.scrollWheelZoom.enable();
+  }
 
   disableInteraction() {
-    this.model.quad.map.dragging.disable();
-    this.model.quad.map.doubleClickZoom.disable();
-    this.model.quad.map.scrollWheelZoom.disable();
-  },
+    if (!this.activePanel) return;
+    this.activePanel.map.dragging.disable();
+    this.activePanel.map.doubleClickZoom.disable();
+    this.activePanel.map.scrollWheelZoom.disable();
+  }
 
   suspendInteractions() {
-    this.model.quad.map.once('moveend', () => {
+    if (!this.activePanel) return;
+    this.activePanel.map.once('moveend', () => {
       this.enableInteraction();
     });
     this.disableInteraction();
-  },
+  }
 
-  initMap: task(function* (event) {
+  initMap = task(function* (event) {
     let map = event.target;
-    this.model.quad.setProperties({
-      map
-    });
+    this.model.panels.forEach(panel => {
+      panel.setProperties({
+        map
+      });
+    })
     this.disableInteraction();
-    // map.setZoom(0);
+
     // map.on('click', function(event){console.log(event)});
 
+    yield waitForEvent(this. activePanel.map, 'moveend');
 
-    yield waitForEvent(this.model.quad.map, 'moveend');
-    // this.model.quad.map.off('moveend', noop);
-    // TODO: move this to function called after center is offset.
-    if (!this.model.quad.originalCenter) {
-      this.model.quad.setProperties({
-        originalCenter: map.getCenter(),
-        originalZoom: map.getZoom(),
-        originalBounds: map.getBounds()
-      });
-    }
     this.enableInteraction();
     if (this.miniMap === null) {
       this.addMiniMap();
     }
     let allSet = yield timeout(300);
     return allSet;
-  }),
+  })
 
-  highlightPoi: task(function* (poi) {
+  highlightPoi  = task(function* (poi) {
     this.set('showingTours', false);
     // this.removeMinMap();
     this.send('clearActive');
     this.set('activePoi', poi);
     poi.setProperties({ active: true });
     yield this.get('flyToPoi').perform(poi);
-  }),
+  })
 
-  flyToPoi: task(function* (poi) {
+  flyToPoi  = task(function* (poi) {
     this.suspendInteractions();
-    yield this.model.quad.map.flyToBounds(poi.bounds, {
+    yield this. activePanel.map.flyToBounds(poi.bounds, {
       duration: 1.5
     });
-  }).restartable(),
+  }).restartable()
 
-  reCenter: task(function* () {
+  reCenter  = task(function* () {
     this.suspendInteractions();
     // this.addMiniMap();
     yield this.get('panToCenter').perform();
-  }),
+  })
 
-  offsetCenter: task(function* () {
+  offsetCenter  = task(function* () {
     /*
       Extend the painting's bounds to include the bottom navigation.
       This ensures the painting will always sit right on top of the navigation.
       The bottom navigation is 20vh plus 40px margin
     */
-    let { map, paintingBounds } = this.model.quad;
+    let { map, paintingBounds } = this. activePanel;
     let fullBounds = L.latLngBounds(paintingBounds.getSouthWest, paintingBounds.getNorthEast());
     let paintingSouthWestPoint = map.options.crs.latLngToPoint(paintingBounds.getSouthWest(), map.getZoom());
     let navSouthWestPoint = L.point(0, paintingSouthWestPoint.y + (window.innerHeight * .2));
@@ -203,51 +202,51 @@ export default Mixin.create({
 
     let navBounds = L.latLngBounds(paintingBounds.getSouthEast(), navSouthwest);
     fullBounds.extend(navBounds);
-    map.fitBounds(fullBounds.pad(.0), {
+    map.fitBounds(fullBounds.pad(.01), {
       animate: false
     });
     yield timeout(300);
-    map.setMaxBounds(fullBounds.pad(.5));
+    map.setMaxBounds(fullBounds);
     map.setMinZoom(map.getZoom() - .5);
-  }).restartable(),
+  }).restartable()
   
-  panToCenter: task(function* () {
-    this.model.quad.map.flyToBounds(
-      this.model.quad.paintingBounds, {
+  panToCenter  = task(function* () {
+    this. activePanel.map.flyToBounds(
+      this. activePanel.paintingBounds, {
         animate: false
       }
     );
-    yield waitForEvent(this.model.quad.map, 'moveend');
+    yield waitForEvent(this. activePanel.map, 'moveend');
     this.set('atMaxBounds', true);
-  }).restartable(),
+  }).restartable()
 
   removeMinMap() {
     if (!this.miniMap) return;
     this.get('miniMap').remove();
     this.setProperties({ miniMap: null });
-  },
+  }
 
-  actions: {
-    setDot(poi, feature, point) {
-      let marker = L.marker(
-        point, {
-          icon: L.divIcon({
-            html: `<div class="jesse-dot"><div class="dot" style='background-color: ${COLORS[feature.properties.type].dot}'></div><div class="pulsate-ring" style='background-color: ${COLORS[feature.properties.type].ring}'></div></div>`
-          })
-        }
-      );
-
-      marker.on('dragend', event => {
-        this.send('relocatePoi', event.target._latlng, poi)
-      });
-      return marker;
-    },
-
-    clearActive() {
-      if (isPresent(this.activePoi)) {
-        this.activePoi.setProperties({ active: false });
-        this.set('activePoi', null);
+  @action
+  setDot(poi, feature, point) {
+    let marker = L.marker(
+      point, {
+        icon: L.divIcon({
+          html: `<div class="jesse-dot"><div class="dot" style='background-color: ${COLORS[feature.properties.type].dot}'></div><div class="pulsate-ring" style='background-color: ${COLORS[feature.properties.type].ring}'></div></div>`
+        })
       }
+    );
+
+    marker.on('dragend', event => {
+      this.send('relocatePoi', event.target._latlng, poi)
+    });
+    return marker;
+  }
+
+  @action
+  clearActive() {
+    if (isPresent(this.activePoi)) {
+      this.activePoi.setProperties({ active: false });
+      this.set('activePoi', null);
     }
   }
-});
+}

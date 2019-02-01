@@ -66,6 +66,7 @@
     "node": "6.* || >= 8.*"
   },
   "dependencies": {
+    "ember-cli-funnel": "^0.6.1",
     "install": "^0.12.2",
     "leaflet-iiif": "^2.0.1",
     "leaflet-minimap": "git://github.com/ecds/Leaflet-MiniMap.git#develop",

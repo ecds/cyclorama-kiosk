@@ -18,6 +18,7 @@ export default Component.extend({
     },
 
     newPoi(type) {
+      console.log('type')
       UIkit.offcanvas(document.getElementById('poi-detail')).hide();
       this.new(type)
     },

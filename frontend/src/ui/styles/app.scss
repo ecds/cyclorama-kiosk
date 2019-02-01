@@ -31,6 +31,14 @@ html {
   font-size: .8rem;
 }
 
+.to-left {     
+  left: 0;
+}
+
+.to-right {
+  left: 10vw;
+}
+
 .leaflet-container.painting {
   background: none;
   height:100vh;
@@ -48,6 +56,17 @@ html {
       transform-origin: right;
     }
   }
+}
+
+.multi-panels {
+  position: absolute;
+  .leaflet-container.painting {
+    width: 90vw;
+  }
+}
+
+.uk-button-text {
+  color: whitesmoke;
 }
 
 // .edit-view {
@@ -134,13 +153,15 @@ body,
       bottom: -6vh;
       left: 12vw;
     }
-
-
   }
 
   // img {
   //   height: 8vh;
   // }
+}
+
+.leaflet-layer {
+  transition: opacity 500ms;
 }
 
 .leaflet-control-attribution {
@@ -364,7 +385,7 @@ body,
       }
     }
 
-    &.alterations {
+    &.changes {
       &::-webkit-scrollbar-thumb {
         background-color: $purple;
       }
@@ -385,7 +406,7 @@ body,
     background: $red;
   }
 
-  &.alterations {
+  &.changes {
     background: $purple;
   }
 

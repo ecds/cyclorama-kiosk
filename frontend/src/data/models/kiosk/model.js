@@ -1,6 +1,8 @@
 import DS from 'ember-data';
-const { Model } = DS;
+const { Model, attr, hasMany } = DS;
 
-export default class KioskModel extends Model {
-
-}
+export default Model.extend({
+  title: attr('string'),
+  panels: hasMany('panel'),
+  pan: attr('string', { defaultValue: 'none' })
+});
