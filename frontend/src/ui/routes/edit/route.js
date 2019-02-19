@@ -4,21 +4,21 @@ import RSVP from 'rsvp';
 
 export default Route.extend({
   // model(params) {
-  //   return this.store.queryRecord('quad', { title: params.quad });
+  //   return this.store.queryRecord('panel', { title: params.panel });
   // },
 
   model(params) {
     return RSVP.hash({
-      quad: this.store.queryRecord('quad', { title: params.quad }),
+      panel: this.store.findRecord('panel', params.panel),
       tours: this.store.findAll('tour'),
       pois: this.store.findAll('poi')
     });
   },
 
   afterModel(model) {
-    let sw = L.CRS.Simple.pointToLatLng(L.point(0, model.quad.height), 8);
-    let ne = L.CRS.Simple.pointToLatLng(L.point(model.quad.width, 0), 8);
-    model.quad.setProperties({
+    let sw = L.CRS.Simple.pointToLatLng(L.point(0, model.panel.height), 8);
+    let ne = L.CRS.Simple.pointToLatLng(L.point(model.panel.width, 0), 8);
+    model.panel.setProperties({
       paintingBounds: new L.latLngBounds(
         [
           sw,
@@ -26,7 +26,7 @@ export default Route.extend({
         ]
       )
     });
-    model.quad.pois.forEach(poi => {
+    model.panel.pois.forEach(poi => {
       poi.setProperties({ show: true });
     });
   }

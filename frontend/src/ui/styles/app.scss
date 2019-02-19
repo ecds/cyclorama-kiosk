@@ -184,10 +184,14 @@ body,
     // font-size: 2vw;
 
     img {
-      animation: psst 10000ms ease-out infinite;
       height: 10vh;
       width: 10vh;
       opacity: .3;
+    }
+
+    img {
+      animation: psst 10000ms ease-out infinite;
+      color: white;
     }
 
     &.active-poi {
@@ -222,34 +226,96 @@ body,
 
 .jesse-dot {
   display: block;  
-  height: 100px;
+  height: 3vx;
   left: -$dot-offset;
   position: absolute;
   top: -$dot-offset;
-  width: 100px;
+  width: 3vx;
 }
 
 .dot {
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   position: relative;
   top: 24px;
   left: 24px;
   border: 2px solid #FFF;
   border-radius: 50%;
+  transition-property: height, width, top, left;
+  transition-duration: 300ms;
+  transition-timing-function: ease;
   z-index: 1000;
+  background: transparent;
 }
 
 .pulsate-ring {
-  width: 80px;
-  height: 80px;
+  pointer-events: none;
+  width: 150px;
+  height: 150px;
   position: absolute;
-  top: 0;
+  top: -28px;
+  left: -28px;
+  // bottom: 244;
   display: block;
-  background: rgba(5, 124, 255, 0.6);
+  // background: rgba(5, 124, 255, 0.6);
   border-radius: 50%;
-  opacity: 0;
+  // opacity: 0;
   animation: pulsate 2400ms ease-out infinite;
+
+  &.active-group {
+    animation: solid-pulsate 2400ms ease-out infinite;
+    opacity: 1;
+  }
+}
+
+@mixin highlight-dot {
+  height: 80px;
+  left: 4px;
+  top: 4px;
+  width: 80px;
+}
+
+@mixin highlight-ring {
+  animation: solid-pulsate 2400ms ease-out infinite;
+}
+
+.highlight-changes {
+  .dot {
+    &.changes {
+      @include highlight-dot;
+    }
+  }
+  .pulsate-ring {
+    &.changes {
+      @include highlight-ring;
+    }
+  }
+}
+
+.highlight-landmarks {
+  .dot {
+    &.landmarks {
+      @include highlight-dot;
+    }
+  }
+  .pulsate-ring {
+    &.landmarks {
+      @include highlight-ring;
+    }
+  }
+}
+
+.highlight-people {
+  .dot {
+    &.people {
+      @include highlight-dot;
+    }
+  }
+  .pulsate-ring {
+    &.people {
+      @include highlight-ring;
+    }
+  }
 }
 
 @keyframes pulsate {
@@ -263,6 +329,17 @@ body,
   100% {
     transform: scale(1.2);
     opacity: 0;
+  }
+}
+
+@keyframes solid-pulsate {
+  0% {
+    transform: scale(0.1);
+    opacity: .7;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(2);
   }
 }
 
@@ -379,12 +456,6 @@ body,
       }
     }
 
-    &.people {
-      &::-webkit-scrollbar-thumb {
-        background-color: $blue;
-      }
-    }
-
     &.changes {
       &::-webkit-scrollbar-thumb {
         background-color: $purple;
@@ -395,6 +466,7 @@ body,
 
 .poi-detail-nav {
   bottom: 0;
+  // left: 0;
   position: absolute;
   width: 100%;
 
@@ -459,4 +531,24 @@ form {
 img.leaflet-tile.leaflet-tile-loaded {
   width: 257px !important;
   height: 257px !important;
+}
+
+.jodit_container:not(.jodit_inline) {
+  background: unset;
+}
+
+.screen-saver {
+  transform: translateX(120%);
+  animation: scroll-left 20s linear infinite;
+  background: transparent;
+  color: #231f20;
+}
+
+@keyframes scroll-left {
+  0% {
+  transform: translateX(120%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }

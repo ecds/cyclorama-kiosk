@@ -1,5 +1,6 @@
 import DS from 'ember-data';
+import ENV from 'cyclorama-kiosk/config/environment'
 
 export default DS.RESTAdapter.extend({
-  host: 'http://otb.ecdsdev.org:3000'
+  host: ENV.APP.API_HOST
 });

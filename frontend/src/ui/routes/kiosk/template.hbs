@@ -1,7 +1,7 @@
-<div class='uk-offcanvas-content'>
+<div class={{concat 'uk-offcanvas-content highlight-' group}}>
   {{#poi-detail panel=panel}}
-
-  <div class='poi-detail-content uk-child-width-1-1 uk-overflow-auto styled-scrollbar {{activePoi.point.properties.type}}' uk-grid>
+  {{#if activePoi}}
+<div class='poi-detail-content uk-child-width-1-1 uk-overflow-auto styled-scrollbar {{activePoi.point.properties.type}}' uk-grid>
     <section class='uk-margin'>
       <article class='uk-article description uk-padding'>
         <h1 class='uk-h1'>{{activePoi.name}}</h1>
@@ -13,7 +13,7 @@
     <section>
       <div class="uk-position-relative uk-visible-toggle uk-light" id='poi-slider' uk-slider center=true>
         <ul class="uk-slider-items uk-grid uk-child-width-3-4" uk-grid>
-          {{#each poi.images as |image|}}
+          {{#each activePoi.images as |image|}}
           <li>
             <figure class='uk-panel uk-text-center'>
               <img src={{image.url}} alt={{image.caption}}>
@@ -21,6 +21,17 @@
             </figure>
           </li>
           {{/each}}
+          {{!-- <li class='uk-panel'>
+            <div class='uk-card uk-card-default uk-position-center uk-card-body uk-width-1-2'>
+              <ol>
+                {{#each poi.images as |image|}}
+                <li>
+                  {{image.caption}}
+                </li>
+                {{/each}}
+              </ol>
+            </div>
+          </li> --}}
         </ul>
 
         <a class="uk-position-center-left uk-slidenav-large uk-position-small gallery-arrow" href=''
@@ -36,61 +47,63 @@
     </section>
     {{/if}}
   </div>
-  <nav class='poi-detail-nav uk-margin uk-margin-remove-bottom uk-padding uk-padding-remove-right uk-padding-remove-left {{activePoi.point.properties.type}}' uk-grid>
-    <div class='uk-width-2-5 uk-padding-small uk-padding-remove-vertical'>
-      <div uk-grid class='uk-grid-collapse  uk-flex-inline uk-flex-center uk-flex-middle uk-align-left'>
+    <nav style='position: fixed;' class='poi-detail-nav uk-margin uk-margin-remove-bottom uk-padding uk-padding-remove-right uk-padding-remove-left {{activePoi.point.properties.type}}' uk-grid>
+      <div class='uk-width-2-5 uk-padding-small uk-padding-remove-vertical'>
+        <div uk-grid class='uk-grid-collapse  uk-flex-inline uk-flex-center uk-flex-middle uk-align-left'>
         {{#if activePoi.previous}}
-          <div class='uk-width-1-6'>
-            {{#uk-button color='link' on-click=(perform highlightPoi activePoi.previous)}}
-              {{fa-icon 'angle-left'}}
-            {{/uk-button}}
-          </div>
-          <div class='uk-width-5-6'>
-             {{#uk-button color='link' on-click=(perform highlightPoi activePoi.previous)}}
-             {{activePoi.previous.name}}
-            {{/uk-button}}
-          </div>
-          {{else}}
-          <div class='uk-width-1-1'></div>
-          {{/if}}
+        <div class='uk-width-1-6'>
+        {{#uk-button color='link' on-click=(perform highlightPoi activePoi.previous)}}
+        {{fa-icon 'angle-left'}}
+        {{/uk-button}}
+        </div>
+        <div class='uk-width-5-6'>
+        {{#uk-button color='link' on-click=(perform highlightPoi activePoi.previous)}}
+        {{activePoi.previous.name}}
+        {{/uk-button}}
+        </div>
+        {{else}}
+        <div class='uk-width-1-1'></div>
+        {{/if}}
+        </div>
       </div>
-    </div>
-    <div class='uk-width-1-5 uk-padding-remove uk-flex-inline uk-flex-center uk-flex-middle poi-detail-home'>
-      {{#uk-button color='link' on-click=(perform closePanel)}}
-      {{fa-icon 'home'}}
-      {{/uk-button}}
-    </div>
-    <div class='uk-width-2-5 uk-padding-small uk-padding-remove-vertical'>
-      <div uk-grid>
-      {{#if poi.next}}
-      <div class='uk-width-5-6'>
+      <div class='uk-width-1-5 uk-padding-remove uk-flex-inline uk-flex-center uk-flex-middle poi-detail-home'>
+        {{#uk-button color='link' on-click=(perform closePanel)}}
+        {{fa-icon 'home'}}
+        {{/uk-button}}
+      </div>
+      <div class='uk-width-2-5 uk-padding-small uk-padding-remove-vertical'>
+        <div uk-grid class='uk-grid-collapse  uk-flex-inline uk-flex-center uk-flex-middle uk-align-right'>
+        {{#if activePoi.next}}
+        <div class='uk-width-5-6'>
 
-      {{#uk-button color='link' on-click=(perform highlightPoi poi.next)}}
-      {{poi.next.name}}
-      {{/uk-button}}
-      </div>
-      <div class='uk-width-1-6'>
-        {{#uk-button color='link' on-click=(perform highlightPoi poi.next)}}
-      {{fa-icon 'angle-right'}}
-      {{/uk-button}}
+        {{#uk-button color='link' on-click=(perform highlightPoi activePoi.next)}}
+        {{activePoi.next.name}}
+        {{/uk-button}}
+        </div>
+        <div class='uk-width-1-6'>
+        {{#uk-button color='link' on-click=(perform highlightPoi activePoi.next)}}
+        {{fa-icon 'angle-right'}}
+        {{/uk-button}}
 
+        </div>
+        {{else}}
+        <div class='uk-width-1-1'></div>
+        {{/if}}
+        </div>
       </div>
-      {{/if}}
-      </div>
-    </div>
-  </nav>
-
+    </nav>
+  {{/if}}
   {{/poi-detail}}
 {{#if (eq scoot 'right')}}
 <div class='uk-position-left uk-flex uk-flex-middle'>
 {{#uk-button color='text' on-click=(perform switchPanel)}}
-<span uk-icon="icon: chevron-left; ratio: 10"></span>
+<span uk-icon="icon: chevron-left; ratio: 5" style='position: fixed; z-index: 1;'></span>
 {{/uk-button}}
   </div>
   {{/if}}
 
   {{#if activePanel.paintingBounds}}
-  <div class={{if (eq model.panels.length 2) (concat 'multi-panels to-' scoot)}}>
+  {{!-- <div> --}}
   {{#leaflet-map
   onLoad=(perform initMap)
   onResize=(perform reSize)
@@ -100,15 +113,15 @@
   crs=crs
   bounceAtZoomLimits=true
   zoomControl=false
-  maxZoom=11
+  maxZoom=10
   onMovestart=(perform resetTimer)
   class='painting'
   as |features|}}
 
   {{#each model.panels as |panel|}}
   {{features.tile
-    url=(concat 'https://s3.amazonaws.com/battleofatlanta/tiles/' panel.title '/{z}/{x}/{y}.png')
-    maxZoom=11
+    url=(concat tileHost panel.title '/{z}/{x}/{y}.png')
+    maxZoom=10
     minZoom=0
     tileSize=256
     continuousWorld=false
@@ -118,7 +131,7 @@
   {{/each}}
 
   {{#each activePanel.pois as |poi|}}
-  {{#if poi.show}}
+  {{!-- {{#if poi.show}} --}}
   {{#if poi.active}}
   {{!-- {{#if panel.active}} --}}
   {{features.geoJSON
@@ -133,18 +146,18 @@
   onClick=(perform highlightPoi poi)
   }}
   {{/if}}
-  {{/if}}
+  {{!-- {{/if}} --}}
   {{/each}}
 
 
   {{/leaflet-map}}
-  </div>
+  {{!-- </div> --}}
   {{/if}}
 
 {{#if (eq scoot 'left')}}
 <div class='uk-position-right uk-flex uk-flex-middle'>
 {{#uk-button color='text' on-click=(perform switchPanel)}}
-<span href="" uk-icon="icon: chevron-right; ratio: 10"></span>
+<span href="" uk-icon="icon: chevron-right; ratio: 5"></span>
 {{/uk-button}}
   </div>
   {{/if}}
@@ -161,11 +174,13 @@
     <div class='uk-width-1-2 uk-transform-origin-bottom-center uk-child-width-1-3 uk-grid-small poi-buttons' uk-grid>
       {{#each buttons as |button index|}}
       <div class='poi-nav-button uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse' uk-grid>
-        <div class='uk-margin-remove poi-nav-button uk-text-center uk-flex-center {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoiType' button}}>
+        {{!-- <div class='uk-margin-remove poi-nav-button uk-text-center uk-flex-center {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoiType' button}}> --}}
+        <div class='uk-margin-remove poi-nav-button uk-text-center uk-flex-center active-poi' role='button' onclick={{perform highlightGroup button.label}}>
           <img class='uk-border-circle' src={{concat '/' button.icon}} alt={{concat 'Button to highlight ' button.label ' in the painting.'}}>
           </div>
-          <div class='uk-text-center uk-flex-center'>
-          <p>{{button.label}}</p>
+
+            <div class='uk-text-center uk-flex-center'>
+          <p class={{if button.active 'active-poi'}}>{{button.label}}</p>
         </div>
       </div>
       {{/each}}
@@ -187,5 +202,7 @@
   {{/if}}
 
 </div>
-
+{{!-- {{#if screenSaver}}
+  <h1 class='uk-heading-hero screen-saver uk-position-top-left uk-overlay uk-overlay-default uk-padding-left'>TOUCH TO EXPLORE {{scoot}}</h1>
+  {{/if}} --}}
 {{!-- <div style='height: 457px; width: 20vw; position: absolute; bottom: 0; left: 0; background: red;'></div> --}}

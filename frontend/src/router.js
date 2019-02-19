@@ -7,8 +7,10 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('edit', { path: '/edit/:quad' });
-  this.route('quad', { path: '/quad/:quad' });
+  if (config.environment === 'development') {
+    this.route('edit', { path: '/edit/:panel' });
+  }
+  // this.route('quad', { path: '/quad/:quad' });
   this.route('kiosk', { path: '/kiosk/:kiosk' });
 });
 

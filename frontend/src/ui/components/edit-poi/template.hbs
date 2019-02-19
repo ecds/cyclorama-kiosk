@@ -21,7 +21,8 @@
   <div class="uk-margin">
     <label class='uk-form-label' for='description'>Description</label>
     <div class='uk-form-controls'>
-      {{pell-editor class='poi-wysiwyg' value=poi.description onChange=(action (mut poi.description)) pellOptions=options}}
+      {{!-- {{pell-editor class='poi-wysiwyg' value=poi.description onChange=(action (mut poi.description)) pellOptions=options}} --}}
+      {{ember-jodit value=(if poi.description poi.description '') onChange=(action (mut poi.description))}}
     </div>
   </div>
 
@@ -39,7 +40,8 @@
         <div class='uk-margin'>
           <label class='uk-form-label' for={{concat (dasherize poi.name) '-' index '-caption'}}>Caption</label>
           <div class='uk-form-controls'>
-            {{pell-editor class='caption-wysiwyg' value=image.caption onChange=(action (mut image.caption)) pellOptions=options}}
+            {{!-- {{pell-editor class='caption-wysiwyg' value=image.caption onChange=(action (mut image.caption)) pellOptions=options}} --}}
+            {{ember-jodit value=(if image.caption image.caption '') onChange=(action (mut image.caption))}}
           </div>
         </div>
         {{#uk-button color='link' on-click=(action 'removeImage' poi image)}}Remove{{/uk-button}}

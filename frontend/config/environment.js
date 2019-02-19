@@ -1,7 +1,11 @@
 /* eslint-env node */
 'use strict';
 
+const http = require('http');
+const fs = require('fs');
+
 module.exports = function(environment) {
+  const CMS_SERVER = 'http://otb.ecdsdev.org:3000';
   let ENV = {
     'ember-resolver': {
       features: {
@@ -32,12 +36,32 @@ module.exports = function(environment) {
   };
 
   if (environment === 'development') {
-    ENV.APP.API_HOST = 'http://otb.ecdsdev.org:3000';
+    ENV.APP.API_HOST = CMS_SERVER;
+    ENV.APP.TILE_HOST = 'https://s3.amazonaws.com/battleofatlanta/tiles/';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
+  }
+
+  if (environment === 'kiosk') {
+    // When building for the kiosk, we want to get fresh JSON files from the CMS.
+    // Add the files as assets.
+    const localPath = 'public/assets/kiosks/'
+    // This might be silly, but this gives us an array for 1-4
+    const kiosks = [...Array(5).keys()];
+    kiosks.shift();
+    kiosks.forEach(function(k) {
+      let file = fs.createWriteStream(`${localPath}${k}.json`);
+      http.get(`${CMS_SERVER}/kiosks/${k}`, function(response) {
+        response.pipe(file);
+      });
+    })
+    ENV.APP.API_HOST = '/assets';
+    ENV.APP.TILE_HOST = 'http://tiles.cycloramakiosk.atlantahistorycenter.com/';
+    ENV.APP.REQUEST_SUFFIX = '.json';
+    ENV.APP.IMAGE_ROOT_PATH = '/assets/images';
   }
 
   if (environment === 'test') {

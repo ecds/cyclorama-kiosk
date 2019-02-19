@@ -3,17 +3,24 @@ import { set } from '@ember/object';
 import { task, timeout } from 'ember-concurrency';
 import { action, computed } from '@ember-decorators/object';
 import UIkit from 'uikit';
+import ENV from 'cyclorama-kiosk/config/environment'
 
 export default class KioskController extends ApplicationController {
+  tileHost = ENV.APP.TILE_HOST;
+  group = null;
+
   resetTimer = task(function* () {
-    yield timeout(90000);
-    if (!this.activePoi) return;
-    document.getElementById('poi-slider').removeEventListener('beforeitemshow', this.get('resetTimer').perform());
-    return yield this.get('closePanel').perform();
+    this.set('screenSaver', false);
+    yield timeout(120000);
+    
+    if (document.body.contains(document.getElementById('poi-slider'))) {
+      document.getElementById('poi-slider').removeEventListener('beforeitemshow', this.get('resetTimer').perform());
+    }
+    // yield this.get('closePanel').perform();
+    location.reload();
   }).restartable()
 
   watchScroll() {
-    // let reset = yield this.get('resetTimer').perform();
     let poiContent = document.getElementsByClassName('poi-detail-content')[0];
     poiContent.addEventListener('scroll', () =>{
       this.get('resetTimer').perform()
@@ -27,13 +34,14 @@ export default class KioskController extends ApplicationController {
       if (event.srcElement.className === 'uk-first-column') return;
       this.get('resetTimer').perform();
     });
-    // UIkit.util.off(document.getElementById('poi-slider'), 'itemshown', this.get('resetTimer').perform());
   }
 
   highlightPoi = task(function* (poi) {
     this.set('showingTours', false);
-    // this.removeMinMap();
     this.send('clearActive');
+    // TODO: Fix this! Without this 1ms delay, the bottom nav buttons for the POI detail
+    // get all messed up :(
+    yield timeout(1);
     this.set('activePoi', poi);
     poi.setProperties({ active: true });
     yield this.get('flyToPoi').perform(poi);
@@ -61,6 +69,12 @@ export default class KioskController extends ApplicationController {
     })
   })
 
+  highlightGroup = task(function* (group) {
+    this.set('group', group);
+    yield timeout(2400);
+    this.set('group', null);
+  })
+
   @action  
   switchPoiType(button) {
     if (button.active) {
@@ -81,15 +95,6 @@ export default class KioskController extends ApplicationController {
   }
 
   switchPanel = task(function* () {
-    // if (this.model.pan === 'left') {
-    //   this.model.setProperties({
-    //     pan: 'none'
-    //   });
-    // } else {
-    //   this.model.setProperties({
-    //     pan: 'left'
-    //   });
-    // }
     this.model.panels.forEach(panel => {
       panel.setProperties({
         active: !panel.active
@@ -104,28 +109,25 @@ export default class KioskController extends ApplicationController {
           opacity: 0
         });
       }
+      this.set('paintingSet', false);
+      this.get('offsetCenter').perform();
     });
-    // if (this.activePanel.title == 'p5b') {
-    //   if (this.model.pan === 'left') {
-    //     this.model.setProperties({
-    //       pan: 'right'
-    //     });
-    //   }
-    // }
-    yield this.get('reset').perform()
+
+    yield this.get('reset').perform();
+    yield this.get('closePanel').perform();
     this.addMiniMap();
   })
 
   @computed('activePanel')
   get scoot() {
-    if ((this.model.title === '4') && (this.activePanel.title === 'p4')) {
-      return 'right';
+    if ((this.model.title === '4') && (this.activePanel.title === 'p1')) {
+      return 'left';
     } else if ((this.model.title === '4') && (this.activePanel.title === 'p5')) {
-      return 'left';
-    } else if ((this.model.title === '1') && (this.activePanel.title === 'p1')) {
-      return 'left';
-    } else if ((this.model.title === '1') && (this.activePanel.title === 'p5')) {
       return 'right';
+    } else if ((this.model.title === '1') && (this.activePanel.title === 'p4')) {
+      return 'right';
+    } else if ((this.model.title === '1') && (this.activePanel.title === 'p5')) {
+      return 'left';
     } else {
       return null;
     }

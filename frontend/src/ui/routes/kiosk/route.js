@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 
 export default class KioskRoute extends Route {
   model(params) {
-   return this.store.findRecord('kiosk', params.kiosk);
+   return this.store.queryRecord('kiosk', { title: params.kiosk });
   }
   
   setupController(controller, model) {
@@ -22,6 +22,9 @@ export default class KioskRoute extends Route {
   }
 
   afterModel(model) {
+    window.addEventListener("touchstart", () => {
+      this.controllerFor('kiosk').get('resetTimer').perform()
+    }, false);
     model.panels.forEach(panel => {
       if (panel.opacity === 1) {
         panel.setProperties({

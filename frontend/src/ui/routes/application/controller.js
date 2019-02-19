@@ -2,6 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember-decorators/object';
 import { isPresent } from '@ember/utils';
 import { task, waitForEvent, timeout } from 'ember-concurrency';
+import ENV from 'cyclorama-kiosk/config/environment'
 /* global L */
 
 const COLORS = {
@@ -25,6 +26,7 @@ export default class ApplicationController extends Controller {
   crs = L.CRS.Simple;
   paintingSet = false;
   miniMap = null;
+  panelBounds = {};
 
   setStyle() {
     return {
@@ -39,7 +41,7 @@ export default class ApplicationController extends Controller {
       this.removeMinMap();
     }
     const miniPainting = new L.tileLayer(
-      `https://s3.amazonaws.com/battleofatlanta/tiles/${this.activePanel.title}/{z}/{x}/{y}.png`
+      `${ENV.APP.TILE_HOST}${this.activePanel.title}/{z}/{x}/{y}.png`
     );
     let miniMap = new L.Control.MiniMap(
       miniPainting, {
@@ -54,8 +56,8 @@ export default class ApplicationController extends Controller {
         centerFixed: this. activePanel.paintingBounds.getCenter(),
         mapOptions: {
           maxBounds: this. activePanel.paintingBounds.pad(0),
-          minZoom: 0,
-          maxZoom: 0
+          minZoom: 1,
+          maxZoom: 1
         }
       }
     );
@@ -69,9 +71,10 @@ export default class ApplicationController extends Controller {
   }
 
   closePanel = task(function* () {
-    yield this.panel.hide();
-    this.get('reCenter').perform();
     this.send('clearActive');
+    yield this.panel.hide();
+    console.log('call recenter')
+    return yield this.get('reCenter').perform();
   })
 
   showPanel  = task(function* () {
@@ -79,25 +82,24 @@ export default class ApplicationController extends Controller {
   })
 
   reSize  = task(function* (/*event*/) {
-    this.sizePanControls();
+    yield timeout(1000);
+    yield this.get('offsetCenter').perform();
     if (this.activePoi) {
       yield this.get('flyToPoi').perform(this.activePoi);
     } else {
-      // yield this. activePanel.map.fitBounds(this. activePanel.paintingBounds);
-      yield this.get('offsetCenter').perform();
-      yield this.get('reCenter').perform();
+      //
     }
   }).restartable()
 
-  setPainting = task(function* (event) {
-    console.log(event);
+  setPainting = task(function* (/*event*/) {
     if (this.paintingSet) return;
     this.set('paintingSet', true);
     yield this.get('offsetCenter').perform();
     this.sizePanControls();
-    return true
-  })
+    return true;
+  }).drop()
 
+  @action
   sizePanControls() {
     let element = document.getElementById('pan-controls');
     if (element === null) return;
@@ -166,14 +168,15 @@ export default class ApplicationController extends Controller {
     return allSet;
   })
 
-  highlightPoi  = task(function* (poi) {
+  highlightPoi  = task(function* (poi, event) {
+    if (event.originalEvent.target.classList.contains('pulsate-ring')) return;
     this.set('showingTours', false);
     // this.removeMinMap();
     this.send('clearActive');
     this.set('activePoi', poi);
     poi.setProperties({ active: true });
     yield this.get('flyToPoi').perform(poi);
-  })
+  }).drop()
 
   flyToPoi  = task(function* (poi) {
     this.suspendInteractions();
@@ -188,31 +191,79 @@ export default class ApplicationController extends Controller {
     yield this.get('panToCenter').perform();
   })
 
-  offsetCenter  = task(function* () {
+  offsetCenter  = task(function* (/*e*/) {
     /*
       Extend the painting's bounds to include the bottom navigation.
       This ensures the painting will always sit right on top of the navigation.
       The bottom navigation is 20vh plus 40px margin
     */
-    let { map, paintingBounds } = this. activePanel;
-    let fullBounds = L.latLngBounds(paintingBounds.getSouthWest, paintingBounds.getNorthEast());
-    let paintingSouthWestPoint = map.options.crs.latLngToPoint(paintingBounds.getSouthWest(), map.getZoom());
-    let navSouthWestPoint = L.point(0, paintingSouthWestPoint.y + (window.innerHeight * .2));
+    let { map, paintingBounds } = this.activePanel;
+    // Calling `extend` on a `L.latLngBounds` object alters it. So we make a copy.
+    // L.rectangle(paintingBounds, {color: 'deeppink'}).addTo(map);
+    let copyPaintingBounds = L.latLngBounds(paintingBounds.getSouthWest(), paintingBounds.getNorthEast());
+    if (this.model.panels && this.model.panels.length === 2) {
+      this.addPanBounds(copyPaintingBounds);
+    }
+    // let paintingSouthWestPoint = map.options.crs.latLngToPoint(paintingBounds.getSouthWest(), map.getZoom());
+    // let navSouthWestPoint = L.point(0, paintingSouthWestPoint.y + (window.innerHeight * .2));
+    let navSouthWestPoint = this.offsetSouthWest();
     let navSouthwest = map.options.crs.pointToLatLng(navSouthWestPoint, map.getZoom());
-
-    let navBounds = L.latLngBounds(paintingBounds.getSouthEast(), navSouthwest);
-    fullBounds.extend(navBounds);
-    map.fitBounds(fullBounds.pad(.01), {
+    
+    let navBounds = L.latLngBounds(copyPaintingBounds.getSouthEast(), navSouthwest);
+    copyPaintingBounds.extend(navBounds);
+    this.set('panelBounds', copyPaintingBounds.pad(.01));
+    // yield timeout(300);
+    map.fitBounds(copyPaintingBounds.pad(.01), {
       animate: false
     });
     yield timeout(300);
-    map.setMaxBounds(fullBounds);
+    map.setMaxBounds(copyPaintingBounds.pad(.6));
     map.setMinZoom(map.getZoom() - .5);
   }).restartable()
+
+  addPanBounds(copyPaintingBounds) {
+    let { map } = this. activePanel;
+    // L.rectangle(copyPaintingBounds).addTo(map);
+    if (this.scoot === 'right') {
+      let paintingSouthWestPoint = map.options.crs.latLngToPoint(copyPaintingBounds.getSouthWest(), map.getZoom());
+      let panSouthWestPoint = L.point(paintingSouthWestPoint.x - (window.innerWidth * .05), 0);
+      let panSouthWestLatLng = map.options.crs.pointToLatLng(panSouthWestPoint, map.getZoom());
+      let panBounds = L.latLngBounds(panSouthWestLatLng, copyPaintingBounds.getNorthEast());
+      return copyPaintingBounds.extend(panBounds);
+    } else if (this.scoot === 'left') {
+      let paintingNorthEastPoint = map.options.crs.latLngToPoint(copyPaintingBounds.getNorthEast(), map.getZoom());
+      let panNorthEastPoint = L.point(paintingNorthEastPoint.x + (window.innerWidth * .05), 0);
+      let panNorthEastLatLng = map.options.crs.pointToLatLng(panNorthEastPoint, map.getZoom());
+      let panBounds = L.latLngBounds(copyPaintingBounds.getSouthEast(), panNorthEastLatLng);
+      return copyPaintingBounds.extend(panBounds);
+    }
+  }
+
+  offsetSouthWest() {
+    let { map, paintingBounds } = this. activePanel;
+    let paintingSouthWestPoint = map.options.crs.latLngToPoint(paintingBounds.getSouthWest(), map.getZoom());
+    let southWestY = paintingSouthWestPoint.y + (window.innerHeight * .2);
+    // if (this.model.panels.length === 2) {
+    //   return L.point((0 - (window.innerWidth * .05)), southWestY);
+    // } else {
+      return L.point(0, southWestY);
+    // }
+  }
+
+  offsetNorthEast() {
+    let { map, paintingBounds } = this. activePanel;
+    let paintingNorthEastPoint = map.options.crs.latLngToPoint(paintingBounds.getNorthEast(), map.getZoom());
+    let northEastX = paintingNorthEastPoint.x + (window.innerWidth * .1);
+    // if (this.model.panels.length === 2) {
+    //   return L.point((0 - (window.innerWidth * .1)), northEastX);
+    // } else {
+      return L.point(0, northEastX);
+    // }
+  }
   
   panToCenter  = task(function* () {
     this. activePanel.map.flyToBounds(
-      this. activePanel.paintingBounds, {
+      this.panelBounds, {
         animate: false
       }
     );
@@ -231,7 +282,7 @@ export default class ApplicationController extends Controller {
     let marker = L.marker(
       point, {
         icon: L.divIcon({
-          html: `<div class="jesse-dot"><div class="dot" style='background-color: ${COLORS[feature.properties.type].dot}'></div><div class="pulsate-ring" style='background-color: ${COLORS[feature.properties.type].ring}'></div></div>`
+          html: `<div class="jesse-dot"><div class="dot ${feature.properties.type}" style='background-color: ${COLORS[feature.properties.type].dot}'></div><div class="pulsate-ring ${feature.properties.type}" style='background-color: ${COLORS[feature.properties.type].ring}'></div></div>`
         })
       }
     );
