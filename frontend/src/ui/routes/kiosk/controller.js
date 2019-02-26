@@ -7,6 +7,7 @@ import ENV from 'cyclorama-kiosk/config/environment'
 
 export default class KioskController extends ApplicationController {
   tileHost = ENV.APP.TILE_HOST;
+  imagePath = ENV.APP.IMAGE_ROOT_PATH;
   group = null;
 
   resetTimer = task(function* () {
@@ -16,8 +17,9 @@ export default class KioskController extends ApplicationController {
     if (document.body.contains(document.getElementById('poi-slider'))) {
       document.getElementById('poi-slider').removeEventListener('beforeitemshow', this.get('resetTimer').perform());
     }
-    // yield this.get('closePanel').perform();
-    location.reload();
+    // TODO Consider doing a reload. Maybe a separate, longer, timer.
+    // location.reload();
+    yield this.get('closePanel').perform();
   }).restartable()
 
   watchScroll() {
@@ -25,7 +27,6 @@ export default class KioskController extends ApplicationController {
     poiContent.addEventListener('scroll', () =>{
       this.get('resetTimer').perform()
     });
-    // yield waitForEvent(poiContent, 'scroll', reset);
   }
 
   watchSlider() {
@@ -118,6 +119,7 @@ export default class KioskController extends ApplicationController {
     this.addMiniMap();
   })
 
+  // FIXME: This is backwards now that the order of the kiosks got flipped.
   @computed('activePanel')
   get scoot() {
     if ((this.model.title === '4') && (this.activePanel.title === 'p1')) {

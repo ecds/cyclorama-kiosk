@@ -16,7 +16,7 @@
           {{#each activePoi.images as |image|}}
           <li>
             <figure class='uk-panel uk-text-center'>
-              <img src={{image.url}} alt={{image.caption}}>
+              <img src={{if image.name (concat imagePath image.name) image.url}} alt={{image.caption}}>
               <figcaption class='uk-text-left uk-margin-top uk-padding-bottom'>{{{image.caption}}}</figcaption>
             </figure>
           </li>

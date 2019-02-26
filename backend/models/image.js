@@ -4,6 +4,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var ImageSchema = new Schema({
     poi: { type: ObjectId, ref: 'Poi' },
+    name: String,
     url: String,
     caption: String,
     position: Number

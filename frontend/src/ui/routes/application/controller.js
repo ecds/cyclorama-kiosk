@@ -73,7 +73,6 @@ export default class ApplicationController extends Controller {
   closePanel = task(function* () {
     this.send('clearActive');
     yield this.panel.hide();
-    console.log('call recenter')
     return yield this.get('reCenter').perform();
   })
 
@@ -159,7 +158,6 @@ export default class ApplicationController extends Controller {
     // map.on('click', function(event){console.log(event)});
 
     yield waitForEvent(this. activePanel.map, 'moveend');
-
     this.enableInteraction();
     if (this.miniMap === null) {
       this.addMiniMap();
@@ -171,7 +169,6 @@ export default class ApplicationController extends Controller {
   highlightPoi  = task(function* (poi, event) {
     if (event.originalEvent.target.classList.contains('pulsate-ring')) return;
     this.set('showingTours', false);
-    // this.removeMinMap();
     this.send('clearActive');
     this.set('activePoi', poi);
     poi.setProperties({ active: true });
@@ -198,14 +195,13 @@ export default class ApplicationController extends Controller {
       The bottom navigation is 20vh plus 40px margin
     */
     let { map, paintingBounds } = this.activePanel;
-    // Calling `extend` on a `L.latLngBounds` object alters it. So we make a copy.
+    // Draw rectangles of the bounds for debugging.
     // L.rectangle(paintingBounds, {color: 'deeppink'}).addTo(map);
+    // Calling `extend` on a `L.latLngBounds` object alters it. So we make a copy.
     let copyPaintingBounds = L.latLngBounds(paintingBounds.getSouthWest(), paintingBounds.getNorthEast());
     if (this.model.panels && this.model.panels.length === 2) {
       this.addPanBounds(copyPaintingBounds);
     }
-    // let paintingSouthWestPoint = map.options.crs.latLngToPoint(paintingBounds.getSouthWest(), map.getZoom());
-    // let navSouthWestPoint = L.point(0, paintingSouthWestPoint.y + (window.innerHeight * .2));
     let navSouthWestPoint = this.offsetSouthWest();
     let navSouthwest = map.options.crs.pointToLatLng(navSouthWestPoint, map.getZoom());
     
@@ -217,7 +213,7 @@ export default class ApplicationController extends Controller {
       animate: false
     });
     yield timeout(300);
-    map.setMaxBounds(copyPaintingBounds.pad(.6));
+    map.setMaxBounds(copyPaintingBounds.pad(.7));
     map.setMinZoom(map.getZoom() - .5);
   }).restartable()
 

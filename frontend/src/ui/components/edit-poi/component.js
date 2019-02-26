@@ -12,12 +12,13 @@ export default Component.extend({
     const file = event.target.files[0];
     let response = yield fetch(`http://otb.ecdsdev.org:3000/sign-s3?file-name=${file.name}&file-type=${file.type}`);
     let signature = yield response.json();
-    let upload = yield fetch(signature.signedRequest, {
+    yield fetch(signature.signedRequest, {
       method: 'PUT',
       body: file
     });
     image.setProperties({
-      url: signature.url
+      url: signature.url,
+      name: file.name
     });
     return yield image.save();
   }),

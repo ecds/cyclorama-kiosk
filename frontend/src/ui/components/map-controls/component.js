@@ -1,16 +1,18 @@
 import Component from '@ember/component';
+import { action } from '@ember-decorators/object';
 /* global L */
 
-export default Component.extend({
-  tagName: '',
-  disableZoomIn: false,
-  disableZoomOut: false,
+// export default Component.extend({
+export default class MapControlsComponent extends Component {
+  tagName = 'span';
+  disableZoomIn = false;
+  disableZoomOut = false;
 
   didInsertElement() {
     this.map.on('zoomend', () => {
       this.toggleEnabled();
     })
-  },
+  }
 
   // 12.201.78.71
 
@@ -26,27 +28,33 @@ export default Component.extend({
     } else {
       this.set('disableZoomOut', false);
     }
-  },
+  }
 
-  actions: {
-    pan(direction) {
-      if (direction === 'down') {
-        this.map.panBy(L.point(0, 500));
-      } else if (direction === 'up') {
-        this.map.panBy(L.point(0, -500));
-      } else if (direction === 'left') {
-        this.map.panBy(L.point(-500, 0));
-      } else if (direction === 'right') {
-        this.map.panBy(L.point(500, 0));
-      }
-    },
-
-    zoomIn() {
-      this.map.zoomIn(.2);
-    },
-
-    zoomOut() {
-      this.map.zoomOut(.2);
+  @action
+  pan(direction) {
+    if (direction === 'down') {
+      this.map.panBy(L.point(0, 500));
+    } else if (direction === 'up') {
+      this.map.panBy(L.point(0, -500));
+    } else if (direction === 'left') {
+      this.map.panBy(L.point(-500, 0));
+    } else if (direction === 'right') {
+      this.map.panBy(L.point(500, 0));
     }
   }
-});
+
+  @action
+  zoomIn() {
+    this.map.zoomIn(.2);
+  }
+
+  @action
+  zoomOut() {
+    this.map.zoomOut(.2);
+  }
+
+  @action
+  reload() {
+    location.reload(true);
+  }
+}

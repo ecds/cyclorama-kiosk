@@ -38,6 +38,7 @@ module.exports = function(environment) {
   if (environment === 'development') {
     ENV.APP.API_HOST = CMS_SERVER;
     ENV.APP.TILE_HOST = 'https://s3.amazonaws.com/battleofatlanta/tiles/';
+    ENV.APP.IMAGE_ROOT_PATH = 'https://s3.amazonaws.com/battleofatlanta/';
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;
@@ -61,7 +62,7 @@ module.exports = function(environment) {
     ENV.APP.API_HOST = '/assets';
     ENV.APP.TILE_HOST = 'http://tiles.cycloramakiosk.atlantahistorycenter.com/';
     ENV.APP.REQUEST_SUFFIX = '.json';
-    ENV.APP.IMAGE_ROOT_PATH = '/assets/images';
+    ENV.APP.IMAGE_ROOT_PATH = 'http://tiles.cycloramakiosk.atlantahistorycenter.com/images/';
   }
 
   if (environment === 'test') {

@@ -23,10 +23,7 @@ export default class EditController extends ApplicationController {
 
     yield waitForEvent(this. activePanel.map, 'moveend');
 
-    // this.enableInteraction();
-    // if (this.miniMap === null) {
-    //   this.addMiniMap();
-    // }
+    this.enableInteraction();
     let allSet = yield timeout(300);
     return allSet;
   })
