@@ -1,0 +1,28 @@
+    <div class='uk-position-center uk-padding'>
+    <div class='uk-animation-slide-bottom {{unless active 'uk-animation-reverse'}} uk-child-width-1-4@l uk-child-width-1-1@m uk-margin-auto-vertical' uk-grid uk-height-match target='> div > .uk-card'>
+        {{!-- <header class='uk-width-1-1 uk-text-center'>
+            <h1 class='uk-text-primary uk-heading-hero tour-heading'>These Are Tours!</h1>
+        </header> --}}
+        {{#each tours as |tour|}}
+    <div>
+        <div onclick={{action 'startTour' tour}} class='uk-card uk-card-default'>
+            <div class='uk-card-media-top uk-cover-container uk-height-large'>
+                <img uk-cover src='https://battleofatlanta.digitalscholarship.emory.edu/media/tours/Unknown_1400x0.jpeg' alt=''>
+            </div>
+            <div class='uk-card-body uk-inline'>
+                <h2 class=''>{{tour.name}}</h2>
+                {{{tour.intro}}}
+                <section class='uk-text-center uk-padding'  style=''>
+                    {{#uk-button color='primary' on-click=(action 'startTour' tour)}}Start Tour{{/uk-button}}
+                </section>
+            </div>
+        </div>
+    </div>
+        {{/each}}
+ 
+    <div class='uk-width-1-1 uk-text-center'>
+        {{#uk-button size='large' color='primary' on-click=hide}}
+          {{fa-icon 'undo'}} Back to painting{{/uk-button}}
+        </div>
+</div>
+</div>

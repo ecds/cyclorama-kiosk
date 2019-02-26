@@ -1,0 +1,71 @@
+{{yield}}
+{{!-- <button class="uk-offcanvas-close" type="button" onclick=closePanel uk-close></button> --}}
+<form class="uk-form-stacked">
+  <h2>Metadata</h2>
+  <div class="uk-margin">
+    <label class="uk-form-label" for={{concat 'name-' poi.id}}>Title</label>
+    <div class="uk-form-controls">
+      {{input class='uk-input' id=(concat 'name-' poi.id) placeholder='POI Title' value=poi.name}}
+    </div>
+  </div>
+  <div class="uk-margin">
+    <label class="uk-form-label" for={{concat 'type-' poi.id}}>POI Type</label>
+    <div class="uk-form-controls">
+      <select class='uk-select' id={{concat 'type-' poi.id}} onchange={{action (mut poi.point.properties.type) value="target.value"}}>
+        {{#each types as |type|}}
+          <option value={{type}} selected={{eq type poi.point.properties.type}}>{{uppercase type}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+  <div class="uk-margin">
+    <label class='uk-form-label' for='description'>Description</label>
+    <div class='uk-form-controls'>
+      {{!-- {{pell-editor class='poi-wysiwyg' value=poi.description onChange=(action (mut poi.description)) pellOptions=options}} --}}
+      {{ember-jodit value=(if poi.description poi.description '') onChange=(action (mut poi.description))}}
+    </div>
+  </div>
+
+  <h2>Images</h2>
+  <div class='uk-child-width-1-2 uk-grid-match' uk-grid>
+    {{#each poi.images as |image index|}}
+      <div>
+        <div class='uk-margin'>
+          <input type='file' onchange={{perform uploadImage image}}>
+          <label class='uk-form-label' for={{concat (dasherize poi.name) '-' index}}>URL</label>
+          <div class='uk-form-controls'>
+            {{input class='uk-input' id=(concat (dasherize poi.name) '-' index) value=image.url}}
+          </div>
+        </div>
+        <div class='uk-margin'>
+          <label class='uk-form-label' for={{concat (dasherize poi.name) '-' index '-caption'}}>Caption</label>
+          <div class='uk-form-controls'>
+            {{!-- {{pell-editor class='caption-wysiwyg' value=image.caption onChange=(action (mut image.caption)) pellOptions=options}} --}}
+            {{ember-jodit value=(if image.caption image.caption '') onChange=(action (mut image.caption))}}
+          </div>
+        </div>
+        {{#uk-button color='link' on-click=(action 'removeImage' poi image)}}Remove{{/uk-button}}
+      </div>
+      <div>
+        <img src={{image.url}} data-width='' data-height='' alt={{image.url}}>
+      </div>
+      <div class='uk-width-1-1'>
+        <hr>
+      </div>
+    {{/each}}
+    <div>
+      {{#uk-button color='primary' on-click=(action 'addImage' poi)}}Add Image{{/uk-button}}
+    </div>
+  </div>
+  <div class='uk-child-width-auto@s' uk-grid>
+    <div>
+      {{#uk-button color='primary' on-click=save}}save{{/uk-button}}
+    </div>
+    <div>
+      {{#uk-button color='secondary' on-click=cancel}}cancel{{/uk-button}}
+    </div>
+    <div>
+      {{#uk-button color='link' on-click=delete}}delete{{/uk-button}}
+    </div>
+  </div>
+</form>

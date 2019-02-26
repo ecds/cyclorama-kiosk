@@ -1,0 +1,47 @@
+<div class='uk-width-1-1 uk-child-width-1-2 uk-margin-collapse map-controls' uk-grid>
+  {{!-- Zoom Controls --}}
+  <div class='uk-grid-collapse uk-child-width-1-1 zoom-controls' uk-grid>
+      {{!-- <div class='uk-flex uk-flex-center uk-flex-bottom'> --}}
+        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button color='link' on-click=(action 'zoomIn') disabled=disableZoomIn}}{{fa-icon 'plus'}}<br>Zoom in{{/uk-button}}</div>
+        {{!-- <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button class='zoom-button' color='secondary' size='small' on-click=reCenter}}{{fa-icon 'undo'}}{{/uk-button}}</div> --}}
+        <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button color='link' on-click=(action 'zoomOut') disabled=disableZoomOut}}{{fa-icon 'minus'}}<br>Zoom out{{/uk-button}}</div>
+      {{!-- </div> --}}
+        {{!-- <div class='uk-flex uk-flex-center uk-flex-middle'>{{#uk-button color='link' on-click=reCenter}}<br>Re-center{{/uk-button}}</div> --}}
+        <div class='uk-padding-small'></div>
+  </div>
+  
+  {{!-- Pan Controls --}}
+  <div class='uk-flex uk-flex-right uk-width-1-2'>
+  <div class='pan-controls uk-margin-top' id='pan-controls'>
+    <span  id='re-center-button' role='button' tabindex=0 onclick={{action 'reload'}}>
+    {{fa-icon 'home'}}
+  </span>
+    <span role='button' tabindex=0 onclick={{action 'pan' 'up'}} class="quarter quarter1 uk-flex uk-flex-center">
+      <span class='uk-flex uk-flex-middle button'>
+        {{fa-icon 'angle-up'}}
+      </span>
+    </span>
+    <span role='button' tabindex=0 onclick={{action 'pan' 'right'}} class="quarter quarter2 uk-flex uk-flex-center">
+      <span class='uk-flex uk-flex-middle button'>
+        {{fa-icon 'angle-right'}}
+      </span>
+    </span>
+    <span role='button' tabindex=0 onclick={{action 'pan' 'left'}} class="quarter quarter3 uk-flex uk-flex-center">
+      <span class='uk-flex uk-flex-middle  button'>
+        {{fa-icon 'angle-left'}}
+      </span>
+    </span>
+    <span role='button' tabindex=0 onclick={{action 'pan' 'down'}} class="quarter quarter4 uk-flex uk-flex-center">
+      <span class='uk-flex uk-flex-middle button'>
+        {{fa-icon 'angle-down' }}
+      </span>
+    </span>
+  </div>
+  </div>
+  
+  
+  {{!-- <div class='uk-width-1-1 uk-flex uk-flex-center uk-flex-middle'>
+    Recenter
+  </div> --}}
+
+</div>

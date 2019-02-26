@@ -1,0 +1,208 @@
+<div class={{concat 'uk-offcanvas-content highlight-' group}}>
+  {{#poi-detail panel=panel}}
+  {{#if activePoi}}
+<div class='poi-detail-content uk-child-width-1-1 uk-overflow-auto styled-scrollbar {{activePoi.point.properties.type}}' uk-grid>
+    <section class='uk-margin'>
+      <article class='uk-article description uk-padding'>
+        <h1 class='uk-h1'>{{activePoi.name}}</h1>
+        {{{activePoi.description}}}
+      </article>
+    </section>
+
+    {{#if activePoi.images}}
+    <section>
+      <div class="uk-position-relative uk-visible-toggle uk-light" id='poi-slider' uk-slider center=true>
+        <ul class="uk-slider-items uk-grid uk-child-width-3-4" uk-grid>
+          {{#each activePoi.images as |image|}}
+          <li>
+            <figure class='uk-panel uk-text-center'>
+              <img src={{if image.name (concat imagePath image.name) image.url}} alt={{image.caption}}>
+              <figcaption class='uk-text-left uk-margin-top uk-padding-bottom'>{{{image.caption}}}</figcaption>
+            </figure>
+          </li>
+          {{/each}}
+          {{!-- <li class='uk-panel'>
+            <div class='uk-card uk-card-default uk-position-center uk-card-body uk-width-1-2'>
+              <ol>
+                {{#each poi.images as |image|}}
+                <li>
+                  {{image.caption}}
+                </li>
+                {{/each}}
+              </ol>
+            </div>
+          </li> --}}
+        </ul>
+
+        <a class="uk-position-center-left uk-slidenav-large uk-position-small gallery-arrow" href=''
+          uk-slidenav-previous uk-slider-item="previous">
+          {{!-- {{fa-icon 'angle-left'}} --}}
+        </a>
+        <a class="uk-position-center-right uk-slidenav-large uk-position-small gallery-arrow" href='' uk-slidenav-next
+          uk-slider-item="next">
+          {{!-- {{fa-icon 'angle-right'}} --}}
+        </a>
+        {{!-- <ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul> --}}
+      </div>
+    </section>
+    {{/if}}
+  </div>
+    <nav style='position: fixed;' class='poi-detail-nav uk-margin uk-margin-remove-bottom uk-padding uk-padding-remove-right uk-padding-remove-left {{activePoi.point.properties.type}}' uk-grid>
+      <div class='uk-width-2-5 uk-padding-small uk-padding-remove-vertical'>
+        <div uk-grid class='uk-grid-collapse  uk-flex-inline uk-flex-center uk-flex-middle uk-align-left'>
+        {{#if activePoi.previous}}
+        <div class='uk-width-1-6'>
+        {{#uk-button color='link' on-click=(perform highlightPoi activePoi.previous)}}
+        {{fa-icon 'angle-left'}}
+        {{/uk-button}}
+        </div>
+        <div class='uk-width-5-6'>
+        {{#uk-button color='link' on-click=(perform highlightPoi activePoi.previous)}}
+        {{activePoi.previous.name}}
+        {{/uk-button}}
+        </div>
+        {{else}}
+        <div class='uk-width-1-1'></div>
+        {{/if}}
+        </div>
+      </div>
+      <div class='uk-width-1-5 uk-padding-remove uk-flex-inline uk-flex-center uk-flex-middle poi-detail-home'>
+        {{#uk-button color='link' on-click=(perform closePanel)}}
+        {{fa-icon 'home'}}
+        {{/uk-button}}
+      </div>
+      <div class='uk-width-2-5 uk-padding-small uk-padding-remove-vertical'>
+        <div uk-grid class='uk-grid-collapse  uk-flex-inline uk-flex-center uk-flex-middle uk-align-right'>
+        {{#if activePoi.next}}
+        <div class='uk-width-5-6'>
+
+        {{#uk-button color='link' on-click=(perform highlightPoi activePoi.next)}}
+        {{activePoi.next.name}}
+        {{/uk-button}}
+        </div>
+        <div class='uk-width-1-6'>
+        {{#uk-button color='link' on-click=(perform highlightPoi activePoi.next)}}
+        {{fa-icon 'angle-right'}}
+        {{/uk-button}}
+
+        </div>
+        {{else}}
+        <div class='uk-width-1-1'></div>
+        {{/if}}
+        </div>
+      </div>
+    </nav>
+  {{/if}}
+  {{/poi-detail}}
+{{#if (eq scoot 'right')}}
+<div class='uk-position-left uk-flex uk-flex-middle'>
+{{#uk-button color='text' on-click=(perform switchPanel)}}
+<span uk-icon="icon: chevron-left; ratio: 5" style='position: fixed; z-index: 1;'></span>
+{{/uk-button}}
+  </div>
+  {{/if}}
+
+  {{#if activePanel.paintingBounds}}
+  {{!-- <div> --}}
+  {{#leaflet-map
+  onLoad=(perform initMap)
+  onResize=(perform reSize)
+  bounds=activePanel.paintingBounds
+  zoomSnap=0
+  maxBoundsViscosity=1.0
+  crs=crs
+  bounceAtZoomLimits=true
+  zoomControl=false
+  maxZoom=10
+  onMovestart=(perform resetTimer)
+  class='painting'
+  as |features|}}
+
+  {{#each model.panels as |panel|}}
+  {{features.tile
+    url=(concat tileHost panel.title '/{z}/{x}/{y}.png')
+    maxZoom=10
+    minZoom=0
+    tileSize=256
+    continuousWorld=false
+    onLoad=(perform setPainting)
+    opacity=panel.opacity
+  }}
+  {{/each}}
+
+  {{#each activePanel.pois as |poi|}}
+  {{!-- {{#if poi.show}} --}}
+  {{#if poi.active}}
+  {{!-- {{#if panel.active}} --}}
+  {{features.geoJSON
+  geoJSON=poi.polygon
+  style=setStyle
+  onAdd=(perform showPanel)
+  }}
+  {{else}}
+  {{features.geoJSON
+  geoJSON=poi.point
+  pointToLayer=(action 'setDot' poi)
+  onClick=(perform highlightPoi poi)
+  }}
+  {{/if}}
+  {{!-- {{/if}} --}}
+  {{/each}}
+
+
+  {{/leaflet-map}}
+  {{!-- </div> --}}
+  {{/if}}
+
+{{#if (eq scoot 'left')}}
+<div class='uk-position-right uk-flex uk-flex-middle'>
+{{#uk-button color='text' on-click=(perform switchPanel)}}
+<span href="" uk-icon="icon: chevron-right; ratio: 5"></span>
+{{/uk-button}}
+  </div>
+  {{/if}}
+  <div class='bottom-nav uk-padding uk-padding-remove-bottom uk-padding-remove-left uk-padding-remove-right uk-grid {{if activePoi 'hide-bottom-nav'}}' uk-grid>
+    {{!-- Controls --}}
+    <div class='uk-width-1-4 uk-child-width-1-1 uk-flex-center uk-grid-collapse' uk-grid>
+    {{#if activePanel.map}}
+      {{map-controls map=activePanel.map reCenter=(perform reCenter)}}
+    {{/if}}
+    </div>
+    
+    
+    {{!-- Buttons --}}
+    <div class='uk-width-1-2 uk-transform-origin-bottom-center uk-child-width-1-3 uk-grid-small poi-buttons' uk-grid>
+      {{#each buttons as |button index|}}
+      <div class='poi-nav-button uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse' uk-grid>
+        {{!-- <div class='uk-margin-remove poi-nav-button uk-text-center uk-flex-center {{if button.active 'active-poi'}}' role='button' onclick={{action 'switchPoiType' button}}> --}}
+        <div class='uk-margin-remove poi-nav-button uk-text-center uk-flex-center active-poi' role='button' onclick={{perform highlightGroup button.label}}>
+          <img class='uk-border-circle' src={{concat '/' button.icon}} alt={{concat 'Button to highlight ' button.label ' in the painting.'}}>
+          </div>
+
+            <div class='uk-text-center uk-flex-center'>
+          <p class={{if button.active 'active-poi'}}>{{button.label}}</p>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+
+    {{!-- MiniMap --}}
+    <div class='uk-width-1-4 uk-transform-origin-bottom-center uk-child-width-1-1 uk-grid-small' style='margin-top: 15px;' uk-grid>
+      <div class='uk-child-width-1-1 uk-text-center uk-flex-center uk-grid-collapse' uk-grid>
+        <div id='minimap' class='uk-margin-remove uk-text-center uk-flex-center'></div>
+        <div class='uk-text-center uk-flex-center'>
+          <p class='sentence'>You are facing {{activePanel.direction}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{#if showingTours}}
+  {{tour-menu start=(perform highlightPoi) showing=showingTours tours=model.tours active=showingTours hide=(action 'hideTours')}}
+  {{/if}}
+
+</div>
+{{!-- {{#if screenSaver}}
+  <h1 class='uk-heading-hero screen-saver uk-position-top-left uk-overlay uk-overlay-default uk-padding-left'>TOUCH TO EXPLORE {{scoot}}</h1>
+  {{/if}} --}}
+{{!-- <div style='height: 457px; width: 20vw; position: absolute; bottom: 0; left: 0; background: red;'></div> --}}

@@ -1,0 +1,128 @@
+/**
+* Quarter Circles
+*/
+
+$control-background: #212121;
+$control-icon-color: #D7CCC8;
+
+.pan-controls {
+  color: white;
+  height: 100%;
+  opacity: 0;
+  position: relative;
+  transform: rotate(45deg);
+  width: 100%;
+}
+
+.quarter {
+  cursor: pointer;
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  transition: background-color 0.2s ease-in-out;
+
+  span {
+    color: $control-icon-color;
+    // font-size: calc(6vw / 2vh);
+    font-size: 1vw;
+  }
+
+  &:focus,
+  &:hover {
+    background-color: #D7CCC8;
+    outline: none;
+
+    span {
+      color: $control-background;
+    }
+  }
+}
+
+.quarter1 {
+  top: 0;
+  left: 0;
+  background-color: $control-background;
+  border-radius: 100% 0 0 0;
+  border-top: solid #E0E0E0;
+  border-left: solid #E0E0E0;
+}
+
+.quarter2 {
+  top: 0;
+  right: 0;
+  background-color: $control-background;
+  border-radius: 0 100% 0 0;
+  border-right: solid #E0E0E0;
+  border-top: solid #E0E0E0;
+}
+
+.quarter3 {
+  bottom: 0;
+  left: 0;
+  background-color: $control-background;
+  border-radius: 0 0 0 100%;
+  border-left: solid #E0E0E0;
+  border-bottom: solid #E0E0E0;
+}
+
+.quarter4 {
+  bottom: 0;
+  right: 0;
+  background-color: $control-background;
+  border-radius: 0 0 100% 0;
+  border-right: solid #E0E0E0;
+  border-bottom: solid #E0E0E0;
+}
+
+.button {
+  transform: rotate(-45deg);
+}
+
+.zoom-button {
+  background-color: $control-background !important;
+  border: solid #EFEBE9;
+  color: $control-icon-color !important;
+  margin: .5vh;
+  opacity: 1 !important;
+
+  &:focus,
+  &:hover {
+    background-color: #1E1E1E !important;
+    color: $control-background !important;
+  }
+}
+
+.uk-button-link {
+  color: $control-background;
+
+  &:hover,
+  &:active,
+  &:focus {
+    color: #BCAAA4;
+  }
+}
+
+.zoom-controls {
+  button {
+    color: white;
+    font-size: 1vw;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+}
+
+#re-center-button {
+  cursor: pointer;
+  font-size: 1vw;
+  position: relative;
+  z-index: 2;
+
+  &:focus,
+  &:hover {
+    outline: none;
+  }
+
+  svg {
+    transform: rotate(-45deg);
+  }
+}
