@@ -10,7 +10,6 @@ Router.map(function() {
   if (config.environment === 'development') {
     this.route('edit', { path: '/edit/:panel' });
   }
-  // this.route('quad', { path: '/quad/:quad' });
   this.route('kiosk', { path: '/kiosk/:kiosk' });
 });
 
