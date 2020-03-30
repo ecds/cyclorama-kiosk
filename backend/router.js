@@ -5,6 +5,7 @@ var images = require('./controllers/images');
 var tours = require('./controllers/tours');
 var quads = require('./controllers/quads');
 var s3 = require('./controllers/s3');
+var errors = require('./controllers/errors');
 
 module.exports = function(router) {
   router.get('/kiosks/:id', kiosks.kioskDetail);
@@ -24,4 +25,5 @@ module.exports = function(router) {
   router.put('/quads/:id', quads.quadUpdate);
   router.get('/quads/:id', quads.quadDetail);
   router.get('/sign-s3', s3.getSigned);
+  router.post('/errors', errors.addError);
 };

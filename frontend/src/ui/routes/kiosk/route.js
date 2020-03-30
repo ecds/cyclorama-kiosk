@@ -1,9 +1,32 @@
 import Route from '@ember/routing/route';
+import { task } from 'ember-concurrency';
 
 export default class KioskRoute extends Route {
+
   model(params) {
    return this.store.queryRecord('kiosk', { title: params.kiosk });
   }
+
+  logError = task(function* (data) {
+
+    try {
+      let error = this.store.createRecord('error', data);
+      console.log(error);
+      yield error.save();
+      // yield fetch('http://otb.ecdsdev.org:3000/errors', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(data)
+      // });
+    } catch(e) {
+      console.log(e);
+    } finally {
+      location.reload(true);
+    }
+  })
   
   setupController(controller, model) {
     // Call _super for default behavior
@@ -22,9 +45,21 @@ export default class KioskRoute extends Route {
   }
 
   afterModel(model) {
+    const logError = this.get('logError');
     window.addEventListener("touchstart", () => {
       this.controllerFor('kiosk').get('resetTimer').perform()
     }, false);
+    window.onerror = function myErrorHandler(message, fileName, lineNumber) {
+      let data = {
+        message,
+        fileName,
+        lineNumber,
+        location: window.location.pathname
+      }
+      logError.perform(data).then(() => {
+        return false;
+      });
+    }
     model.panels.forEach(panel => {
       if (panel.opacity === 1) {
         panel.setProperties({
