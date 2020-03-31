@@ -1,5 +1,6 @@
 import Model, { attr, belongsTo, hasMany } from '@ember-data/model';
 import { computed } from '@ember/object';
+import { htmlSafe } from '@ember/string';
 
 export default class PoiModel extends Model {
   @attr('string') name;
@@ -22,7 +23,7 @@ export default class PoiModel extends Model {
       return null;
     }
     return previous
-  };
+  }
 
   @computed('panel')
   get next() {
@@ -31,5 +32,10 @@ export default class PoiModel extends Model {
       return null;
     }
     return next
-  };
+  }
+
+  @computed('description')
+  get safeDescription() {
+    return htmlSafe(this.description);
+  }
 }

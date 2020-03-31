@@ -11,14 +11,15 @@ export default Component.extend({
   mode: 'slide',
   bgClose: 'false',
 
+  /* eslint-disable ember/no-get */
   setEvents() {
     let events = {
-      beforeshow: this.getWithDefault("on-beforeshow", noop),
-      show: this.getWithDefault("on-show", noop),
-      shown: this.getWithDefault("on-shown", noop),
-      beforehide: this.getWithDefault("on-beforehide", noop),
-      hide: this.getWithDefault("on-hide", noop),
-      hidden: this.getWithDefault("on-hidden", noop)
+      beforeshow: (this.get("on-beforeshow") === undefined ? noop : this.get("on-beforeshow")),
+      show: (this.get("on-show") === undefined ? noop : this.get("on-show")),
+      shown: (this.get("on-shown") === undefined ? noop : this.get("on-shown")),
+      beforehide: (this.get("on-beforehide") === undefined ? noop : this.get("on-beforehide")),
+      hide: (this.get("on-hide") === undefined ? noop : this.get("on-hide")),
+      hidden: (this.get("on-hidden") === undefined ? noop : this.get("on-hidden"))
     };
 
     for (let event in events) {

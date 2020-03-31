@@ -1,90 +1,105 @@
 <div class='uk-offcanvas-content styled-scrollbar'>
-  {{#poi-detail panel=panel}}
-  {{#if managePois}}
-  {{manage-pois model=model.panel reorderPois=(action 'reorderPois') highlight=(action 'editPoi') managePois=managePois
-  new=(action 'newPoiType') delete=(action 'deletePoi')}}
+  <PoiDetail @panel={{this.panel}}>
+    {{#if this.managePois}}
+    <ManagePois
+      @model={{this.model.panel}}
+      @reorderPois={{fn this.reorderPois}}
+      @highlight={{fn this.editPoi}}
+      @managePois={{this.managePois}}
+      @new={{fn this.newPoiType}}
+      @delete={{fn this.deletePoi}}
+    />
+    {{/if}}
+    {{#if this.newPoi}}
+      <EditPoi
+       @poi={{this.newPoi}}
+       @save={{perform this.savePoi this.newPoi}}
+       @delete={{fn this.deletePoi this.newPoi}}
+       @cancel={{fn this.cancel this.newPoi}}
+       @newImage={{fn this.newImage this.newPoi}}
+      >
+        <button class="uk-offcanvas-close" type="button" onclick={{perform this.closePanel}} uk-close></button>
+      </EditPoi>
+    {{else}}
+      {{#each this.model.panel.pois as |poi|}}
+        {{#if poi.active}}
+          <EditPoi
+            @poi={{poi}}
+            @save={{perform this.savePoi poi}}
+            @delete={{fn this.deletePoi poi}}
+            @cancel={{fn this.cancel poi}}
+            @deleteImage={{fn this.deleteImage}}
+            @newImage={{fn this.newImage poi}}
+          >
+            <button class="uk-offcanvas-close" type="button" onclick={{perform this.closePanel}} uk-close></button>
+          </EditPoi>
+        {{/if}}
+      {{/each}}
+    {{/if}}
+  </PoiDetail>
+
+  {{#if this.model.panel.paintingBounds}}
+    <LeafletMap
+      @onLoad={{perform this.initEditMap}}
+      @onResize={{perform this.reSize}}
+      @bounds={{this.model.panel.paintingBounds}}
+      @zoomSnap={{0}}
+      @maxBoundsViscosity={{0.5}}
+      @crs={{this.crs}}
+      @bounceAtZoomLimits={{true}}
+      @zoomControl={{true}}
+      @maxZoom={{11}}
+      @class="painting"
+      as |features|
+    >
+
+      <features.tile
+        @url={{concat 'https://s3.amazonaws.com/battleofatlanta/tiles/' this.model.panel.title '/{z}/{x}/{y}.png'}}
+        @maxZoom={{10}}
+        @minZoom={{0}}
+        @tileSize={{256}}
+        @continuousWorld={{false}}
+        @onLoad={{perform this.setPainting}}
+      />
+
+      {{#each this.model.panel.pois as |poi|}}
+        {{#if poi.active}}
+          <features.geoJSON
+            @geoJSON={{poi.polygon}}
+            @style={{this.setStyle}}
+            @onAdd={{fn this.polygonAdded poi}}
+            @className="uk-animation-fade"
+          />
+        {{/if}}
+        <features.geoJSON
+          @geoJSON={{poi.point}}
+          @pointToLayer={{fn this.setDot poi}}
+          @onClick={{fn this.editPoi poi}}
+        />
+      {{/each}}
+    </LeafletMap>
   {{/if}}
-  {{#if newPoi}}
-  {{#edit-poi poi=newPoi save=(perform savePoi newPoi) delete=(action 'deletePoi' newPoi) cancel=(action 'cancel'
-  newPoi) newImage=(action 'newImage' newPoi)}}
-    <button class="uk-offcanvas-close" type="button" onclick={{perform closePanel}} uk-close></button>
-  {{/edit-poi}}
-  {{else}}
-  {{#each model.panel.pois as |poi|}}
-  {{#if poi.active}}
-  {{#edit-poi poi=poi save=(perform savePoi poi) delete=(action 'deletePoi' poi) cancel=(action 'cancel' poi)
-  deleteImage=(action 'deleteImage') newImage=(action 'newImage' poi)}}
-      <button class="uk-offcanvas-close" type="button" onclick={{perform closePanel}} uk-close></button>
-  {{/edit-poi}}
-{{/if}}
-  {{/each}}
-  {{/if}}
+  <div
+    class='bottom-nav bottom-nav uk-flex-middle uk-flex uk-flex-center uk-child-width-1-4 {{if this.activePoi 'hide-bottom-nav'}}'
+    uk-grid>
+    <div class='uk-flex-middle uk-flex uk-flex-center'>
+      {{!-- {{#uk-button size='large' color='primary' on-click=(action (toggle 'managePois' this))}}manage pois{{/uk-button}} --}}
+      <UkButton @size='large' @color='primary' @on-click={{toggle 'managePois' this}}>manage pois</UkButton>
+    </div>
 
-    {{#if manageTours}}
-  {{manage-tours tourToEdit=tourToEdit model=model.tours reorderPois=(action 'reorderPois') highlight=(action 'editPoi') manageTours=manageTours
-  new=(action 'newTour') delete=(action 'deletePoi')}}
-  {{/if}}
-  {{#if tourToEdit}}
-  {{edit-tour tour=tourToEdit pois=model.pois addPoi=(action 'addPoiToTour') save=(action 'saveTour' newTour) delete=(action 'deleteTour' newTour) cancel=(action 'cancel'
-  tourToEdit)}}
-  {{/if}}
-  {{/poi-detail}}
+    <div class='uk-flex-middle uk-flex uk-flex-center'></div>
 
-  {{#if model.panel.paintingBounds}}
-  {{#leaflet-map
-  onLoad=(perform initEditMap)
-  onResize=(perform reSize)
-  bounds=model.panel.paintingBounds
-  zoomSnap=0
-  maxBoundsViscosity=0.5
-  crs=crs
-  bounceAtZoomLimits=true
-  zoomControl=true
-  maxZoom=11
-  class='painting'
-  as |features|}}
-
-   {{features.tile
-    url=(concat 'https://s3.amazonaws.com/battleofatlanta/tiles/' model.panel.title '/{z}/{x}/{y}.png')
-    maxZoom=10
-    minZoom=0
-    tileSize=256
-    continuousWorld=false
-    onLoad=(perform setPainting)
-  }}
-
-  {{#each model.panel.pois as |poi|}}
-  {{#if poi.active}}
-  {{features.geoJSON
-  geoJSON=poi.polygon
-  style=setStyle
-  onAdd=(action 'polygonAdded' poi)
-  className='uk-animation-fade'
-  }}
-  {{/if}}
-  {{features.geoJSON
-  geoJSON=poi.point
-  pointToLayer=(action 'setDot' poi)
-  onClick=(action 'editPoi' poi)
-  }}
-  {{/each}}
-
-  {{/leaflet-map}}
-  {{/if}}
-  <div class='bottom-nav bottom-nav uk-flex-middle uk-flex uk-flex-center uk-child-width-1-4 {{if activePoi 'hide-bottom-nav'}}' uk-grid>
-      <div class='uk-flex-middle uk-flex uk-flex-center'>{{#uk-button size='large' color='primary' on-click=(action (toggle 'managePois' this))}}manage pois{{/uk-button}}</div>
-
-      <div class='uk-flex-middle uk-flex uk-flex-center'></div>
-
-      <div class='uk-flex-middle uk-flex uk-flex-center'>{{#uk-button size='large' color='primary' on-click=(perform editReCenter)}}Clear/recenter{{/uk-button}}</div>
+    <div class='uk-flex-middle uk-flex uk-flex-center'>
+      <UkButton @size='large' @color='primary' @on-click={{perform this.editReCenter}}>Clear/recenter</UkButton>
+    </div>
 
     <div>
-      {{#if model.panel.map}}
-      {{map-controls map=model.panel.map reCenter=(perform reCenter)}}
-    {{/if}}
+      {{#if this.model.panel.map}}
+        <MapControls @map={{this.model.panel.map}} @reCenter={{perform this.reCenter}} />
+      {{/if}}
     </div>
 
-    </div>
-      <div id='minimap' hidden></div>
+  </div>
+  <div id='minimap' hidden></div>
 
 </div>

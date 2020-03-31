@@ -1,6 +1,6 @@
-import DS from 'ember-data';
+import RESTSerializer, { EmbeddedRecordsMixin } from '@ember-data/serializer/rest';
 
-export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
+export default RESTSerializer.extend(EmbeddedRecordsMixin, {
   primaryKey: '_id',
   attrs: {
     pois: { embedded: 'always' }

@@ -12,16 +12,8 @@ export default class KioskRoute extends Route {
     try {
       let error = this.store.createRecord('error', data);
       yield error.save();
-      // yield fetch('http://otb.ecdsdev.org:3000/errors', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(data)
-      // });
     } catch(e) {
-      console.log(e);
+      console.log(e); // eslint-disable-line no-console
     } finally {
       location.reload(true);
     }
@@ -30,7 +22,7 @@ export default class KioskRoute extends Route {
   
   setupController(controller, model) {
     // Call _super for default behavior
-    this._super(controller, model);
+    // this._super(controller, model);
     this.controllerFor('kiosk').set('model', model);
     fetch('/buttons.json').then(response => {
       response.json().then(data => {
@@ -45,7 +37,7 @@ export default class KioskRoute extends Route {
   }
 
   afterModel(model) {
-    const logError = this.get('logError');
+    const logError = this.logError;
     window.addEventListener("touchstart", () => {
       this.controllerFor('kiosk').get('resetTimer').perform()
     }, false);

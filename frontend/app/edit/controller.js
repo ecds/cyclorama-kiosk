@@ -1,13 +1,13 @@
 import ApplicationController from '../application/controller';
 import UIkit from 'uikit';
 import { task, timeout, waitForEvent } from 'ember-concurrency';
-import { action, set } from '@ember/object';
+import { action } from '@ember/object';
 /* global L */
 
 export default class EditController extends ApplicationController {
   newPoi = null;
   tourToEdit = null;
-  newPoiType = 'people';
+  // newPoiType = 'people';
   managePois = false;
   manageTours = false;
 
@@ -51,7 +51,7 @@ export default class EditController extends ApplicationController {
   }
 
   @(task(function* (event) {
-    yield this.get('initMap').perform(event);
+    yield this.initMap.perform(event);
     // Add listener for when a new poi is dropped on the painting.
     this.model.panel.map.on('pm:create', (shape) => { this.send('newPoi', shape) });
   }))
@@ -111,7 +111,7 @@ export default class EditController extends ApplicationController {
   savePoi;
 
   @(task(function* () {
-    yield this.get('closePanel').perform();
+    yield this.closePanel.perform();
     this.model.panel.map.pm.disableGlobalEditMode();
   }))
   editReCenter;
@@ -139,7 +139,7 @@ export default class EditController extends ApplicationController {
     this.model.panel.map.pm.Draw.Marker.disable();
     this.model.panel.map.pm.Draw.Cut.enable();
     let newPoint = shape.layer.toGeoJSON();
-    newPoint.properties.type = this.get('newPoiType');
+    newPoint.properties.type = this.newPoiType;
 
     let newPoi = this.store.createRecord('poi', {
       point: newPoint,
@@ -177,7 +177,7 @@ export default class EditController extends ApplicationController {
 
   @action
   editPoi(poi, event) {
-    this.get('highlightPoi').perform(poi, event);
+    this.highlightPoi.perform(poi, event);
     this.model.panel.map.pm.enableGlobalEditMode();
   }
 
@@ -234,7 +234,7 @@ export default class EditController extends ApplicationController {
       this.model.pois.removeObject(poi);
       poi.destroy();
     }
-    this.get('editReCenter').perform();
+    this.editReCenter.perform();
   }
 
   @action
@@ -278,7 +278,7 @@ export default class EditController extends ApplicationController {
       poi.setProperties({ tmpPolygon: editEvent.target.pm._layer.toGeoJSON() });
     });
     layer.pm.enable();
-    this.get('showPanel').perform();
+    this.showPanel.perform();
   }
 
   @action

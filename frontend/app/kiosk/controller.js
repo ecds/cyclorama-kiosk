@@ -15,18 +15,18 @@ export default class KioskController extends ApplicationController {
     yield timeout(120000);
     
     if (document.body.contains(document.getElementById('poi-slider'))) {
-      document.getElementById('poi-slider').removeEventListener('beforeitemshow', this.get('resetTimer').perform());
+      document.getElementById('poi-slider').removeEventListener('beforeitemshow', this.resetTimer.perform());
     }
     // TODO Consider doing a reload. Maybe a separate, longer, timer.
     // location.reload();
-    yield this.get('closePanel').perform();
+    yield this.closePanel.perform();
   }).restartable())
   resetTimer;
 
   watchScroll() {
     let poiContent = document.getElementsByClassName('poi-detail-content')[0];
     poiContent.addEventListener('scroll', () =>{
-      this.get('resetTimer').perform()
+      this.resetTimer.perform();
     });
   }
 
@@ -34,7 +34,7 @@ export default class KioskController extends ApplicationController {
     if (!this.activePoi) return;
     UIkit.util.on('#poi-slider', 'beforeitemshow', event => {
       if (event.srcElement.className === 'uk-first-column') return;
-      this.get('resetTimer').perform();
+      this.resetTimer.perform();
     });
   }
 
@@ -46,7 +46,7 @@ export default class KioskController extends ApplicationController {
     yield timeout(1);
     this.set('activePoi', poi);
     poi.setProperties({ active: true });
-    yield this.get('flyToPoi').perform(poi);
+    yield this.flyToPoi.perform(poi);
     yield timeout(300);
     this.watchScroll();
     this.watchSlider();
@@ -77,7 +77,7 @@ export default class KioskController extends ApplicationController {
     this.set('group', group);
     yield timeout(2400);
     this.set('group', null);
-  }))
+  }).restartable())
   highlightGroup;
 
   @action  
@@ -115,11 +115,11 @@ export default class KioskController extends ApplicationController {
         });
       }
       this.set('paintingSet', false);
-      this.get('offsetCenter').perform();
+      this.offsetCenter.perform();
     });
 
-    yield this.get('reset').perform();
-    yield this.get('closePanel').perform();
+    yield this.reset.perform();
+    yield this.closePanel.perform();
     this.addMiniMap();
   }))
   switchPanel;

@@ -18,7 +18,7 @@ export default class PanelModel extends Model {
   @computed('pois')
   get _poiPositionSort() {
     return ['position:asc']
-  };
+  }
 
   @computed('height', 'width')
   get zoomLevel() {
@@ -28,12 +28,12 @@ export default class PanelModel extends Model {
         256
       ) / Math.log(2)
     );
-  };
+  }
 
   @computed('height', 'width')
   get paintingBounds() {
     let sw = L.CRS.Simple.pointToLatLng(L.point(0, this.height), this.zoomLevel);
     let ne = L.CRS.Simple.pointToLatLng(L.point(this.width, 0), this.zoomLevel);
     return new L.latLngBounds([sw, ne])
-  };
+  }
 }

@@ -73,21 +73,20 @@ export default class ApplicationController extends Controller {
   @(task(function* () {
     this.send('clearActive');
     yield this.panel.hide();
-    return yield this.get('reCenter').perform();
+    return yield this.reCenter.perform();
   }))
   closePanel;
 
   @(task(function* () {
     yield this.panel.show();
-    console.log("ApplicationController -> @ -> this.panel", this.panel)
   }))
   showPanel;
 
   @(task(function* (/*event*/) {
     yield timeout(1000);
-    yield this.get('offsetCenter').perform();
+    yield this.offsetCenter.perform();
     if (this.activePoi) {
-      yield this.get('flyToPoi').perform(this.activePoi);
+      yield this.flyToPoi.perform(this.activePoi);
     } else {
       //
     }
@@ -97,7 +96,7 @@ export default class ApplicationController extends Controller {
   @(task(function* (/*event*/) {
     if (this.paintingSet) return;
     this.set('paintingSet', true);
-    yield this.get('offsetCenter').perform();
+    yield this.offsetCenter.perform();
     this.sizePanControls();
     return true;
   }).drop())
@@ -178,7 +177,7 @@ export default class ApplicationController extends Controller {
     this.send('clearActive');
     this.set('activePoi', poi);
     poi.setProperties({ active: true });
-    yield this.get('flyToPoi').perform(poi);
+    yield this.flyToPoi.perform(poi);
   }).drop())
   highlightPoi;
 
@@ -193,7 +192,7 @@ export default class ApplicationController extends Controller {
   @(task(function* () {
     this.suspendInteractions();
     // this.addMiniMap();
-    yield this.get('panToCenter').perform();
+    yield this.panToCenter.perform();
   }))
   reCenter;
 
@@ -280,7 +279,7 @@ export default class ApplicationController extends Controller {
 
   removeMinMap() {
     if (!this.miniMap) return;
-    this.get('miniMap').remove();
+    this.miniMap.remove();
     this.setProperties({ miniMap: null });
   }
 

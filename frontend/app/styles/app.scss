@@ -467,7 +467,7 @@ body,
 .poi-detail-nav {
   bottom: 0;
   // left: 0;
-  position: absolute;
+  position: fixed;
   width: 50vw;
 
   &.people {
@@ -551,4 +551,13 @@ img.leaflet-tile.leaflet-tile-loaded {
   100% {
     transform: translateX(-100%);
   }
+}
+
+.to-other-panel {
+  position: fixed;
+  z-index: 1;
+}
+
+.mini-map-container {
+  margin-top: 15px;
 }

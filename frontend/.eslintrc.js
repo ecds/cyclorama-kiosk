@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   root: true,
   parser: 'babel-eslint',
@@ -8,13 +10,8 @@ module.exports = {
       legacyDecorators: true
     }
   },
-  plugins: [
-    'ember'
-  ],
-  extends: [
-    'eslint:recommended',
-    'plugin:ember/recommended'
-  ],
+  extends: ['eslint:recommended', 'plugin:ember-best-practices/recommended', 'plugin:ember/recommended' ],
+  plugins: ['prettier'],
   env: {
     browser: true
   },

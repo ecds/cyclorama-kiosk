@@ -1,6 +1,6 @@
-import DS from 'ember-data';
+import RESTAdapter from '@ember-data/adapter/rest';
 import ENV from 'frontend/config/environment'
 
-export default DS.RESTAdapter.extend({
+export default RESTAdapter.extend({
   host: ENV.APP.API_HOST
 });

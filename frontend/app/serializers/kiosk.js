@@ -1,4 +1,4 @@
-import DS from 'ember-data';
+import RESTSerializer, { EmbeddedRecordsMixin } from '@ember-data/serializer/rest';
 import ENV from 'frontend/config/environment'
 
 let key = '';
@@ -7,7 +7,7 @@ if (ENV.environment == 'development') {
 } else {
   key = 'title';
 }
-export default DS.RESTSerializer.extend(DS.EmbeddedRecordsMixin, {
+export default RESTSerializer.extend(EmbeddedRecordsMixin, {
   primaryKey: key,
   attrs: {
     panels: { embedded: 'always' }
