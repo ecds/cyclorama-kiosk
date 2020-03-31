@@ -1,26 +1,19 @@
-/* eslint-env node */
 'use strict';
 
 const http = require('http');
 const fs = require('fs');
 
 module.exports = function(environment) {
-  const CMS_SERVER = 'http://otb.ecdsdev.org:3000';
+  const CMS_SERVER = 'http://readux.ecdsdev.org:3000';
   let ENV = {
-    'ember-resolver': {
-      features: {
-        EMBER_RESOLVER_MODULE_UNIFICATION: true
-      }
-    },
-    modulePrefix: 'cyclorama-kiosk',
+    modulePrefix: 'frontend',
     environment,
     rootURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
-        // e.g. 'with-controller': true
-        'ember-module-unification': true
+        // e.g. EMBER_NATIVE_DECORATOR_SUPPORT: true
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
@@ -31,7 +24,6 @@ module.exports = function(environment) {
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-      // customEvents
     }
   };
 
@@ -39,11 +31,6 @@ module.exports = function(environment) {
     ENV.APP.API_HOST = CMS_SERVER;
     ENV.APP.TILE_HOST = 'https://s3.amazonaws.com/battleofatlanta/tiles/';
     ENV.APP.IMAGE_ROOT_PATH = 'https://s3.amazonaws.com/battleofatlanta/';
-    // ENV.APP.LOG_RESOLVER = true;
-    // ENV.APP.LOG_ACTIVE_GENERATION = true;
-    // ENV.APP.LOG_TRANSITIONS = true;
-    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
-    // ENV.APP.LOG_VIEW_LOOKUPS = true;
   }
 
   if (environment === 'kiosk') {
@@ -64,21 +51,6 @@ module.exports = function(environment) {
     ENV.APP.REQUEST_SUFFIX = '.json';
     ENV.APP.IMAGE_ROOT_PATH = 'http://tiles.cycloramakiosk.atlantahistorycenter.com/images/';
   }
-
-  if (environment === 'test') {
-    // Testem prefers this...
-    ENV.locationType = 'none';
-
-    // keep test console output quieter
-    ENV.APP.LOG_ACTIVE_GENERATION = false;
-    ENV.APP.LOG_VIEW_LOOKUPS = false;
-
-    ENV.APP.rootElement = '#ember-testing';
-  }
-
-  // if (environment === 'production') {
-
-  // }
 
   return ENV;
 };

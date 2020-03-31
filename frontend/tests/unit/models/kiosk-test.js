@@ -1,6 +1,5 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { run } from '@ember/runloop';
 
 module('Unit | Model | kiosk', function(hooks) {
   setupTest(hooks);
@@ -8,7 +7,7 @@ module('Unit | Model | kiosk', function(hooks) {
   // Replace this with your real tests.
   test('it exists', function(assert) {
     let store = this.owner.lookup('service:store');
-    let model = run(() => store.createRecord('kiosk', {}));
+    let model = store.createRecord('kiosk', {});
     assert.ok(model);
   });
 });
